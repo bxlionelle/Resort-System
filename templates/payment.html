@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+</head>
+<body>
+    <h3>Payment Options</h3>
+    <p>Guest Name: {{ guest.firstname }} {{ guest.lastname }}</p>
+    <p>Room Type: {{ guest.room_name }}</p>
+
+    <form action="" method="POST">
+        <label for="payment-method">Choose Payment Method:</label>
+        <select id="payment-method" name="payment-method" onchange="showPaymentDetails()">
+            <option value="paymaya">PayMaya</option>
+            <option value="paypal">PayPal</option>
+            <option value="credit-card">Credit Card</option>
+            <option value="debit-card">Debit Card</option>
+        </select><br>
+
+        <div id="payment-details"></div>
+
+        <input type="submit" value="Confirm Payment">
+    </form>
+    <a href="{{ url_for('reservationform', check_in=guest.check_in, check_out=guest.check_out, adults=guest.adults, children=guest.children, room_type=guest.room_type) }}">Cancel</a>
+
+    <script>
+        function showPaymentDetails() {
+            var paymentMethod = document.getElementById("payment-method").value;
+            var paymentDetailsDiv = document.getElementById("payment-details");
+            var detailsHtml = '';
+
+            if (paymentMethod === 'paypal') {
+                detailsHtml = '<label for="paypal-email">Enter your PayPal Email:</label><input type="email" id="paypal-email" name="paypal-email" required><br>';
+            } else if (paymentMethod === 'paymaya') {
+                detailsHtml = '<label for="phone-number">Enter your Phone Number:</label><input type="tel" id="phone-number" name="phone-number" required><br>';
+            } else if (paymentMethod === 'credit-card' || paymentMethod === 'debit-card') {
+                detailsHtml = `
+                    <label for="card-number">Card Number:</label>
+                    <input type="text" id="card-number" name="card-number" required>
+                    <label for="expiry-date">Expiry Date:</label>
+                    <input type="text" id="expiry-date" name="expiry-date" required placeholder="MM/YY">
+                    <label for="cvv">CVV:</label>
+                    <input type="text" id="cvv" name="cvv" required>
+                `;
+            }
+
+            paymentDetailsDiv.innerHTML = detailsHtml;
+        }
+    </script>
+</body>
+</html>

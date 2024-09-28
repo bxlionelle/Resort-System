@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Receipt</title>
+</head>
+<body>
+    <h3>Reservation Receipt</h3>
+    <p>Thank you, {{ guest.firstname }} {{ guest.lastname }}!</p>
+    <p>Your Customer ID: <strong>{{ guest.customer_id }}</strong></p>
+    <p>Your reservation details:</p>
+
+    <ul>
+        <li>Check In: {{ guest.check_in }}</li>
+        <li>Check Out: {{ guest.check_out }}</li>
+        <li>Adults: {{ guest.adults }}</li>
+        <li>Children: {{ guest.children }}</li>
+        <li>Room Type: {{ guest.room_name }}</li>
+        <li>Address: {{ guest.address }}</li>
+        <li>Phone Number: {{ guest.cel_num }}</li>
+        <li>Payment Method: {{ guest.payment_method }}</li>
+    </ul>
+
+    <p>PAYMENT CONFIRMED</p>
+    <a href="{{ url_for('index') }}">Home</a>
+</body>
+</html>

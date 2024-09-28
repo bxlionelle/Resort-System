@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+</head>
+<body>
+    <h1>Admin Panel</h1>
+    <h2>Guest List</h2>
+    <table border="1">
+        <tr>
+            <th>Customer ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>Cell Number</th>
+            <th>Check In</th>
+            <th>Check Out</th>
+            <th>Adults</th>
+            <th>Children</th>
+            <th>Room Type</th>
+            <th>Payment Method</th>
+        </tr>
+        {% for guest in guestlist %}
+        <tr>
+            <td>{{ guest.customer_id }}</td>
+            <td>{{ guest.firstname }}</td>
+            <td>{{ guest.lastname }}</td>
+            <td>{{ guest.address }}</td>
+            <td>{{ guest.cel_num }}</td>
+            <td>{{ guest.check_in }}</td>
+            <td>{{ guest.check_out }}</td>
+            <td>{{ guest.adults }}</td>
+            <td>{{ guest.children }}</td>
+            <td>{{ guest.room_name }}</td>
+            <td>{{ guest.payment_method }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html>

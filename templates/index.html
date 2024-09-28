@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html llang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Book Now!</title>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+
+<body>
+
+    
+<header>
+
+    <input type="checkbox" name="" id="toggler">
+    <label for="toggler" class="fas fa-bars"></label>
+
+    <a href="#" class="logo">resort<span>.</span></a>
+
+    <nav class="navbar">
+        <a href="#home">home</a>
+        <a href="#rates">rates</a>
+        <a href="#about">about</a>
+        <a href="#contact">contact</a>
+    </nav>
+</header>
+
+<section class="home" id="home">
+
+    <div class="content">
+        <h3>Zosa</h3>
+        <span>  add lines here chuchuhc tagline </span>
+        <p> text </p>
+        <a href="#" class="btn">Book Now</a>
+
+    </div>
+
+</section>
+
+<section class="rates" id="rates">
+    <h1>Welcome aboard!</h1>
+    <div class="box-container">
+        <form action="/" method="POST">
+            <div class="box">
+                <div class="box1"> <!--check in-->
+                    <label for="check_in">Check In:</label>
+                    <input class="w3-input w3-border" type="date" id="check_in" name="check_in" required><br>
+                </div>
+                <div class="box2"> <!--check out-->
+                    <label for="check_out">Check Out:</label>
+                    <input class="w3-input w3-border" type="date" id="check_out" name="check_out" required><br>
+                </div>
+                <script>
+                    const today = new Date().toISOString().split('T')[0];
+                    document.getElementById('check_in').setAttribute('min', today);
+                    document.getElementById('check_out').setAttribute('min', today);
+                    
+                    document.getElementById('check_in').addEventListener('change', function() {
+                        document.getElementById('check_out').setAttribute('min', this.value);
+                    });
+                </script> 
+                <div class="box3"> <!--adult-->
+                    <label for="adult-count">Adults:</label>
+                    <input class="w3-input w3-border" type="number" id="adult-count" name="adult-count" min="1" value="1" required><br>
+                </div>
+                <div class="box4"> <!--child-->
+                    <label for="child-count">Children:</label>
+                    <input class="w3-input w3-border" type="number" id="child-count" name="child-count" min="0" value="0"><br>
+                </div>
+                <section class="rooms"> <!--room choice-->
+                    <div class="w3-row-padding w3-padding-16">
+                        {% for room_name, room_details in rooms.items() %}
+                        <div class="w3-third w3-margin-bottom">
+                            <div class="w3-container w3-white">
+                                <h3>{{ room_name }}</h3>
+                                <h6 class="w3-opacity">Price: {{ room_details.price }}/night</h6>
+                                <p>{{ room_details.description }}</p>
+                                <p>More:</p>
+                                <ul>
+                                    {% for item in room_details.more %}
+                                    <li>{{ item }}</li>
+                                    {% endfor %}
+                                </ul>
+                        
+                                <button type="submit" value="{{ room_name }}" name="room-name" id="room-name" class="w3-button w3-block w3-black">Choose Room</button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+            </div>
+        </form>
+    </div>
+</section>
+
+
+
+ 
+<div>
+
+    <section class="about" id="about">
+        <h1 class="heading"><span>about</span> us <h1>
+        
+        <div class="row">
+
+            <div class="video-container">
+                <video src="images/19MJ.gif" loop autoplay muted></video>
+                <h3> best place to unwind</h3>
+            </div>
+
+            <div class="content">
+                <h3> text huxhuxhhuxhuxhu</h3>
+                <p> haaaaaalaaaaaaaaabaaaaa naaaaaaa teeeeeexxxxxxxxtttttttttt</p>
+                <p> explain bakit dri ka nniya crush</p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="contact" id="contact">
+        <h1 class="heading"> <span> contact </span> us </h1>
+
+        <div class="row">
+
+            <form actions="">
+                <input type="text" placeholder="name" class="box">
+                <input type="email" placeholder="email" class="box">
+                <input type="number" placeholder="number" class="box">
+                <textarea name="" class="box" placeholder="message" id="" cols="30" rows="10"></textarea>
+                <input type="submit" value="send message" class="btn">
+
+            </form>
+
+            <div class="image">
+                <img src="images/pics.jpg" alt="">
+            </div>
+    </section>
+</div>
+
+</body>
+</html>
+
+
+
