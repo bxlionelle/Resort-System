@@ -1,7 +1,22 @@
 from flask import Flask, render_template, request, url_for, redirect
 import uuid
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://users.sqlite3' #"user" amo an table
+app.config["SQLALCHEMY_TRACK_MODIFICATITONS"] = False
+
+db = SQLAlchemy(app)
+
+class users(db.Model):
+    _id = db.Column("id", db.integer, primary_key=True)
+    name = db.Column("name", db.String(100))
+    
+    def __init__(self, name):
+        self.name =name
+  
 
 guestlist = []
 rooms = {
@@ -107,4 +122,5 @@ def admin():
     return render_template("admin.html", guestlist=guestlist)
 
 if __name__ == "__main__":
+    db.create_all
     app.run(debug=True)
