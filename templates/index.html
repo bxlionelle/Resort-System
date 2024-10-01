@@ -11,6 +11,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aladin&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aladin&family=Cherry+Cream+Soda&family=Concert+One&family=Fjalla+One&display=swap" rel="stylesheet">
+    
+        
 </head>
 
 <body>
@@ -73,12 +81,14 @@
                     <label for="child-count">Children:</label>
                     <input class="w3-input w3-border" type="number" id="child-count" name="child-count" min="0" value="0"><br>
                 </div>
+
                 <section class="rooms"> <!--room choice-->
                     <div class="w3-row-padding w3-padding-16">
                         {% for room_name, room_details in rooms.items() %}
                         <div class="w3-third w3-margin-bottom">
                             <div class="w3-container w3-white">
                                 <h3>{{ room_name }}</h3>
+                                <img src="{{ room_details.image }}" alt="{{ room_name }}" style="width:100%; height:auto;">
                                 <h6 class="w3-opacity">Price: {{ room_details.price }}/night</h6>
                                 <p>{{ room_details.description }}</p>
                                 <p>More:</p>
@@ -87,7 +97,7 @@
                                     <li>{{ item }}</li>
                                     {% endfor %}
                                 </ul>
-                        
+                
                                 <button type="submit" value="{{ room_name }}" name="room-name" id="room-name" class="w3-button w3-block w3-black">Choose Room</button>
                             </div>
                         </div>
@@ -110,13 +120,13 @@
         <div class="row">
 
             <div class="video-container">
-                <video src="images/19MJ.gif" loop autoplay muted></video>
+                <video src="lala.mp4" loop autoplay muted></video>
                 <h3> best place to unwind</h3>
             </div>
 
             <div class="content">
                 <h3> text huxhuxhhuxhuxhu</h3>
-                <p> haaaaaalaaaaaaaaabaaaaa naaaaaaa teeeeeexxxxxxxxtttttttttt</p>
+                <p> EBRAM FERERA - JADE EUNICE ALEXIS BABIAB</p>
                 <p> explain bakit dri ka nniya crush</p>
 
             </div>
@@ -140,7 +150,7 @@
             </form>
 
             <div class="image">
-                <img src="images/pics.jpg" alt="">
+                <img src="resort1.jpg" alt="">
             </div>
     </section>
 </div>

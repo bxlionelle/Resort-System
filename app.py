@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-
+'''
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://users.sqlite3' #"user" amo an table
 app.config["SQLALCHEMY_TRACK_MODIFICATITONS"] = False
 
@@ -16,29 +16,33 @@ class users(db.Model):
     
     def __init__(self, name):
         self.name =name
-  
+'''
 
 guestlist = []
 rooms = {
     "Basic Room": {
         "price": 500,
         "description": "1 bed, A/C, Sleeps 2, Free wifi",
-        "more": ["Private bathroom", "Cable channels", "Free toiletries"]
+        "more": ["Private bathroom", "Cable channels", "Free toiletries"],
+        "image": "lily.jpg" 
     },
     "Deluxe Room": { 
         "price": 1200,
         "description": "2 beds, A/C, Sleeps 4-5, Free wifi",
-        "more": ["Private bathroom", "Cable channels", "Free toiletries"]
+        "more": ["Private bathroom", "Cable channels", "Free toiletries"],
+        "image": "static/images/suite_room.jpg" 
     },
     "Deluxe Twin Room": {
         "price": 2200,
         "description": "4 beds, A/C, Sleeps 8, Free wifi",
-        "more": ["Private bathroom", "Cable channels", "Free toiletries"]
+        "more": ["Private bathroom", "Cable channels", "Free toiletries"],
+        "image": "static/images/suite_room.jpg"
     },
     "Suite Room": {
         "price": 6000,
         "description": "3 double beds, A/C, Sleeps 6, Free wifi",
-        "more": ["Private bathroom", "Cable channels", "Free toiletries"]
+        "more": ["Private bathroom", "Cable channels", "Free toiletries"],
+        "image": "static/images/suite_room.jpg" #adi kay naka-assign an pictures, tapos ha line 89 ha index.html didto hiya tatawagon
     }
 }
 
@@ -122,5 +126,5 @@ def admin():
     return render_template("admin.html", guestlist=guestlist)
 
 if __name__ == "__main__":
-    db.create_all
+    #db.create_all
     app.run(debug=True)
