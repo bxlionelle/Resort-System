@@ -1,22 +1,28 @@
-from flask import Flask, render_template, request, url_for, redirect
-import uuid
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, request, url_for, redirect, flash
+#from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 app = Flask(__name__)
-
-'''
+"""
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://users.sqlite3' #"user" amo an table
 app.config["SQLALCHEMY_TRACK_MODIFICATITONS"] = False
 
 db = SQLAlchemy(app)
 
-class users(db.Model):
-    _id = db.Column("id", db.integer, primary_key=True)
-    name = db.Column("name", db.String(100))
+class guest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)  
+    firstname = db.Column(db.String(100), nullable=False)
+    lastname = db.Column(db.String(100), nullable=False)  
+    address = db.Column(db.String(200), nullable=False)  
+    cel_num = db.Column(db.String(15), nullable=False)  
+    room_type = db.Column(db.String(50))
+    check_in = db.Column(db.DateTime)  
+    check_out = db.Column(db.DateTime)  
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)
     
     def __init__(self, name):
-        self.name =name
-'''
+        return '<FirstName %r' % self.firstname
+"""
 
 guestlist = []
 rooms = {
@@ -24,36 +30,38 @@ rooms = {
         "price": 500,
         "description": "1 bed, A/C, Sleeps 2, Free wifi",
         "more": ["Private bathroom", "Cable channels", "Free toiletries"],
-        "image": "lily.jpg" 
+        "image": "static/images/lily.jpg" 
     },
     "Deluxe Room": { 
         "price": 1200,
         "description": "2 beds, A/C, Sleeps 4-5, Free wifi",
         "more": ["Private bathroom", "Cable channels", "Free toiletries"],
-        "image": "static/images/suite_room.jpg" 
+        "image": "static/images/lily1.jpg" 
     },
     "Deluxe Twin Room": {
         "price": 2200,
         "description": "4 beds, A/C, Sleeps 8, Free wifi",
         "more": ["Private bathroom", "Cable channels", "Free toiletries"],
-        "image": "static/images/suite_room.jpg"
+        "image": "static/images/lily4.jpg"
     },
     "Suite Room": {
         "price": 6000,
         "description": "3 double beds, A/C, Sleeps 6, Free wifi",
         "more": ["Private bathroom", "Cable channels", "Free toiletries"],
-        "image": "static/images/suite_room.jpg" #adi kay naka-assign an pictures, tapos ha line 89 ha index.html didto hiya tatawagon
+        "image": "static/images/lily3.jpg" #adi kay naka-assign an pictures, tapos ha line 89 ha index.html didto hiya tatawagon
     }
 }
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    
     if request.method == "POST":
         check_in = request.form.get("check_in")
         check_out = request.form.get("check_out")
         adults = request.form.get("adult-count")
         children = request.form.get("child-count")
         room_name = request.form.get("room-name")
+        
         guestlist.append(check_in)
         guestlist.append(check_out)
         guestlist.append(adults)
@@ -75,7 +83,17 @@ def index():
 @app.route("/reservationform", methods=['GET', 'POST'])
 def reservationform():
     if request.method == "POST":
-            
+        
+        class IDGenerator:
+            def __init__(self, start_id=2024001):
+                self.current_id = start_id
+
+            def generate_id(self):
+                generated_id = self.current_id
+                self.current_id += 1
+                return generated_id
+        id_gen = IDGenerator()
+        
         guest = {
             "firstname": request.form.get("firstname"),
             "lastname": request.form.get("lastname"),
@@ -86,7 +104,7 @@ def reservationform():
             "adults": request.form.get("adults"),
             "children": request.form.get("children"), 
             "room_name": request.form.get("room_type"),
-            "customer_id": str(uuid.uuid4())  # parahan id
+            "customer_id": id_gen.generate_id()
         }
         guestlist.append(guest)
         return redirect(url_for('payment', guest_index=len(guestlist) - 1))
@@ -123,8 +141,9 @@ def receipt(guest_index):
 
 @app.route("/admin")
 def admin():
+    
     return render_template("admin.html", guestlist=guestlist)
 
 if __name__ == "__main__":
-    #db.create_all
+   # db.create_all
     app.run(debug=True)

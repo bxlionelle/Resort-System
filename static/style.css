@@ -101,9 +101,8 @@ header .fa-bars{
     align-items: center;
     min-height: 100vh;
     background:url("pics.jpg") no-repeat; 
-    background-image: url('resort1.jpg');
     background-size: cover;
-    background-position: center;
+   
 
 }
 
@@ -240,10 +239,107 @@ header .fa-bars{
     height: 15rem;
     resize: none;
 }
+.admin-block{
+    text-align: center;
+    width: auto ;
+    height: auto;
+    margin: 120px auto;
+    margin-left: auto;
+    margin-right: auto;
+    border: 3px solid teal;
+    border-radius: 15px;
+}
+.reservation-block{
+    background: url("resort3.jpg") ;
+    text-align: center;
+    width: 50% ;
+    height: 100px auto;
+    margin: 120px auto;
+    margin-left: 50px;
+    margin-right: 50px;
+    border: 3px solid teal;
+    border-width: 10px;
+    border-radius: 35px;
+    position: relative;
+    left: 320px;
+    padding-bottom: 3rem;
+}
+.flu{
+    padding-left: 10rem ;
+    
+}
 
 
 
+.payment-block{
+    text-align: center;
+    width: 50% ;
+    height: 100px auto;
+    margin: 120px auto;
+    margin-left: 50px;
+    margin-right: 50px;
+    border: 3px solid teal;
+    border-width: 10px;
+    border-radius: 15px;
+    position: relative;
+    left: 320px;
+}
 
+
+.receipt-block {
+    width: 50% ;
+    height: 100px auto;
+    margin: 110px auto;
+    margin-left: 50px;
+    margin-right: 50px;
+    border: 3px solid teal;
+    border-width: 10px;
+    border-radius: 15px;
+    position: relative;
+    left: 320px;
+   
+  }
+  .Reservation{
+    font-family: "Aladin", system-ui;
+    text-align: center;
+    padding-top: 5px;
+    font-size: 3rem;
+
+
+
+  }
+  .Receipt{
+    font-family: "Fjalla One", sans-serif;
+    text-align: center;
+    font-size: 2rem;
+
+  }
+  .Receipt2{
+    font-family: "Fjalla One", sans-serif;
+    text-align: center;
+    font-size: 15px;
+    width: 50% ;
+    height: 200px auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    border: 3px solid teal;
+    border-width: 5px;
+    border-radius: 15px;
+  }
+
+  .confirmed{
+    font-family: "Fjalla One", sans-serif ;
+    font-size: 20px;
+    text-align: center;
+   
+  }
+  .last{
+    padding-top: 10px;
+    padding-bottom: 2rem;
+  }
+
+  
 
 
 
@@ -330,3 +426,5 @@ header .fa-bars{
 
     }
 }
+
+

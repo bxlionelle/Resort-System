@@ -1,38 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Reservation Form</title>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+   
 </head>
 <body>
-    <h3>Your Reservation Details</h3>
-    <form action="/reservationform" method="POST">
+    <header>
+
+        <input type="checkbox" name="" id="toggler">
+        <label for="toggler" class="fas fa-bars"></label>
+    
+        <a href="#" class="logo">Resort<span>.</span></a>
+    </header>  
+    <div class="reservation-block">
+        <h3>Your Reservation Details</h3>
+        <form action="/reservationform" method="POST">
+            
+            <input type="hidden" name="check_in" value="{{ check_in }}">
+            <input type="hidden" name="check_out" value="{{ check_out }}">
+            <input type="hidden" name="adults" value="{{ adults }}">
+            <input type="hidden" name="children" value="{{ children }}">
+            <input type="hidden" name="room_type" value="{{ room_name }}">
+    
+            <label>Check In: {{ check_in }}</label><br>
+            <label>Check Out: {{ check_out }}</label><br>
+            <label>Adults: {{ adults }}</label><br>
+            <label>Children: {{ children }}</label><br>
+            <label> Room Type: {{room_name}}</label><br>
+
+            <section class="Flu">
+                <label for="firstname">First Name:</label>
+                <input type="text" id="firstname" name="firstname" required><br>
         
-        <input type="hidden" name="check_in" value="{{ check_in }}">
-        <input type="hidden" name="check_out" value="{{ check_out }}">
-        <input type="hidden" name="adults" value="{{ adults }}">
-        <input type="hidden" name="children" value="{{ children }}">
-        <input type="hidden" name="room_type" value="{{ room_name }}">
-
-        <label>Check In: {{ check_in }}</label><br>
-        <label>Check Out: {{ check_out }}</label><br>
-        <label>Adults: {{ adults }}</label><br>
-        <label>Children: {{ children }}</label><br>
-        <label> Room Type: {{room_name}}</label><br>
-
-        <label for="firstname">First Name:</label>
-        <input type="text" id="firstname" name="firstname" required><br>
-
-        <label for="lastname">Last Name:</label>
-        <input type="text" id="lastname" name="lastname" required><br>
-
-        <label for="address">Address:</label>
-        <input type="text" id="address" name="address" required><br>
-
-        <label for="cel-number">Cell Number:</label>
-        <input type="tel" id="cel-number" name="cel-number" required minlength="11" maxlength="11" pattern="\d*"><br>
-
-        <input type="submit" value="Proceed to Payment">
-    </form>
-    <a href="{{ url_for('index') }}">Cancel</a>
+                <label for="lastname" >Last Name:</label>
+                <input type="text" id="lastname" name="lastname" required><br>
+        
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required><br>
+        
+                <label for="cel-number">Cell Number:</label>
+                <input type="tel" id="cel-number" name="cel-number" required minlength="11" maxlength="11" pattern="\d*"><br>
+            </section>
+    
+    
+            <button class="btn btn --primary color" value="Proceed to Payment">Proceed To Payment</button>
+        </form>
+        <a href="{{ url_for('index') }}"><button class="btn btn --primary color ">Cancel</button></a>
+    </div>
 </body>
 </html>

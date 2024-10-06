@@ -1,26 +1,49 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Receipt</title>
-</head>
-<body>
-    <h3>Reservation Receipt</h3>
-    <p>Thank you, {{ guest.firstname }} {{ guest.lastname }}!</p>
-    <p>Your Customer ID: <strong>{{ guest.customer_id }}</strong></p>
-    <p>Your reservation details:</p>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+        <title>Receipt</title>
+    
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+        <link rel="stylesheet" href="/static/style.css">
+        
+    </head>
+    <body>
+    
+        <header>
+    
+            <input type="checkbox" name="" id="toggler">
+            <label for="toggler" class="fas fa-bars"></label>
+        
+            <a href="#" class="logo">Resort<span>.</span></a>
+        </header>  
+        <div class="receipt-block">
+              <h3 class="Reservation">Reservation Receipt</h3>
 
-    <ul>
-        <li>Check In: {{ guest.check_in }}</li>
-        <li>Check Out: {{ guest.check_out }}</li>
-        <li>Adults: {{ guest.adults }}</li>
-        <li>Children: {{ guest.children }}</li>
-        <li>Room Type: {{ guest.room_name }}</li>
-        <li>Address: {{ guest.address }}</li>
-        <li>Phone Number: {{ guest.cel_num }}</li>
-        <li>Payment Method: {{ guest.payment_method }}</li>
-    </ul>
+              <section class="Receipt">
+                <p>Thank you, {{ guest.firstname }} {{ guest.lastname }}!</p>
+                <p>Your Customer ID: <strong>{{ guest.customer_id }}</strong></p>
+                <p>Your reservation details:</p>
+              </section>
+                <section class="Receipt2">
+                    <p>Check In: {{ guest.check_in }}</p>
+                    <p>Check Out: {{ guest.check_out }}</p>
+                    <p>Adults: {{ guest.adults }}</p>
+                    <p>Children: {{ guest.children }}</p>
+                    <p>Room Type: {{ guest.room_name }}</p>
+                    <p>Address: {{ guest.address }}</p>
+                    <p>Phone Number: {{ guest.cel_num }}</p>
+                    <p>Payment Method: {{ guest.payment_method }}</p>
+                </section>
 
-    <p>PAYMENT CONFIRMED</p>
-    <a href="{{ url_for('index') }}">Home</a>
-</body>
-</html>
+                    <section class="last">
+                        <p class= "confirmed">PAYMENT CONFIRMED</p>
+                        <p style="text-align: center;"><a href="{{ url_for('index') }}"><button class=" btn btn --primary color">Home</button</a></p>
+                    </section>
+          </div>
+    </body></html>
