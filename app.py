@@ -1,28 +1,10 @@
-from flask import Flask, render_template, request, url_for, redirect, flash
-#from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from flask import Flask, render_template, request, url_for, redirect
+import sqlite3
+import os
+
+currentdirectory = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__)
-"""
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://users.sqlite3' #"user" amo an table
-app.config["SQLALCHEMY_TRACK_MODIFICATITONS"] = False
-
-db = SQLAlchemy(app)
-
-class guest(db.Model):
-    id = db.Column(db.Integer, primary_key=True)  
-    firstname = db.Column(db.String(100), nullable=False)
-    lastname = db.Column(db.String(100), nullable=False)  
-    address = db.Column(db.String(200), nullable=False)  
-    cel_num = db.Column(db.String(15), nullable=False)  
-    room_type = db.Column(db.String(50))
-    check_in = db.Column(db.DateTime)  
-    check_out = db.Column(db.DateTime)  
-    date_added = db.Column(db.DateTime, default=datetime.utcnow)
-    
-    def __init__(self, name):
-        return '<FirstName %r' % self.firstname
-"""
 
 guestlist = []
 rooms = {
@@ -94,9 +76,10 @@ def reservationform():
                 return generated_id
         id_gen = IDGenerator()
         
+
         guest = {
-            "firstname": request.form.get("firstname"),
-            "lastname": request.form.get("lastname"),
+            "Firstname": request.form.get("firstname"),
+            "Lastname": request.form.get("lastname"),
             "address": request.form.get("address"),
             "cel_num": request.form.get("cel-number"),
             "check_in": request.form.get("check_in"),
@@ -105,9 +88,21 @@ def reservationform():
             "children": request.form.get("children"), 
             "room_name": request.form.get("room_type"),
             "customer_id": id_gen.generate_id()
+           
         }
+        
+        connection = sqlite3.connect(os.path.join(currentdirectory, "customer.db"))
+        cursor = connection.cursor()
+        
+        query1 = "INSERT INTO customer (firstname, lastname, address, cel_num, check_in, check_out, adults, children, room_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        cursor.execute(query1, (guest["Firstname"], guest["Lastname"], guest["address"], guest["cel_num"], guest["check_in"], guest["check_out"], guest["adults"], guest["children"], guest["room_name"]))
+        connection.commit()
+        connection.close()
+
         guestlist.append(guest)
+        
         return redirect(url_for('payment', guest_index=len(guestlist) - 1))
+    
     
     check_in = request.args.get("check_in")
     check_out = request.args.get("check_out" )
@@ -139,10 +134,50 @@ def receipt(guest_index):
     guest = guestlist[guest_index]
     return render_template("receipt.html", guest=guest)
 
-@app.route("/admin")
+@app.route("/admin", methods=["GET"])
 def admin():
+    try:
+        if request.method == "GET":
+            firstname = request.args.get("firstname")
+            lastname = request.args.get("lastname")
+            address = request.args.get("address")
+            room_type = request.args.get("room_type")
+            cel_num = request.args.get("cel_num")
+            check_in = request.args.get("check_in")
+            check_out = request.args.get("check_out")
+            adults = request.args.get("adults")
+            children = request.args.get("children")
+
+            # Validate that required fields are filled
+            if not firstname or not lastname or not address or not room_type:
+                return render_template("admin.html", error="First name, last name, address, and room type are required.")
+            
+            # Database connection
+            connection = sqlite3.connect(os.path.join(currentdirectory, "customer.db"))
+            cursor = connection.cursor()
+            
+            # Update SQL query to include additional fields
+            query = """
+                SELECT * FROM customer 
+                WHERE firstname=? AND lastname=? AND address=? 
+                AND room_name=? AND cel_num=? AND check_in=? 
+                AND check_out=? AND adults=? AND children=?
+            """
+            cursor.execute(query, (firstname, lastname, address, room_type, cel_num, check_in, check_out, adults, children))
+            results = cursor.fetchall()  # Fetch all matching records
+            
+            connection.close()  # Close the connection
+            
+            return render_template("admin.html", guestlist=results)
+    except sqlite3.Error as e:
+        print(f"Database error: {e}")
+        return render_template("admin.html", error="Database error occurred.")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return render_template("admin.html", error="An unexpected error occurred.")
+
+
     
-    return render_template("admin.html", guestlist=guestlist)
 
 if __name__ == "__main__":
    # db.create_all
