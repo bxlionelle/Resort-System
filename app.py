@@ -78,8 +78,8 @@ def reservationform():
         
 
         guest = {
-            "Firstname": request.form.get("firstname"),
-            "Lastname": request.form.get("lastname"),
+            "firstname": request.form.get("firstname"),
+            "lastname": request.form.get("lastname"),
             "address": request.form.get("address"),
             "cel_num": request.form.get("cel-number"),
             "check_in": request.form.get("check_in"),
@@ -95,7 +95,7 @@ def reservationform():
         cursor = connection.cursor()
         
         query1 = "INSERT INTO customer (firstname, lastname, address, cel_num, check_in, check_out, adults, children, room_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-        cursor.execute(query1, (guest["Firstname"], guest["Lastname"], guest["address"], guest["cel_num"], guest["check_in"], guest["check_out"], guest["adults"], guest["children"], guest["room_name"]))
+        cursor.execute(query1, (guest["firstname"], guest["lastname"], guest["address"], guest["cel_num"], guest["check_in"], guest["check_out"], guest["adults"], guest["children"], guest["room_name"]))
         connection.commit()
         connection.close()
 

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %} 
+    login page
+{% endblock %}
+
+{% block body %} 
+    <div class="form">
+        <h1 class="heading">Log In Page</h1>
+        <form action="{{url_for("login")}}" method = "POST">
+            <div>
+                <input class="input" type="email" name="email" id="email" placeholder="Something@gmail.com" required>
+            </div>
+            <br>
+            <div>
+                <input class="input" type="password" name="password" id="password" placeholder="Password" required>
+            </div>
+            <br>
+            <div>
+                <input class="button" type="submit" value="Login">
+                <a href="/register" ><input class="button" type="button" value="Register An Account"></a>
+            </div>
+        </form>
+    </div>
+{% endblock %}
