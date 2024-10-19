@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, session
 import sqlite3
 import os
 
 currentdirectory = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__)
+app.secret_key = "hello"
 
 guestlist = []
 rooms = {
@@ -34,7 +35,80 @@ rooms = {
     }
 }
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/")
+def home():
+    return render_template ('home.html', rooms=rooms)
+    
+@app.route('/signup', methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        customer = []
+        firstname = request.form.get("first-name")
+        lastname = request.form.get("last-name")
+        gender = request.form.get("gender")
+        cel_num = request.form.get("cel-number")
+        address = request.form.get("address")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        
+        session['user_info'] = {
+            'firstname': firstname,
+            'lastname': lastname,
+            'gender': gender,
+            'cel_num': cel_num,
+            'address': address,
+            'email': email,
+            'password': password
+        }
+        
+        customer.append(firstname)
+        customer.append(lastname)
+        customer.append(gender)
+        customer.append(cel_num)
+        customer.append(address)
+        customer.append(email)
+        customer.append(password)
+        
+        guestlist.append(customer)
+        print(guestlist)
+        return redirect(url_for('login'))
+    else:
+        return render_template('sign_up.html')
+
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    
+    if request.method == "POST":
+        
+        get_email = request.form.get("email")
+        get_password = request.form.get("password")
+        valid = False
+        
+        for customer in guestlist:
+            if get_email == customer[5] and get_password == customer[6]:
+                valid = True
+                session['user_info'] = {
+                    'firstname': customer[0],
+                    'lastname': customer[1],
+                    'gender': customer[2],
+                    'cel_num': customer[3],
+                    'address': customer[4],
+                    'email': customer[5],
+                }
+                break
+        
+        if valid:
+            session['email'] = get_email
+            return render_template("index.html", rooms=rooms)
+        else:
+            return render_template('login.html', message="Invalid")
+    
+    return render_template('login.html')
+    
+    
+        
+
+@app.route("/index", methods=["GET", "POST"])
 def index():
     
     if request.method == "POST":
@@ -51,7 +125,10 @@ def index():
         guestlist.append(room_name)
     
         #Ig shoshow ha registration
-        return render_template("reservationform.html", 
+        user_info = session.get('user_info')
+        
+        return render_template("reservationform.html",
+            user_info=user_info, 
             check_in=check_in, 
             check_out=check_out, 
             adults=adults, 
@@ -60,7 +137,7 @@ def index():
         )
 
     return render_template("index.html", rooms=rooms)
-
+            
 
 @app.route("/reservationform", methods=['GET', 'POST'])
 def reservationform():
@@ -76,46 +153,44 @@ def reservationform():
                 return generated_id
         id_gen = IDGenerator()
         
-
         guest = {
-            "firstname": request.form.get("firstname"),
-            "lastname": request.form.get("lastname"),
-            "address": request.form.get("address"),
-            "cel_num": request.form.get("cel-number"),
             "check_in": request.form.get("check_in"),
             "check_out": request.form.get("check_out"),
             "adults": request.form.get("adults"),
             "children": request.form.get("children"), 
-            "room_name": request.form.get("room_type"),
-            "customer_id": id_gen.generate_id()
-           
+            "room_name": request.form.get("room_name"),
+            "customer_id": id_gen.generate_id()  # ID GENERATOR :#
         }
-        
+
+        # DB PURPOSES, DO NOT TOUCH UNLESS ASSIGNED TO YOU
         connection = sqlite3.connect(os.path.join(currentdirectory, "customer.db"))
-        cursor = connection.cursor()
+        #cursor = connection.cursor()
         
-        query1 = "INSERT INTO customer (firstname, lastname, address, cel_num, check_in, check_out, adults, children, room_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-        cursor.execute(query1, (guest["firstname"], guest["lastname"], guest["address"], guest["cel_num"], guest["check_in"], guest["check_out"], guest["adults"], guest["children"], guest["room_name"]))
         connection.commit()
         connection.close()
 
         guestlist.append(guest)
         
-        return redirect(url_for('payment', guest_index=len(guestlist) - 1))
-    
-    
+        return redirect(url_for('payment', guest_index=len(guestlist) - 1, guest=guest))
+
+    # para adi ha db, WAG GALAWIN
     check_in = request.args.get("check_in")
-    check_out = request.args.get("check_out" )
+    check_out = request.args.get("check_out")
     adults = request.args.get("adults")
     children = request.args.get("children")
-    room_type = request.args.get("room_name")
-
-    return render_template("reservationform.html", 
+    room_name = request.args.get("room_name")
+    
+    # An info na gin filled up ha signup
+    user_info = session.get('user_info')
+    
+    return render_template("reservationform.html", user_info=user_info, 
         check_in=check_in, 
         check_out=check_out, 
         adults=adults, 
         children=children, 
-        room_type=room_type)
+        room_name=room_name
+    )
+
 
 @app.route("/payment/<int:guest_index>", methods=['GET', 'POST'])
 def payment(guest_index):
@@ -126,13 +201,30 @@ def payment(guest_index):
         return redirect(url_for('receipt', guest_index=guest_index))
     
     guest = guestlist[guest_index]
-    return render_template("payment.html", guest=guest)
+    user_info = session.get('user_info')
+    check_in = request.args.get("check_in")
+    check_out = request.args.get("check_out")
+    adults = request.args.get("adults")
+    children = request.args.get("children")
+    room_name = request.args.get("room_name")
+        
+
+    return render_template("payment.html", guest=guest, user_info=user_info,
+        check_in=check_in, 
+        check_out=check_out, 
+        adults=adults, 
+        children=children, 
+        room_name=room_name)
+    #room name di ko ma get
+
+
 
 
 @app.route("/receipt/<int:guest_index>")
 def receipt(guest_index):
     guest = guestlist[guest_index]
-    return render_template("receipt.html", guest=guest)
+    user_info = session.get('user_info')
+    return render_template("receipt.html", guest=guest, user_info=user_info)
 
 @app.route("/admin", methods=["GET"])
 def admin():
@@ -180,5 +272,4 @@ def admin():
     
 
 if __name__ == "__main__":
-   # db.create_all
     app.run(debug=True)

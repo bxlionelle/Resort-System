@@ -68,7 +68,7 @@
     <h1>Welcome aboard!</h1>
 
     <div class="box-container">
-        <form action="/" method="POST">
+        <form action="/index" method="POST">
             
             <div class="box">
 
@@ -103,26 +103,31 @@
                 </div>
 
                 <section class="rooms"> <!--room choice-->
-                    <div class="w3-row-padding w3-padding-16">
-                        {% for room_name, room_details in rooms.items() %}
-                        <div class="w3-third w3-margin-bottom">
-                            <div class="w3-container w3-white">
-                                <h3>{{ room_name }} </h3>
-                                <h3 style="display: none;" width="100%;" height:"auto;" > {{room_details.image}} </h3> 
-                                <img src="{{room_details.image}}" alt="{{ room_name }}" style="width:100%; height:auto;">
-                                <h6 class="w3-opacity"> Price: {{ room_details.price }}/night</h6>
-                                <p>{{ room_details.description }}</p>
-    
-                            
-                                    {% for item in room_details.more %}
-                                    <li>{{ item }}</li>
-                                    {% endfor %}
+                    <div class="w3-row-padding w3-padding-16" >
+
+            
+                            {% for room_name, room_details in rooms.items() %}
+                            <div class="w3-third w3-margin-bottom">
+                                <div class="w3-container w3-white">
+                                    <h3>{{ room_name }} </h3>
+                                    <h3 style="display: none;" width="100%;" height:"auto;" > {{room_details.image}} </h3> 
+                                    <img src="{{room_details.image}}" alt="{{ room_name }}" style="width:100%; height:auto;">
+                                    <h6 class="w3-opacity"> Price: {{ room_details.price }}/night</h6>
+                                    <p>{{ room_details.description }}</p>
+        
                                 
-                
-                                <button type="submit" value="{{ room_name }}" name="room-name" id="room-name" class="w3-button w3-block w3-black">Choose Room</button>
+                                        {% for item in room_details.more %}
+                                        <li>{{ item }}</li>
+                                        {% endfor %}
+                                    
+                    
+                                    <button type="submit" value="{{ room_name }}" name="room-name" id="room-name" class="w3-button w3-block w3-black">Choose Room</button>
+                                </div>
                             </div>
-                        </div>
-                        {% endfor %}
+                            {% endfor %}
+
+                        
+
                     </div>
                 </section>
             </div>

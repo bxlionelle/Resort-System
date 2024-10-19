@@ -1,13 +1,11 @@
-{% extends "base.html" %}
-
-{% block title %} 
-    login page
-{% endblock %}
-
-{% block body %} 
+<DOCTYPE>
     <div class="form">
         <h1 class="heading">Log In Page</h1>
         <form action="{{url_for("login")}}" method = "POST">
+            
+    {% if message %}
+    <p>{{ message }}
+    {% endif %}
             <div>
                 <input class="input" type="email" name="email" id="email" placeholder="Something@gmail.com" required>
             </div>
@@ -18,8 +16,8 @@
             <br>
             <div>
                 <input class="button" type="submit" value="Login">
-                <a href="/register" ><input class="button" type="button" value="Register An Account"></a>
+                <a href="/signup" ><input class="button" type="button" value="Register An Account"></a>
             </div>
         </form>
     </div>
-{% endblock %}
+</html>

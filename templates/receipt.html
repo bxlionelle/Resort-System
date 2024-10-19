@@ -26,7 +26,7 @@
               <h3 class="Reservation">Reservation Receipt</h3>
 
               <section class="Receipt">
-                <p>Thank you, {{ guest.firstname }} {{ guest.lastname }}!</p>
+                <p>Thank you, {{ user_info.firstname }} {{ user_info.lastname }}!</p>
                 <p>Your Customer ID: <strong>{{ guest.customer_id }}</strong></p>
                 <p>Your reservation details:</p>
               </section>
@@ -35,9 +35,9 @@
                     <p>Check Out: {{ guest.check_out }}</p>
                     <p>Adults: {{ guest.adults }}</p>
                     <p>Children: {{ guest.children }}</p>
-                    <p>Room Type: {{ guest.room_name }}</p>
-                    <p>Address: {{ guest.address }}</p>
-                    <p>Phone Number: {{ guest.cel_num }}</p>
+                    <p>Room Type: {{ guest.room_type }}</p>
+                    <p>Address: {{ user_info.address }}</p>
+                    <p>Phone Number: {{ user_info.cel_num}}</p>
                     <p>Payment Method: {{ guest.payment_method }}</p>
                 </section>
 
