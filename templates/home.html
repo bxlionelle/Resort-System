@@ -45,152 +45,90 @@
 
 </section>
 
-<section class= "Login" id="login">
+<section class="Login" id="login">
     <div class="container-slide">
-        <div class="row">
-            <!-- Left column: Carousel -->
-            <div class="col-md-6">
-                <div class="carousel slide" 
-                    id="carouselDemo"
-                    data-bs-wrap="true" 
-                    data-bs-ride="carousel">
-
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <img src="static/images/resort5.jpg" class="w-100">
-                                <div class="carousel-caption">
-                                    <h5>Title Slide 0</h5>
-                                </div>
-                            </div>
-
-                            <div class="carousel-item" data-bs-interval="3000">
-                                <img src="static/images/resort2.jpg" class="w-100">
-                                <div class="carousel-caption">
-                                    <h5>Title Slide 1</h5>
-                                </div>
-                            </div>
-
-                            <div class="carousel-item" data-bs-interval="3000">
-                                <img src="static/images/resort1.jpg" class="w-100">
-                                <div class="carousel-caption">
-                                    <h5>Title Slide 2</h5>
-                                </div>
-                            </div>
-
-                            <div class="carousel-item" data-bs-interval="3000">
-                                <img src="static/images/resort4.jpg" class="w-100">
-                                <div class="carousel-caption">
-                                    <h5>Title Slide 3</h5>
-                                </div>
-                            </div>
-
-                            <div class="carousel-item" data-bs-interval="3000">
-                                <img src="static/images/resort6.jpg" class="w-100">
-                                <div class="carousel-caption">
-                                    <h5>Title Slide 4</h5>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button class="carousel-control-prev" 
-                            type="button"
-                            data-bs-target="#carouselDemo" 
-                            data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon"></span>
-                        </button>
-
-                        <button class="carousel-control-next"
-                            type="button"
-                            data-bs-target="#carouselDemo"
-                            data-bs-slide="next">
-                            <span class="carousel-control-next-icon"></span>
-                        </button>
-
-                        <div class="carousel-indicators">
-                            <button type="button" class="active"
-                                data-bs-target="#carouselDemo"
-                                data-bs-slide-to="0">
-                                <img src="static/images/resort5.jpg" />
-                            </button>
-
-                            <button type="button" 
-                                data-bs-target="#carouselDemo"
-                                data-bs-slide-to="1">
-                                <img src="static/images/resort2.jpg" />
-                            </button>
-
-                            <button type="button"
-                                data-bs-target="#carouselDemo"
-                                data-bs-slide-to="2">
-                                <img src="static/images/resort1.jpg" />
-                            </button>
-
-                            <button type="button"
-                                data-bs-target="#carouselDemo"
-                                data-bs-slide-to="3">
-                                <img src="static/images/resort4.jpg" />
-                            </button>
-
-                            <button type="button"
-                                data-bs-target="#carouselDemo"
-                                data-bs-slide-to="4">
-                                <img src="static/images/resort6.jpg" />
-                            </button>
-                        </div>
-                    </div>
-            </div>
-
-            <!-- Right column: Title and content -->
-            <div class="col-md-6">
-                <div class="title">
-                    <div class="content">
-                        <h3> WHAT ARE YOU WAITING FOR? BOOK NOW!</h3>
-                        <p>Discover a world of adventure and relaxation at our beachfront resort. Explore hidden coves, snorkel in vibrant coral reefs, or simply soak up the sun on our pristine beaches.!</p>
-                    </div>
-
-                    <div class="buttons">   
-                        <li>
-                            <a style="color: black" href="{{ url_for('login') }}">Login</a> |
-                            <a style="color: black" href="{{ url_for('signup') }}">Sign up</a>
-                        </li>
-                    </div>
+      <div class="row">
+        <!-- Left column: Carousel -->
+        <div class="col-md-6">
+          <div class="carousel slide" id="carouselDemo" data-bs-wrap="true" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              {% for i in range(5) %}
+              <div class="carousel-item {% if i == 0 %}active{% endif %}" data-bs-interval="3000">
+                <img src="static/images/resort{{ i+1 }}.jpg" class="w-100">
+                <div class="carousel-caption">
+                  <h5>Title Slide {{ i }}</h5>
                 </div>
+              </div>
+              {% endfor %}
             </div>
+
+            
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselDemo" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselDemo" data-bs-slide="next">
+              <span class="carousel-control-next-icon"></span>
+            </button>
+            <div class="carousel-indicators">
+              {% for i in range(5) %}
+              <button type="button" class="{% if i == 0 %}active{% endif %}" data-bs-target="#carouselDemo" data-bs-slide-to="{{ i }}">
+                <img src="static/images/resort{{ i+1 }}.jpg" />
+              </button>
+              {% endfor %}
+            </div>
+          </div>
         </div>
+        <!-- Right column: Title and content -->
+        <div class="col-md-6">
+          <div class="title">
+            <div class="content">
+              <h3>WHAT ARE YOU WAITING FOR? BOOK NOW!</h3>
+              <p>Discover a world of adventure and relaxation at our beachfront resort. Explore hidden coves, snorkel in vibrant coral reefs, or simply soak up the sun on our pristine beaches.</p>
+            </div>
+            <div class="buttons">
+              <li>
+                <a style="color: black" href="{{ url_for('login') }}">Login</a> |
+                <a style="color: black" href="{{ url_for('signup') }}">Sign up</a>
+              </li>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
 
 <section class="rooms" id="rates">
 
 
-
-    <section class="rooms"> <!--room choice-->
-        <div class="w3-row-padding w3-padding-16" >
-            <h1 class="heading"> <span> Room </span> Rates </h1>
-
-                {% for room_name, room_details in rooms.items() %}
-                <div class="w3-third w3-margin-bottom">
-                    <div class="w3-container w3-white">
-                        <h3>{{ room_name }} </h3>
-                        <h3 style="display: none;" width="100%;" height:"auto;" > {{room_details.image}} </h3> 
-                        <img src="{{room_details.image}}" alt="{{ room_name }}" style="width:100%; height:auto;">
-                        <h6 class="w3-opacity"> Price: {{ room_details.price }}/night</h6>
-                        <p>{{ room_details.description }}</p>
-                    
-                            {% for item in room_details.more %}
-                            <li>{{ item }}</li>
-                            {% endfor %}
-
-                        <p class="w3-large"><i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i class="fa fa-wifi"></i> <i class="fa fa-tv"></i> <i class="fa fa-glass"></i> <i class="fa fa-cutlery"></i></p>  
-                        
-                    </div>
-                </div>
-                {% endfor %}
-
-            
-
+    <section class="rooms">
+        <!-- Room choice -->
+        <div class="w3-row-padding w3-padding-16">
+          <h1 class="heading"><span>Room</span> Rates</h1>
+          
+          <div class="row">
+            {% for room_name, room_details in rooms.items() %}
+            <div class="col-md-6 mb-4">
+              <div class="w3-container w3-white">
+                <h3>{{ room_name }}</h3>
+                <img src="{{ room_details.image }}" alt="{{ room_name }}" style="width:100%; height:auto;">
+                <h6 class="w3-opacity">Price: {{ room_details.price }}/night</h6>
+                <p>{{ room_details.description }}</p>
+                <ul>
+                  {% for item in room_details.more %}
+                  <li>{{ item }}</li>
+                  {% endfor %}
+                </ul>
+                <p class="w3-large">
+                  <i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i class="fa fa-wifi"></i> 
+                  <i class="fa fa-tv"></i> <i class="fa fa-glass"></i> <i class="fa fa-cutlery"></i>
+                </p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          
         </div>
-    </section>
+      </section>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
 

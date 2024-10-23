@@ -449,9 +449,7 @@ header .fa-bars{
     .title .content h3{
         font-size: 3rem;
         text-align: center;
-        margin-right: 100px;
-
-        
+        margin-right: 100px;        
     }
 
     .title{
@@ -462,7 +460,22 @@ header .fa-bars{
     .title .buttons{
         margin-right: 100px;
     }
-}
+
+    .Login .container-slide {
+        display: flex;
+        align-items: center;
+      }
+    
+      .Login .col-md-6 {
+        flex: 1;
+        padding: 15px;
+      }
+    
+      .Login .title {
+        text-align: left;
+      }
+    }
+    
 
 
 
@@ -506,6 +519,15 @@ header .fa-bars{
 
     .home .content span{
         font-size: 2.5rem;
+    }
+
+    .w3-row-padding .w3-third {
+        width: 48%; /* Adjust width for two-column layout */
+        margin-right: 2%; /* Small gap between columns */
+    }
+    
+    .w3-row-padding .w3-third:nth-child(2n) {
+        margin-right: 0; /* Remove right margin for every second element */
     }
 }
 
