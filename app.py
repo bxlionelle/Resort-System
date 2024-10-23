@@ -14,6 +14,8 @@ rooms = {
         "description": "1 bed, A/C, Sleeps 2, Free wifi",
         "more": ["Private bathroom", "Cable channels", "Free toiletries"],
         "image": "static/images/lily.jpg" 
+        
+        
     },
     "Deluxe Room": { 
         "price": 1200,
