@@ -13,25 +13,35 @@ rooms = {
         "price": 500,
         "description": "1 bed, A/C, Sleeps 2, Free wifi",
         "more": ["Private bathroom", "Cable channels", "Free toiletries"],
-        "image": "static/images/lily.jpg" 
+        "image": "static/images/lily.jpg" ,
+        "min_guests": 1,
+        "max_guests": 2
+        
+        
     },
     "Deluxe Room": { 
         "price": 1200,
         "description": "2 beds, A/C, Sleeps 4-5, Free wifi",
         "more": ["Private bathroom", "Cable channels", "Free toiletries"],
-        "image": "static/images/lily1.jpg" 
+        "image": "static/images/lily1.jpg" ,
+        "min_guests": 2,
+        "max_guests": 5
     },
     "Deluxe Twin Room": {
         "price": 2200,
         "description": "4 beds, A/C, Sleeps 8, Free wifi",
         "more": ["Private bathroom", "Cable channels", "Free toiletries"],
-        "image": "static/images/lily4.jpg"
+        "image": "static/images/lily4.jpg",
+        "min_guests": 2,
+        "max_guests": 8
     },
     "Suite Room": {
         "price": 6000,
         "description": "3 double beds, A/C, Sleeps 6, Free wifi",
         "more": ["Private bathroom", "Cable channels", "Free toiletries"],
-        "image": "static/images/lily3.jpg" #adi kay naka-assign an pictures, tapos ha line 89 ha index.html didto hiya tatawagon
+        "image": "static/images/lily3.jpg",
+        "min_guests": 2,
+        "max_guests": 6#adi kay naka-assign an pictures, tapos ha line 89 ha index.html didto hiya tatawagon
     }
 }
 

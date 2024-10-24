@@ -56,12 +56,6 @@
 
 </section>
 
-<style>
-    .rates {
-        text-align: center;
-    }
-    
-</style>
 
 <section class="rates" id="rates">
 
@@ -73,13 +67,15 @@
             <div class="box">
 
                 <div class="box1"> <!--check in-->
-                    <label for="check_in">Check In:</label>
+                     <i class="fa fa-calendar"></i><label for="check_in"> Check In:</label>
                     <input class="w3-input w3-border" type="date" id="check_in" name="check_in" placeholder="dd/mm/yy" required><br>
+                   
                 </div>
 
                 <div class="box2"> <!--check out-->
-                    <label for="check_out">Check Out:</label>
+                    <i class="fa fa-calendar"></i><label for="check_out">Check Out:</label>
                     <input class="w3-input w3-border" type="date" id="check_out" name="check_out" placeholder="dd/mm/yy" required><br>
+                    
                 </div>
 
                 <script>
@@ -93,13 +89,15 @@
                 </script> 
 
                 <div class="box3"> <!--adult-->
-                    <label for="adult-count">Adults:</label>
+                    <i class="fa fa-user"></i><label for="adult-count">Adults:</label>
                     <input class="w3-input w3-border" type="number" id="adult-count" name="adult-count" min="1" value="1" required><br>
+                    
                 </div>
 
                 <div class="box4"> <!--child-->
-                    <label for="child-count">Children:</label>
+                    <i class="fa fa-child"></i><label for="child-count">Children:</label>
                     <input class="w3-input w3-border" type="number" id="child-count" name="child-count" min="0" value="0"><br>
+                    
                 </div>
 
                 <section class="rooms"> <!--room choice-->
@@ -107,7 +105,7 @@
 
             
                             {% for room_name, room_details in rooms.items() %}
-                            <div class="w3-third w3-margin-bottom">
+                            <div class="w3-half w3-margin-bottom">
                                 <div class="w3-container w3-white">
                                     <h3>{{ room_name }} </h3>
                                     <h3 style="display: none;" width="100%;" height:"auto;" > {{room_details.image}} </h3> 
@@ -120,13 +118,14 @@
                                         <li>{{ item }}</li>
                                         {% endfor %}
                                     
-                    
+                                        <i class="fa fa-bath" title="Bathroom"></i> <i class="fa fa-phone" title="Phone"></i> <i class="fa fa-wifi" title="Wi-Fi"></i> 
+                                        <i class="fa fa-tv" title="Television" ></i> <i class="fa fa-cutlery" title="Breakfast"></i>
+                                        
+                                    
                                     <button type="submit" value="{{ room_name }}" name="room-name" id="room-name" class="w3-button w3-block w3-black">Choose Room</button>
                                 </div>
                             </div>
                             {% endfor %}
-
-                        
 
                     </div>
                 </section>
