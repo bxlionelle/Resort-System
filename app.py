@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, url_for, redirect, session
+from flask import Flask, render_template, request, url_for, redirect, session, flash
 import sqlite3
-import os
+import os, bcrypt
 
 currentdirectory = os.path.dirname(os.path.abspath(__file__))
 
@@ -42,58 +42,62 @@ def home():
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        customer = []
-        firstname = request.form.get("first-name")
-        lastname = request.form.get("last-name")
-        gender = request.form.get("gender")
-        cel_num = request.form.get("cel-number")
-        address = request.form.get("address")
-        email = request.form.get("email")
-        password = request.form.get("password")
-        
-        session['user_info'] = {
-            'firstname': firstname,
-            'lastname': lastname,
-            'gender': gender,
-            'cel_num': cel_num,
-            'address': address,
-            'email': email,
-            'password': password
+    
+        customer = {
+            'firstname': request.form.get("first-name"),
+            'lastname': request.form.get("last-name"),
+            'gender': request.form.get("gender"),
+            'cel_num': request.form.get("cel-number"),
+            'address': request.form.get("address"),
+            'email': request.form.get("email"),
+            'password': request.form.get("password")
         }
         
-        customer.append(firstname)
-        customer.append(lastname)
-        customer.append(gender)
-        customer.append(cel_num)
-        customer.append(address)
-        customer.append(email)
-        customer.append(password)
+
+        session['user_info'] = customer
         
-        guestlist.append(customer)
+        connection = sqlite3.connect(os.path.join(currentdirectory, "customer.db"), timeout=5)
+
+        cursor = connection.cursor()
+        
+        query1 = "INSERT INTO Customers_Profile (firstname, lastname, gender, cel_num, address, email, password) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        cursor.execute(query1, (
+            customer['firstname'], 
+            customer['lastname'], 
+            customer['gender'], 
+            customer['cel_num'], 
+            customer['address'], 
+            customer['email'], 
+            customer['password']
+        ))
+
+        connection.commit()
+        connection.close()
+        
+        guestlist.append(customer) 
         print(guestlist)
         return redirect(url_for('login'))
     else:
         return render_template('sign_up.html')
 
+
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    
     if request.method == "POST":
-        
         get_email = request.form.get("email")
         get_password = request.form.get("password")
         valid = False
         
         for customer in guestlist:
-            if get_email == customer[5] and get_password == customer[6]:
+            if get_email == customer['email'] and get_password == customer['password']:
                 valid = True
                 session['user_info'] = {
-                    'firstname': customer[0],
-                    'lastname': customer[1],
-                    'gender': customer[2],
-                    'cel_num': customer[3],
-                    'address': customer[4],
-                    'email': customer[5],
+                    'firstname': customer['firstname'],
+                    'lastname': customer['lastname'],
+                    'gender': customer['gender'],
+                    'cel_num': customer['cel_num'],
+                    'address': customer['address'],
+                    'email': customer['email'],
                 }
                 break
         
@@ -101,15 +105,19 @@ def login():
             session['email'] = get_email
             return render_template("index.html", rooms=rooms)
         else:
-            return render_template('login.html', message="Invalid")
+            return render_template('login.html', message="Invalid credentials")
     
     return render_template('login.html')
+
     
     
         
 
 @app.route("/index", methods=["GET", "POST"])
 def index():
+    if 'email' not in session:
+        return redirect(url_for('login'))
+    
     
     if request.method == "POST":
         check_in = request.form.get("check_in")
@@ -126,6 +134,8 @@ def index():
     
         #Ig shoshow ha registration
         user_info = session.get('user_info')
+        
+
         
         return render_template("reservationform.html",
             user_info=user_info, 
@@ -269,7 +279,11 @@ def admin():
         return render_template("admin.html", error="An unexpected error occurred.")
 
 
-    
+@app.route("/logout")
+def logout():
+    session.pop('email', None)
+    flash("You have been logged out.", "info")
+    return redirect(url_for('login'))
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,13 +1,35 @@
 <DOCTYPE>
-    <div class="form">
-        <h1 class="heading">Log In Page</h1>
+    <html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login Page</title>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+   
+</head>
+<body>
+    <header>
+
+        <input type="checkbox" name="" id="toggler">
+        <label for="toggler" class="fas fa-bars"></label>
+    
+        <a href="#" class="logo">Resort<span>.</span></a>
+    </header>  
+    <div class="login-block">
+        <h1 class="login">Log In Page</h1>
         <form action="{{url_for("login")}}" method = "POST">
             
     {% if message %}
     <p>{{ message }}
     {% endif %}
             <div>
-                <input class="input" type="email" name="email" id="email" placeholder="Something@gmail.com" required>
+                <input class="input" type="email" name="email" id="email" placeholder="email" required>
             </div>
             <br>
             <div>
@@ -15,8 +37,8 @@
             </div>
             <br>
             <div>
-                <input class="button" type="submit" value="Login">
-                <a href="/signup" ><input class="button" type="button" value="Register An Account"></a>
+                <button class="btn btn --primary" type="submit" value="Login"> Login</button> <br>
+                <a href="/signup" ><button class="btn btn --primary" type="button" value="Register An Account">Register an Account</button></a>
             </div>
         </form>
     </div>
