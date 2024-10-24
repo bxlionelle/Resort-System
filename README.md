@@ -56,6 +56,7 @@ MAG BUTANG HIN "PROFILE" NA KUAN HA NAVBAR PARA MA KITA NGAN MA MODIFY HAN CUSTO
 
 
 PAN CONNECT HA DB
+
 connection = sqlite3.connect(os.path.join(currentdirectory, "customer.db"))
         cursor = connection.cursor()
         
