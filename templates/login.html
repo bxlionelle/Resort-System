@@ -22,12 +22,13 @@
         <a href="#" class="logo">Resort<span>.</span></a>
     </header>  
     <div class="login-block">
-        <h1 class="login">Log In Page</h1>
+        <h1 class="login">Coral Cove logo</h1>
         <form action="{{url_for("login")}}" method = "POST">
             
     {% if message %}
     <p>{{ message }}
     {% endif %}
+
             <div>
                 <input class="input" type="email" name="email" id="email" placeholder="email" required>
             </div>
