@@ -26,14 +26,14 @@
     
 
     <nav class="navbar"> 
-        <a href="#home">home</a>
-        <a href="#rates">rates</a>
-        <a href="#login">login</a>
+        <a href="#home">HOME</a>
+        <a href="#rates">RATES</a>
+        <a href="{{ url_for('login') }}">LOGIN</a>
         
     </nav>
 </header>
 
-<section class="home" id="home" style="background-image: url('static/images/resort1.jpg');">
+<section class="home" id="home" style="background-image: url('static/images/e.jpg');">
 
     <div class="content">
         <h3>Coral Cove</h3>
@@ -82,8 +82,8 @@
         <div class="col-md-6">
           <div class="title">
             <div class="content">
-              <h3>WHAT ARE YOU WAITING FOR? BOOK NOW!</h3>
-              <p>Discover a world of adventure and relaxation at our beachfront resort. Explore hidden coves, snorkel in vibrant coral reefs, or simply soak up the sun on our pristine beaches.</p>
+              <h1>A Verdant Oasis</h1>
+              <p>Beneath a cerulean sky, a hidden paradise awaits. Lush palm fronds sway, casting dancing shadows upon the alabaster sand. The crystal-clear waters beckon, revealing vibrant coral reefs. It is a place where time stands still, and the heart finds solace in nature's beauty.</p>
             </div>
             <div class="buttons">
               <li>
@@ -118,7 +118,8 @@
                   <li>{{ item }}</li>
                   {% endfor %}
                 </ul>
-                <p class="w3-large">
+                <!-- Toolkit needed pa -->
+                <p class="w3-large"> 
                   <i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i class="fa fa-wifi"></i> 
                   <i class="fa fa-tv"></i> <i class="fa fa-glass"></i> <i class="fa fa-cutlery"></i>
                 </p>

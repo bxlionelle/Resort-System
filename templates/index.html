@@ -36,11 +36,54 @@
 
 
     <nav class="navbar"> 
-        <a href="#home">home</a>
-        <a href="#rates">rates</a>
-        <a href="#about">about</a>
-        <a href="#contact">contact</a>
+    
+        <a href="#home">HOME</a>
+        <a href="#rates">RATES</a>
+        <a href="#about">ABOUT</a>
+        <a href="#contact">CONTACT</a>
+
+        <img src="static/images/profile.png" class="user-pic" onclick="toggleMenu()">
+        
+        <div class="sub-menu-wrap" id="subMenu">
+         <div class="sub-menu">
+        
+            <div class="user-info">
+                <img src="static/images/profile.png">
+                <h4> hello, {{ user_info.firstname }} </h4>
+            </div>
+             <hr>
+        
+            
+                <a href="{{ url_for('edit') }}" class="sub-menu-link" >
+                    <i class="f	fas fa-user-edit" ></i>
+                    <h4>Edit Profile</h4>
+                    <span> > </span>
+                </a>
+
+                <a href=""{{ url_for('home') }}" " class="sub-menu-link">
+                    <i class="fas fa-sign-out-alt" ></i>
+                    <h4>Logout</h4>
+                    <span> > </span>
+                </a>
+                
+            </div>
+
+         </div>
+        </div>
+        
+        
     </nav>
+
+
+    <script> 
+        let subMenu = document.getElementById("subMenu");
+
+        function toggleMenu(){
+            subMenu.classList.toggle("open-menu");
+        }
+    
+    
+    </script>
 </header>
 
 
@@ -48,8 +91,8 @@
 
     <div class="content">
         <h3>Coral Cove</h3>
-        <span>  You Beachfront Sanctuary</span>
-        <p> EXPERIENCE UNPARALLEL HOSPITALITY TAILORING YOUR NEEDS, IN BREATHTAKING ISLANDPARADISE. GO THROUGH THE BEAUTY OF THE BLUE AND UNWIND IN TROPICAL LUXURY. </p>
+        <span> YOUR BEACHFRONT SANCTUARY </span> <br>
+        <p>__________________________</p>
         <a href="#rates" class="btn">Book Now</a>
 
     </div>
@@ -59,7 +102,9 @@
 
 <section class="rates" id="rates">
 
-    <h1>Welcome aboard!</h1>
+    <h1>HOLA AMIGOS!</h1>
+    <br>
+    <br>
 
     <div class="box-container">
         <form action="/index" method="POST">
@@ -122,7 +167,7 @@
                                         <i class="fa fa-tv" title="Television" ></i> <i class="fa fa-cutlery" title="Breakfast"></i>
                                         
                                     
-                                    <button type="submit" value="{{ room_name }}" name="room-name" id="room-name" class="w3-button w3-block w3-black">Choose Room</button>
+                                    <button type="submit" value="{{ room_name }}" name="room-name" id="room-name" class="w3-button w3-block w3-black" onclick="validateGuestCount(this)">Choose Room</button>
                                 </div>
                             </div>
                             {% endfor %}
@@ -151,9 +196,10 @@
             </div>
 
             <div class="content">
-                <h3> WHAT ARE YOU WAITING FOR? BOOK NOW!</h3>
-                <p>A tantalizing destination where fun awaits at every turn, tempting you to indulge in unforgettable experiences!"</p>
-
+                <p>_______________________________________________</p>
+                <h1> CORAL COVE RESORT </h1>
+                <p> CORAL COVE RESORT IS YOUR ULTIMATE TROPICAL ESCAPE. NESTLED AMIDST PRISTINE BEACHES AND LUSH GREENERY, OUR RESORT OFFERS A SERENE AND LUXURIOUS GATEWAY. IDULGE IN WORLD-CLASS AMENITIES, SAVOR DELECTABLE CUISINE, UNWIND ON OUR TRANQUIL OASIS AND REJUVENATE YOUR SENSES. WHETHER YOU'RE SEEKING ADVENTURE, RELAXATION, OR WANTING TO CREATE UNFORGETTABLE MEMORIES, CORAL COVE RESORT HAS IT ALL. OUR RESORT INVITES YOU TO ESCAPE THE ORDINARY AND EMBRACE THE EXTRAORDINARY. DRIFT AWAY TO A REALM OF TRANQUILITY, WHERE THE AZURE OCEAN KISSES THE SHORE. CORAL COVE RESORT IS A SANCTUARY FOR THE SOUL, A PARADISE FOR THE SENSES.</p>
+                <p>_______________________________________________</p>
 
             </div>
 
@@ -176,7 +222,19 @@
             </form>
 
             <div class="image">
-                <img src="resort1.jpg" alt="">
+                <h3>MORE ABOUT CORAL COVE RESORT</h3>
+                <address>
+                Brgy. Diversion Road, Tanauan<br>
+                Tacloban City, Leyte, 6500<br>
+                Philippines<br>
+                09123456789<br>
+                bogart22@gmail.com
+            </address>
+            <h3>FEEL FREE TO CONTACT US!</h3>
+            <address>
+                <a href="https://www.facebook.com/vincentlloyd.caspe.9?mibextid=ZbWKwL">FACEBOOK</a> <br>
+                <a href="https://www.instagram.com/oxmonfford/profilecard/?igsh=MTIwOTg0dWdqZ3kzNA==">INSTAGRAM</a>
+            </address>
             </div>
     </section>
 </div>

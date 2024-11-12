@@ -66,7 +66,7 @@ def signup():
         
 
         session['user_info'] = customer
-        
+        """
         connection = sqlite3.connect(os.path.join(currentdirectory, "customer.db"), timeout=5)
 
         cursor = connection.cursor()
@@ -84,7 +84,7 @@ def signup():
 
         connection.commit()
         connection.close()
-        
+        """
         guestlist.append(customer) 
         print(guestlist)
         return redirect(url_for('login'))
@@ -98,6 +98,8 @@ def login():
         get_email = request.form.get("email")
         get_password = request.form.get("password")
         valid = False
+        
+        user_info = session.get('user_info')
         
         for customer in guestlist:
             if get_email == customer['email'] and get_password == customer['password']:
@@ -114,14 +116,19 @@ def login():
         
         if valid:
             session['email'] = get_email
-            return render_template("index.html", rooms=rooms)
+            return render_template("index.html", rooms=rooms, user_info=user_info)
         else:
             return render_template('login.html', message="Invalid credentials")
     
     return render_template('login.html')
 
     
+@app.route("/edit")
+def edit():
     
+    user_info = session.get('user_info')
+      
+    return render_template ('edit.html', user_info=user_info)    
         
 
 @app.route("/index", methods=["GET", "POST"])
@@ -157,7 +164,7 @@ def index():
             room_name=room_name
         )
 
-    return render_template("index.html", rooms=rooms)
+    return render_template("index.html", rooms=rooms, user_info=user_info)
             
 
 @app.route("/reservationform", methods=['GET', 'POST'])

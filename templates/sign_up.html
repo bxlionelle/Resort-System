@@ -22,37 +22,54 @@
     </header> 
 
 <div class="signup-block">
-    <h1 class="signup">Register Account</h1>
+    <div class="signup">Register Account</div>
+    <div class="content">
+
     <form action = "{{url_for("signup")}}" method = "POST">
-        <div>
-            <input class="input" type="text" name="first-name" id="first-name" placeholder="First Name: " required size="31" style="text-align: center;">
-            <input class="input" type="text" name="last-name" id="last-name" placeholder="Last Name: " required size="31" style="text-align: center;">
-        </div>
-        <br>
-        <div class="gender">
-            <p>
-            Female: <input type="radio" name="gender" id="gender" value="">
-            Male: <input type="radio" name="gender" id="gender" value=""><br></p>
-        </div>
-        <br>
-        <div>
-            <input class="input" id="cel-num" type="tel" name="cel-number" id="cel-number" placeholder="Phone Number" required minlength="11" maxlength="11" required pattern="\d*", size="31" style="text-align: center;">
-            <input class="input" id="" type="text" name="address" id="address" placeholder="Address:" required size="31" style="text-align: center;">
-        </div>
-        <br>
-        <div>
-            <input class="input" type="email" name="email" id="email" placeholder="Eamil" required size="31" style="text-align: center;">
-            <input class="input" type="password" name="password" id="password" placeholder="Password:" required minlength="8" size="31" style="text-align: center;">   
-        </div>
-        <br>
-        <div>
-            <button type="submit" value="Register Account" class="btn btn --primary" id="submit">Register Account</button>
+        <div class="user-details">
+
+            <div class="input-box">
+                <span class="details">Username:</span>
+                <input class="input" type="text" name="first-name" id="first-name" placeholder="First Name " required size="31" style="text-align: center;">
+            </div>
+            <div class="input-box">
+                <span class="details">Lastname:</span>   
+                <input class="input" type="text" name="last-name" id="last-name" placeholder="Last Name " required size="31" style="text-align: center;">
+            </div>
+            <div class="input-box">
+                <span class="details">Phone Number:</span>
+                <input class="input" id="cel-num" type="tel" name="cel-number" id="cel-number" placeholder="Number" required minlength="11" maxlength="11" required pattern="\d*", size="31" style="text-align: center;">
+            </div>
+            <div class="input-box">
+                <span class="details">Address:</span>
+                <input class="input" id="" type="text" name="address" id="address" placeholder="Address" required size="31" style="text-align: center;">
+            </div>
             <br>
-            <a href="login"><button type="button" value="Login Instead" name="login" class="btn btn --primary" id="login">Login Instead</button></a>
-        </div>
+            <div class="input-box">
+                <span class="details">Email:</span>
+                <input class="input" type="email" name="email" id="email" placeholder="Email" required size="31" style="text-align: center;">
+            </div>
+            <div class="input-box">
+                <span class="details">Password:</span>
+                <input class="input" type="password" name="password" id="password" placeholder="Password" required minlength="8" size="31" style="text-align: center;">   
+            </div>
+            <br>
+            <div class="gender">
+                <p>
+                Female: <input type="radio" name="gender" id="gender" value="">
+                Male: <input type="radio" name="gender" id="gender" value=""><br></p>
+            </div>
+            <br>
+
+            <div class="button">
+                <button type="submit" value="Register Account" class="btn btn --primary" id="submit">Register Account</input>
+                <br>
+                <a href="login"><button type="button" value="Login Instead" name="login" class="btn btn --primary" id="login">Login Instead</button></a>
+            </div>
+        
+        </div>  
     </form>
     <div>
         
-    </div>
 </div>
 </html>
