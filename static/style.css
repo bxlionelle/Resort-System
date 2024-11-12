@@ -629,9 +629,10 @@ form .input-log{
     margin-left: 70px;
     margin-right: 50px;
     border-width: 10px;
-    border-radius: 15px;
+    border-radius: 20px;
     position: relative;
     left: 320px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .signup{
@@ -686,6 +687,16 @@ form .input-box span.details {
         border: 1px solid #ccc;
         border-bottom-width: 2px;
         transition: all 0.3s ease;
+}
+.input {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    border: 1px solid #ccc;
 }
 
 .user-details .input-box input:focus,
