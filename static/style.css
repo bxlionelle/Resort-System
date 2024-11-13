@@ -564,7 +564,7 @@ header .fa-bars{
 .login-block .login{
   text-align: center;
   padding: 0 0 20px 0;
-  border-bottom: 1px solid wheat;
+  border-bottom: 1px solid rgb(249, 248, 245);
 }
 .login{
     font-family: "Aladin", system-ui;
@@ -575,7 +575,7 @@ header .fa-bars{
 
 form .input-log{
     position: relative;
-    border-bottom: 2px solid wheat;;
+    border-bottom: 2px solid rgb(250, 249, 246);;
     margin: 30px 0;
   }
   
@@ -606,7 +606,7 @@ form .input-log{
     left: 0;
     width: 0px;
     height: 2px;
-    background: #2691d9;
+    background: #61696d;
     transition: .5s;
   }
 
