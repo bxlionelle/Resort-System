@@ -56,6 +56,7 @@ class Customers:
     def signup():
         if request.method == "POST":
             
+            #ig fill up adi tapos diretso na ha customer(dict)
             customer = {
                 'firstname': request.form.get("first-name"),
                 'lastname': request.form.get("last-name"),
@@ -66,7 +67,10 @@ class Customers:
                 'password': request.form.get("password")
             }
             
-            guestlist.append(customer) # ig susulod an customer ha guestlist
+            #tapos ig append an customer(dict) ha guestlist(list)
+            guestlist.append(customer)
+            
+            #masubmit na ngan, ma kadto ha login
             return redirect(url_for('login'))
         else:
             return render_template('sign_up.html')
@@ -74,14 +78,20 @@ class Customers:
 
     @app.route('/login', methods=["GET", "POST"])
     def login():
+        #if nakaregister na, ma diretso ngadi ha login
         if request.method == "POST":
             login_email = request.form.get("email")
             login_password = request.form.get("password")
-            valid = False
+            valid = False 
+            
+            #setter?, an customer(dict) ha gueslist(list)
+            #kun an email ngan password is equal didto ha customer(dict)
+            #ig set hiya as TRUE para makaenter
+            #ig set an session data han uer_info
             
             for customer in guestlist: 
                 if login_email == customer['email'] and login_password == customer['password']:
-                    valid = True #ig set hiya as true
+                    valid = True
                     session['user_info'] = {
                         'firstname': customer['firstname'],
                         'lastname': customer['lastname'],
@@ -91,12 +101,14 @@ class Customers:
                         'email': customer['email'],
                     }
                     break
+                elif login_password == customer['password']:
+                    return render_template('login.html', message="Wrong Password")
             
             if valid:
                 session['email'] = login_email
                 return render_template("index.html", rooms=rooms)
             else:
-                return render_template('login.html', message="Invalid credentials")
+                return render_template('login.html', message="Wrong Password")
         
         return render_template('login.html')
 
