@@ -28,7 +28,7 @@
                         <!-- Profile picture image-->
                         <img class="img-account-profile rounded-circle mb-2" src="static/images/profile.png" alt="">
                         <!-- Profile picture help block-->
-                        <div class=" font-italic"> @{{ user_info.firstname }}</div>
+                        <div class=" font-italic"> {{ user_info.firstname }}</div>
 
                         <div class=" font-italic ">  {{ user_info.email }} </div>
                        
@@ -42,44 +42,41 @@
                 <div class="card mb-4">
                     <div class="card-header">Account Details</div>
                     <div class="card-body">
-                        <form>
-                            
-                            <!-- Form Row-->
+                        <form action="{{ url_for('edit') }}" method="POST">
+                            <!-- Form Row -->
                             <div class="row gx-3 mb-3">
-                                <!-- Form Group (first name)-->
+                                <!-- Form Group (first name) -->
                                 <div class="col-md-6">
                                     <label class="font" for="inputFirstName">First name</label>
-                                    <input class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name" >
+                                    <input class="form-control" name="first-name" id="inputFirstName" type="text" value="{{ user_info.firstname }}" placeholder="Enter your first name">
                                 </div>
-                                <!-- Form Group (last name)-->
+                                <!-- Form Group (last name) -->
                                 <div class="col-md-6">
                                     <label class="font" for="inputLastName">Last name</label>
-                                    <input class="form-control" id="inputLastName" type="text" placeholder="Enter your last name" >
+                                    <input class="form-control" name="last-name" id="inputLastName" type="text" value="{{ user_info.lastname }}" placeholder="Enter your last name">
                                 </div>
                             </div>
-                            <!-- Form Row        -->
+                            <!-- Form Row -->
                             <div class="row gx-3 mb-3">
-                                
-                                <!-- Form Group (location)-->
+                                <!-- Form Group (location) -->
                                 <div class="col-md-6">
                                     <label class="font" for="inputLocation">Address</label>
-                                    <input class="form-control" id="inputLocation" type="text" placeholder="Enter your Address" >
+                                    <input class="form-control" name="address" id="inputLocation" type="text" value="{{ user_info.address }}" placeholder="Enter your Address">
                                 </div>
-
-                                <!-- Form Group (phone number)-->
+                                <!-- Form Group (phone number) -->
                                 <div class="col-md-6">
                                     <label class="font" for="inputPhone">Phone number</label>
-                                    <input class="form-control" id="inputPhone" type="tel" placeholder="Enter your phone number" >
+                                    <input class="form-control" name="cel-number" id="inputPhone" type="tel" value="{{ user_info.cel_num }}" placeholder="Enter your phone number">
                                 </div>
-
                             </div>
-                            <!-- Form Group (email address)-->
+                            <!-- Form Group (email address) -->
                             <div class="mb-3">
-                                <label class="font" for="inputEmailAddress">Email address</label>
-                                <input class="form-control" id="inputEmailAddress" type="email" placeholder="Enter your email address" value="name@example.com">
+                                <label type="hidden" class="font" for="inputEmailAddress"></label>
+                                <input type="hidden" class="form-control" name="email" id="inputEmailAddress" type="email" value="{{ user_info.email }}" placeholder="Enter your email address">
                             </div>
-
-
+                        
+                            <!-- Save changes button -->
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
                         </form>
 
                         
@@ -91,7 +88,6 @@
             <!-- Save changes button
             liooo an save changes po -->
             <a style="color: black" class="back" href="{{ url_for('index') }}"> Back</a> 
-            <a style="color: black" class="save" href="#"> Save Changes</a> 
                              
         </div>
     </div>

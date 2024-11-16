@@ -43,19 +43,14 @@ rooms = {
     }
 }
 
-class Home: #independent
+class Home:
     @app.route("/")
     def home():
         return render_template('home.html', rooms=rooms)
-
-class Customers:
-    def __init__(self,firstname, lastname, gender, cel_num, address, email, password ):
-        super().__init__(firstname,lastname, gender, cel_num, address, email, password)
     
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-    
         customer = {
             'firstname': request.form.get("first-name"),
             'lastname': request.form.get("last-name"),
@@ -65,33 +60,17 @@ def signup():
             'email': request.form.get("email"),
             'password': request.form.get("password")
         }
+
+        guestlist.append(customer)
+        session['guestlist'] = guestlist  # Update session with the latest guestlist
         
-
-        session['user_info'] = customer
-        """
-        connection = sqlite3.connect(os.path.join(currentdirectory, "customer.db"), timeout=5)
-
-        cursor = connection.cursor()
-        
-        query1 = "INSERT INTO Customers_Profile (firstname, lastname, gender, cel_num, address, email, password) VALUES (?, ?, ?, ?, ?, ?, ?)"
-        cursor.execute(query1, (
-            customer['firstname'], 
-            customer['lastname'], 
-            customer['gender'], 
-            customer['cel_num'], 
-            customer['address'], 
-            customer['email'], 
-            customer['password']
-        ))
-
-        connection.commit()
-        connection.close()
-        """
-        guestlist.append(customer) 
+        session['user_info'] = customer  # Log in the user
         print(guestlist)
+        
         return redirect(url_for('login'))
-    else:
+    else: 
         return render_template('sign_up.html')
+
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -101,10 +80,10 @@ def login():
         get_password = request.form.get("password")
         valid = False
         
-        user_info = session.get('user_info')
+        user_info = session.get('user_info') #kuwaon an nakadto sulod han session var which is user_info(customer)
         
-        for customer in guestlist:
-            if get_email == customer['email'] and get_password == customer['password']:
+        for customer in guestlist: 
+           if get_email == customer['email'] and get_password == customer['password']:
                 valid = True
                 session['user_info'] = {
                     'firstname': customer['firstname'],
@@ -114,6 +93,7 @@ def login():
                     'address': customer['address'],
                     'email': customer['email'],
                 }
+                session['email'] = get_email
                 break
         
         if valid:
@@ -124,95 +104,97 @@ def login():
     
     return render_template('login.html')
 
-    
-@app.route("/edit")
+@app.route("/edit", methods=["GET", "POST"])
 def edit():
+    if request.method == "POST":
+        updated_user_info = {
+            "firstname": request.form.get("first-name"),
+            "lastname": request.form.get("last-name"),
+            "address": request.form.get("address"),
+            "email": request.form.get("email"),
+            "cel_num": request.form.get("cel-number"),
+        }
+
+        # Update session data
+        session['user_info'] = updated_user_info #ig convert niya an updated_user_info tikadto ha session var na user_info(customer)
+
+        # Update the corresponding user in guestlist
+        for user in guestlist:
+            if user['email'] == session['user_info']['email']:
+                user.update(updated_user_info)
+                break
+
+        return redirect(url_for('profile'))
+
+    return render_template("edit.html", user_info=session.get('user_info'))
+
+@app.route('/profile', methods=["GET"])
+def profile():
+    if 'user_info' not in session:
+        flash("You need to log in to view your profile.")
+        return redirect(url_for('login'))
     
-    user_info = session.get('user_info')
-      
-    return render_template ('edit.html', user_info=user_info)    
-        
+    user_info = session.get('user_info') #ig show info nga nakadto to user_info(customer) nga in session
+    
+    #AN TRANSACTIONS NALA, LIKE MAKITA HIRA KUN ANO AN IRA GIN BOOK
+    return render_template("profile.html", user_info=user_info)
+
 
 @app.route("/index", methods=["GET", "POST"])
 def index():
     if 'email' not in session:
         return redirect(url_for('login'))
     
+    user_info = session.get('user_info')
     
     if request.method == "POST":
-        check_in = request.form.get("check_in")
-        check_out = request.form.get("check_out")
-        adults = request.form.get("adult-count")
-        children = request.form.get("child-count")
-        room_name = request.form.get("room-name")
         
-        guestlist.append(check_in)
-        guestlist.append(check_out)
-        guestlist.append(adults)
-        guestlist.append(children)
-        guestlist.append(room_name)
+        guest = {
+            'check_in' : request.form.get("check_in"),
+            'check_out' : request.form.get("check_out"),
+            'adults' : request.form.get("adult-count"),
+            'children' : request.form.get("child-count"),
+            'room_name' : request.form.get("room-name")
+        }
+        
+        #ig sulod an adi ha guestlist
+        guestlist.append(guest)
     
         #Ig shoshow ha registration
         user_info = session.get('user_info')
         
-
-        
+        #pagkadto reservation, ig shoshow an user_info, tapos an adi. ///
         return render_template("reservationform.html",
             user_info=user_info, 
-            check_in=check_in, 
-            check_out=check_out, 
-            adults=adults, 
-            children=children, 
-            room_name=room_name
+            guest=guest
         )
 
-    return render_template("index.html", rooms=rooms, user_info=user_info)
+    return render_template("index.html", rooms=rooms, guestlist=guestlist, user_info=user_info)
             
-
+class Rent:
     @app.route("/reservationform", methods=['GET', 'POST'])
     def reservationform():
         if request.method == "POST":
             
-            class IDGenerator:
-                def __init__(self, start_id=2024001):
-                    self.current_id = start_id
-
-                def generate_id(self):
-                    generated_id = self.current_id
-                    self.current_id += 1
-                    return generated_id
-
-            id_gen = IDGenerator()
+            check_in = request.args.get("check_in")
+            check_out = request.args.get("check_out")
+            adults = request.args.get("adults")
+            room_name = request.args.get("room_name")
+            children = request.args.get("children")
             
-            guest = {
-                "check_in": request.form.get("check_in"),
-                "check_out": request.form.get("check_out"),
-                "adults": request.form.get("adults"),
-                "children": request.form.get("children"), 
-                "room_name": request.form.get("room_name"),
-                "customer_id": id_gen.generate_id()
-            }
-
-
-
-            guestlist.append(guest)
+            user_info = session.get('user_info')
             
-            return redirect(url_for('payment', guest_index=len(guestlist) - 1, guest=guest))
+            session['guestlist'] = guestlist  # Update the session with the modified guestlist
 
-        check_in = request.args.get("check_in")
-        check_out = request.args.get("check_out")
-        adults = request.args.get("adults")
-        children = request.args.get("children")
-        room_name = request.args.get("room_name")
-        
-        user_info = session.get('user_info')
+            return redirect(url_for('payment', guest_index=len(guestlist) - 1))
+
         
         return render_template("reservationform.html", user_info=user_info, 
             check_in=check_in, 
             check_out=check_out, 
+            room_name=room_name,
             adults=adults, 
-            children=children, 
-            room_name=room_name
+            children=children
         )
 
     @app.route("/payment/<int:guest_index>", methods=['GET', 'POST'])
@@ -221,15 +203,17 @@ def index():
             guest = guestlist[guest_index]
             
             guest['payment_method'] = request.form.get('payment-method')
-            return redirect(url_for('receipt', guest_index=guest_index))
+            return redirect(url_for('receipt', guest_index=guest_index, guest=guest))
         
         guest = guestlist[guest_index]
+        
         user_info = session.get('user_info')
+        
         check_in = request.args.get("check_in")
         check_out = request.args.get("check_out")
         adults = request.args.get("adults")
         children = request.args.get("children")
-        room_name = request.args.get("room_name")
+        room_name = request.args.get("room-name")
             
         return render_template("payment.html", guest=guest, user_info=user_info,
             check_in=check_in, 
@@ -242,7 +226,19 @@ def index():
     def receipt(guest_index):
         guest = guestlist[guest_index]
         user_info = session.get('user_info')
+        
+        
         return render_template("receipt.html", guest=guest, user_info=user_info)
+    
+    
+    
+@app.route('/logout')
+def logout():
+    if 'user_info' in session:
+        session['user_info'] = {key: session['user_info'][key] for key in session['user_info'] if key not in ['email']}
+    session.pop('email', None)
+    return redirect(url_for('home'))
+
 
 
 

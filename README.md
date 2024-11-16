@@ -186,3 +186,6 @@ Use session['user_info'] only for the currently logged-in user's session data.
 Always update both guestlist and session['user_info'] when modifying user details.
 
 For future scalability, consider replacing guestlist with a database to persist data.
+
+
+------------------------------------------------

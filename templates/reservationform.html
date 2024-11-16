@@ -30,7 +30,7 @@
             <input type="hidden" name="check_out" value="{{ check_out }}">
             <input type="hidden" name="adults" value="{{ adults }}">
             <input type="hidden" name="children" value="{{ children }}">
-            <input type="hidden" name="room_type" value="{{ room_name }}">
+            <input type="hidden" name="room_name" value="{{ room_name }}">
 
             
 
@@ -42,11 +42,11 @@
             
             
 
-            <label>Check In: {{ check_in }}</label><br>
-            <label>Check Out: {{ check_out }}</label><br>
-            <label>Adults: {{ adults }}</label><br>
-            <label>Children: {{ children }}</label><br>
-            <label> Room Type: {{room_name}}</label><br>
+            <label>Check In: {{ guest.check_in }}</label><br>
+            <label>Check Out: {{ guest.check_out }}</label><br>
+            <label>Adults: {{ guest.adults }}</label><br>
+            <label>Children: {{ guest.children }}</label><br>
+            <label> Room Type: {{ guest.room_name }}</label><br>
     
     
             <button class="btn btn --primary color" value="Proceed to Payment">Proceed To Payment</button>
