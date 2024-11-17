@@ -26,7 +26,11 @@
     <div class="content">
 
     <form action = "{{url_for("signup")}}" method = "POST">
+        {% if message %}
+            <p>{{ message }}
+        {% endif %}
         <div class="user-details">
+
 
             <div class="input-box">
                 <span class="details">Username:</span>
