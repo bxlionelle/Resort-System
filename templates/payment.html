@@ -23,9 +23,9 @@
             </form>
             <form action="" method="POST" id="paymentForm">
                 <label for="payment-method">Payment Method:</label>
-                <select id="payment-method" name="payment-method" onchange="showPaymentDetails()">
-                    <option value="paypal">PayPal</option>
-                    <option value="credit-card">Credit Card</option>
+                <select id="payment-method" name="payment-method" onchange="showPaymentDetails()" required>
+                    <option value="">Payment Method</option>
+                    <option value="paypal">Paytaca</option>
                     <option value="debit-card">Debit Card</option>
                 </select><br>
                 <div id="payment-details"></div>
@@ -38,10 +38,9 @@
                     var paymentDetailsDiv = document.getElementById("payment-details");
                     var detailsHtml = '';
 
-                    if (paymentMethod === 'paypal') {
-                        // Replace with your actual PayPal integration logic
-                        detailsHtml = '<a href="https://www.paypal.com/your-paypal-checkout-link">Proceed to PayPal</a>';
-                    } else if (paymentMethod === 'credit-card' || paymentMethod === 'debit-card') {
+                    if (paymentMethod === 'paytaca') {
+                        detailsHtml = '<a href="https://www.paytaca.com/">Proceed to Paytaca</a>';
+                    } else if (paymentMethod === 'debit-card') {
                         detailsHtml = `
                             <label for="cardholder-name">Cardholder's Name:</label>
                             <input type="text" id="cardholder-name" name="cardholder-name" required><br>

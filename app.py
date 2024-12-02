@@ -70,7 +70,7 @@ def login():
                 'address': guest[5],    
                 'email': guest[6],      
             }
-            session['email'] = guest[6]  # ig check an email kun uniq
+            session['email'] = guest[6]  # ig check an email 
             con.close()
             return redirect(url_for("index"))
         else:
@@ -205,7 +205,8 @@ def index():
     if 'email' not in session:
         return redirect(url_for('login'))
     
-    user_info = session.get('user_info')
+    
+    user_info = session.get('user_info') 
     
     if request.method == "POST":
         
@@ -223,11 +224,29 @@ def index():
         #Ig shoshow ha registration
         user_info = session.get('user_info')
         
+        con = sqlite3.connect(currentdirectory + '\data.db')
+        c = con.cursor()
+
+           
+        guest_id = session['user_info'].get('guest_id')
+        
+        query = """
+            INSERT INTO BOOKING (guest_id, check_in, check_out, adult_guest, child_guest, room_name)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """
+        c.execute(query, (guest_id, guest["check_in"], guest["check_out"], guest["adults"], guest["children"], guest["room_name"]))
+        con.commit()
+        con.close()
+
+        
         #pagkadto reservation, ig shoshow an user_info, tapos an adi. ///
         return render_template("reservationform.html",
             user_info=user_info, 
             guest=guest
         )
+        
+        #Mag INNER JOIN la ugaring para ma call an common, pero if kung two transactions na in one account, it will only
+        #show the first transaction
 
     return render_template("index.html", rooms=rooms, guestlist=guestlist, user_info=user_info)
             
@@ -263,6 +282,8 @@ class Rent:
             guest = guestlist[guest_index]
             
             guest['payment_method'] = request.form.get('payment-method')
+            
+            
             return redirect(url_for('receipt', guest_index=guest_index, guest=guest))
         
         guest = guestlist[guest_index]
@@ -286,7 +307,6 @@ class Rent:
     def receipt(guest_index):
         guest = guestlist[guest_index]
         user_info = session.get('user_info')
-        
         
         return render_template("receipt.html", guest=guest, user_info=user_info)
     
