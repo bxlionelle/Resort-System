@@ -110,15 +110,22 @@
           <h1 class="heading"><span>Room</span> Rates</h1>
           
           <div class="row">
-            {% for room_name, room_details in rooms.items() %}
+
+            
+            <div>
+                
+                
+
+
+            {% for room in rooms %}
             <div class="col-md-6 mb-4">
               <div class="w3-container w3-white">
-                <h3>{{ room_name }}</h3>
-                <img src="{{ room_details.image }}" alt="{{ room_name }}" style="width:100%; height:auto;">
-                <h6 class="w3-opacity">Price: {{ room_details.price }}/night</h6>
-                <p>{{ room_details.description }}</p>
+                <h3>{{ room.room_name }}</h3>
+                <img src="{{ room.image }}" alt="{{ room_name }}" style="width:100%; height:auto;">
+                <h6 class="w3-opacity">Price: {{ room.cost }}/night</h6>
+                <p>{{ room.description }}</p>
                 <ul>
-                  {% for item in room_details.more %}
+                  {% for item in room.more %}
                   <li>{{ item }}</li>
                   {% endfor %}
                 </ul>

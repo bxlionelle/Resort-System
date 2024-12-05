@@ -149,17 +149,17 @@
                     <div class="w3-row-padding w3-padding-16" >
 
             
-                            {% for room_name, room_details in rooms.items() %}
+                        {% for room in rooms %}
                             <div class="w3-half w3-margin-bottom">
                                 <div class="w3-container w3-white">
-                                    <h3>{{ room_name }} </h3>
-                                    <h3 style="display: none;" width="100%;" height:"auto;" > {{room_details.image}} </h3> 
-                                    <img src="{{room_details.image}}" alt="{{ room_name }}" style="width:100%; height:auto;">
-                                    <h6 class="w3-opacity"> Price: {{ room_details.price }}/night</h6>
-                                    <p>{{ room_details.description }}</p>
+                                    <h3>{{ room.room_name }} </h3>
+                                    <h3 style="display: none;" width="100%;" height:"auto;" > {{room.image}} </h3> 
+                                    <img src="{{room.image}}" alt="{{ room_name }}" style="width:100%; height:auto;">
+                                    <h6 class="w3-opacity"> Price: {{ room.cost }}/night</h6>
+                                    <p>{{ room.description }}</p>
         
                                 
-                                        {% for item in room_details.more %}
+                                        {% for item in room.more %}
                                         <li>{{ item }}</li>
                                         {% endfor %}
                                     
@@ -167,7 +167,7 @@
                                         <i class="fa fa-tv" title="Television" ></i> <i class="fa fa-cutlery" title="Breakfast"></i>
                                         
                                     
-                                    <button type="submit" value="{{ room_name }}" name="room-name" id="room-name" class="w3-button w3-block w3-black" onclick="validateGuestCount(this)">Choose Room</button>
+                                    <button type="submit" value="{{ room.room_name }}" name="room-name" id="room-name" class="w3-button w3-block w3-black" onclick="validateGuestCount(this)">Choose Room</button>
                                 </div>
                             </div>
                             {% endfor %}
