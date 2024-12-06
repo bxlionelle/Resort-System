@@ -66,37 +66,35 @@ predefined_rooms = {
     "Suite Room": { "price": 6000, "description": "3 double beds, A/C, Sleeps 6, Free wifi", "more": ["Private bathroom", "Cable channels", "Free toiletries"], "image": "static/images/lily3.jpg", "min_guests": 2, "max_guests": 6, "room_count": 5},
 }
 
-con = sqlite3.connect(currentdirectory + '\\data.db')
+# Connect to the database
+db_path = os.path.join(os.getcwd(), 'data.db')
+con = sqlite3.connect(db_path)
 c = con.cursor()
 
-for room_name, room_details in predefined_rooms.items():
-    # Check if the room already exists in the ROOMS table
-    c.execute("SELECT room_id FROM ROOMS WHERE room_name = ?", (room_name,))
-    result = c.fetchone()
+try:
+    for room_name, room_details in predefined_rooms.items():
+        # Check if the room already exists
+        c.execute("SELECT room_id FROM ROOMS WHERE room_name = ?", (room_name,))
+        result = c.fetchone()
         
-    if result is not None:
-            # If the room already exists, flash a message and redirect
-            flash(f"Error: The room '{room_name}' already exists. Please contact support.")
-            redirect ('/')
-        
+        if result is not None:
+            print("")
+        else:
+            # Insert the relevant columns into the ROOMS table
+            query = """
+            INSERT INTO ROOMS (room_name, room_cost, room_availability)
+            VALUES (?, ?, ?)
+            """
+            c.execute(query, (room_name, room_details["price"], room_details["room_count"]))
+            print(f"Inserted room '{room_name}' into the database.")
 
-    else:
-            # Insert only the relevant columns into the ROOMS table
-        query = """
-        INSERT INTO ROOMS (room_name, room_cost, room_availability,)
-        VALUES (?, ?, ?)
-        """
-        c.execute(query, (room_name, room_details["price"], room_details["room_count"]))
-
-    # Commit changes once after the loop completes
-con.commit()
-con.close()
-    
-
-    # Redirect to the home page after inserting all rooms
-
-
-    # room_details["min_guests"], room_details["max_guests"]
+    # Commit changes after all insertions
+    con.commit()
+except Exception as e:
+    print(f"An error occurred: {e}")
+finally:
+    # Close the connection
+    con.close()
 
 
     #ig insert sa database, pero kun already exist then move on
@@ -113,7 +111,8 @@ def home():
     return render_template("home.html", rooms=rooms)
 
 
-
+#ig show an mga nakabooked na customer
+#an add rooms, makakapag add hin room, pero di pa na show
 @app.route("/admin_dashboard", methods=["GET", "POST"])
 def admin_dashboard():
     # Fetch the list of bookings from the database to show guest information
@@ -123,7 +122,7 @@ def admin_dashboard():
 
     # Query to fetch booking details including guest info and room details
     query = """
-        SELECT BOOKING.booking_id, GUEST.guest_id, ROOMS.room_name, ROOMS.check_in, ROOMS.check_out, ROOMS.room_cost
+        SELECT BOOKING.booking_id, GUEST.guest_id, ROOMS.room_name, GUEST.firstname, GUEST.lastname, BOOKING.check_in, BOOKING.check_out, ROOMS.room_cost
         FROM BOOKING 
         JOIN GUEST ON BOOKING.guest_id = GUEST.guest_id
         JOIN ROOMS ON BOOKING.room_name = ROOMS.room_name
@@ -169,7 +168,6 @@ def add_room():
         return redirect(url_for("admin_dashboard"))
 
     return render_template("add_room.html")
-
 
 # Route to update room information
 @app.route("/update_room/<room_name>", methods=["GET", "POST"])
@@ -397,9 +395,9 @@ def profile():
 def index():
     if 'email' not in session:
         return redirect(url_for('login'))
-    
+
     user_info = session.get('user_info')
-    
+
     if request.method == "POST":
         # Collect guest information from the form
         guest = {
@@ -409,49 +407,54 @@ def index():
             'children': request.form.get("child-count"),
             'room_name': request.form.get("room-name")
         }
-        
-        """
-        
 
-        if room_name and its availabilty is not available anymore then flash a message that "Room is not available"
-        else  proceed to 
-        
-        """
-        
-        
-        # Append guest information to the guestlist (if needed)
-        guestlist.append(guest)
-        
-        # Connect to the database
+        room_name = guest["room_name"]
+        if not room_name:
+            flash("Please select a room.")
+            return redirect(url_for('index'))
+
+        room = room_manager.get_room(room_name)
+        if not room:
+            flash(f"Room '{room_name}' does not exist.")
+            return redirect(url_for('index'))
+
+        if not room.room_available():
+            flash(f"Room '{room_name}' is not available. Please choose another room.")
+            return redirect(url_for('index'))
+
+        # If available, book the room
+        room.room_book()
+
+        # Insert booking into database
         con = sqlite3.connect(currentdirectory + '\\data.db')
         c = con.cursor()
 
-        # Retrieve the guest_id using the logged-in user's email
+        # Get the guest ID
         user_email = session['user_info']['email']
         c.execute("SELECT guest_id FROM GUEST WHERE email = ?", (user_email,))
         guest_id_row = c.fetchone()
-        
-        if guest_id_row:
-            guest_id = guest_id_row[0]  # Extract the guest_id from the query result
 
-            #make a condition if the room_name / room_id is available, if yes proceed
-            # if no print a flash message and try again
-            
-            # Insert booking information into the BOOKING table
+        if guest_id_row:
+            guest_id = guest_id_row[0]
+
+            # Insert booking into the database
             query = """
                 INSERT INTO BOOKING (guest_id, check_in, check_out, adult_guest, child_guest, room_name)
                 VALUES (?, ?, ?, ?, ?, ?)
             """
-            
-            
-            c.execute(query, (guest_id, guest["check_in"], guest["check_out"], guest["adults"], guest["children"], guest["room_name"]))
+            c.execute(query, (guest_id, guest["check_in"], guest["check_out"], guest["adults"], guest["children"], room_name))
+
+            c.execute("UPDATE ROOMS SET Room_Availability = Room_Availability - 1 WHERE room_name = ?", (room_name,))
             con.commit()
         else:
             con.close()
             flash("Error: Could not find the guest ID. Please contact support.")
             return redirect(url_for('index'))
-        
+
         con.close()
+
+        # Append the guest details to the guest list
+        guestlist.append(guest)
 
         # Render the reservation form with the user and booking details
         return render_template(
@@ -459,12 +462,13 @@ def index():
             user_info=user_info,
             guest=guest
         )
-    rooms = room_manager.list_rooms() #new way para ma call an rooms
+
+    # Display available rooms on the index page
+    rooms = room_manager.list_rooms()
     return render_template("index.html", rooms=rooms, guestlist=guestlist, user_info=user_info)
 
             
-class Rent:
-    #IG DISPLAY LA NIYA AN INPUTS HA INDEX
+class Rent: #IG DISPLAY LA NIYA AN INPUTS HA INDEX
     @app.route("/reservationform", methods=['GET', 'POST'])
     def reservationform():
         if request.method == "POST":
@@ -493,30 +497,48 @@ class Rent:
     @app.route("/payment/<int:guest_index>", methods=['GET', 'POST'])
     def payment(guest_index):
         if request.method == "POST":
+
             guest = guestlist[guest_index]
             
-            guest['payment_method'] = request.form.get('payment-method')
+            payment_method = request.form.get('payment-method')
             
+            # Add payment method to the specific guest dictionary
+            guestlist[guest_index]['payment_method'] = payment_method
             
-            return redirect(url_for('receipt', guest_index=guest_index, guest=guest))
+            # Connect to database
+            con = sqlite3.connect(currentdirectory + '\data.db')
+            c = con.cursor()
+            
+            # Get guest_id and booking_id
+            user_email = session['user_info']['email']
+            c.execute("SELECT guest_id FROM GUEST WHERE email = ?", (user_email,))
+            guest_id = c.fetchone()[0]
+            
+            # Get the most recent booking for this guest
+            c.execute("SELECT booking_id FROM BOOKING WHERE guest_id = ? ORDER BY booking_id DESC LIMIT 1", (guest_id,))
+            booking_id = c.fetchone()[0]
+            
+            # Insert payment information
+            query = """
+                INSERT INTO PAYMENT (guest_id, booking_id, payment_method)
+                VALUES (?, ?, ?)
+            """
+            c.execute(query, (guest_id, booking_id, payment_method))
+            con.commit()
+            con.close()
+            
+            return redirect(url_for('receipt', guest_index=guest_index))
         
-        guest = guestlist[guest_index]
-        
+        # For GET request
+        try:
+            guest = guestlist[guest_index]
+        except IndexError:
+            flash("Invalid guest selection")
+            return redirect(url_for('index'))
+    
         user_info = session.get('user_info')
-        
-        check_in = request.args.get("check_in")
-        check_out = request.args.get("check_out")
-        adults = request.args.get("adults")
-        children = request.args.get("children")
-        room_name = request.args.get("room-name")
-            
-        return render_template("payment.html", guest=guest, user_info=user_info,
-            check_in=check_in, 
-            check_out=check_out, 
-            adults=adults, 
-            children=children, 
-            room_name=room_name)
-
+        return render_template("payment.html", guest=guest, user_info=user_info)
+    
     @app.route("/receipt/<int:guest_index>")
     def receipt(guest_index):
         guest = guestlist[guest_index]

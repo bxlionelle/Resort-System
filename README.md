@@ -794,3 +794,180 @@ con = sqlite3.connect(currentdirectory + '\\data.db')
             
             con.commit()
             con.close()
+
+
+
+
+
+
+
+
+
+    def save_to_db(self):
+        if self.room_no is None: 
+            
+            c.execute('SELECT Room_No FROM room_types WHERE Room_Type = ? AND Room_Cost = ?', (self.room_type, self.price))
+            existing_room = c.fetchone()
+            
+            if existing_room:
+                #print(f"Room '{self.room_type}' already exists with Room No {existing_room[0]}. No need to insert.")
+                self.room_no = existing_room[0]  # Set the room_no to the existing ID
+                
+            else:
+                
+                c.execute('''
+                INSERT INTO room_types (Room_Type, Availability, Room_Cost, Room_Status)
+                VALUES (?, ?, ?, ?)
+                ''', (self.room_type, 'Available', self.price, 'Active'))
+                con.commit()
+                
+                self.room_no = c.lastrowid  # Set the room_no to the ID of the newly inserted row
+        else:
+            
+            c.execute('''
+            UPDATE room_types
+            SET Room_Type = ?, Availability = ?, Room_Cost = ?, Room_Status = ?
+            WHERE Room_No = ?
+            ''', (self.room_type, 'Available', self.price, 'Active', self.room_no))
+            con.commit()
+
+    def book(self):
+        if not self.is_booked:
+            self.is_booked = True
+            c.execute('''
+            UPDATE room_types
+            SET Availability = ?
+            WHERE Room_No = ?
+            ''', ('Booked', self.room_no))
+            con.commit()
+            print(f"Room '{self.room_type}' has been booked.")
+        else:
+            print(f"Room '{self.room_type}' is already booked.")
+
+    def checkout(self):
+        if self.is_booked:
+            self.is_booked = False
+            c.execute('''
+            UPDATE room_types
+            SET Availability = ?
+            WHERE Room_No = ?
+            ''', ('Available', self.room_no))
+            con.commit()
+            print(f"Room '{self.room_type}' is now available.")
+        else:
+            print(f"Room '{self.room_type}' is already available.")
+
+    def show_details(self):
+        return {
+            'room_no': self.room_no,
+            'room_type': self.room_type,
+            'price': self.price,
+            'description': self.description,
+            'more': self.more,
+            'image': self.image
+        }
+
+
+class Resort(Room):
+    def __init__(self):
+        self.rooms = []
+
+    def add_room(self, room):
+        room.save_to_db()
+        self.rooms.append(room)
+
+    def show_rooms(self):
+        for room in self.rooms:
+            availability = "Available" if room.is_booked == False else "Booked"
+            print(f"Room No: {room.room_no}, Type: {room.room_type}, Price: {room.price}, Status: {availability}")
+
+    def search_room(self, room_type):
+        room = Room.fetch_room_by_type(room_type)
+        if room:
+            print(room.show_details())
+        else:
+            print(f"Room type '{room_type}' not found.")
+
+# Initialize the resort and add rooms
+
+
+
+
+
+
+@app.route("/index", methods=["GET", "POST"])
+def index():
+    if 'email' not in session:
+        return redirect(url_for('login'))
+    
+    user_info = session.get('user_info')
+    
+    if request.method == "POST":
+        # Collect guest information from the form
+        guest = {
+            'check_in': request.form.get("check_in"),
+            'check_out': request.form.get("check_out"),
+            'adults': request.form.get("adult-count"),
+            'children': request.form.get("child-count"),
+            'room_name': request.form.get("room-name")
+        }
+        
+        """
+        
+
+        if room_name and its availabilty is not available anymore then flash a message that "Room is not available"
+        else  proceed to 
+        
+        """
+        
+        con = sqlite3.connect(currentdirectory + '\\data.db')
+        c = con.cursor()
+
+        # Check room availability
+        c.execute("SELECT Room_Availability FROM ROOMS WHERE Room_name = ?", (guest['room_name'],))
+        room_data = c.fetchone()
+        
+        if room_data is not None::
+            # If room is unavailable, flash a message and redirect
+            con.close()
+            flash(f"Room '{guest['room_name']}' is not available. Please select another room.")
+            return redirect(url_for('index'))
+
+        # Get the guest ID
+        user_email = session['user_info']['email']
+        c.execute("SELECT guest_id FROM GUEST WHERE email = ?", (user_email,))
+        guest_id_row = c.fetchone()
+        
+        if guest_id_row:
+            guest_id = guest_id_row[0]
+
+            # Insert booking into the database
+            query = """
+                INSERT INTO BOOKING (guest_id, check_in, check_out, adult_guest, child_guest, room_name)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """
+            c.execute(query, (guest_id, guest["check_in"], guest["check_out"], guest["adults"], guest["children"], guest["room_name"]))
+
+            # Reduce the room count by 1
+            c.execute("UPDATE ROOMS SET room_count = room_count - 1 WHERE room_name = ?", (guest['room_name'],))
+            
+            # Commit changes
+            con.commit()
+        else:
+            con.close()
+            flash("Error: Could not find the guest ID. Please contact support.")
+            return redirect(url_for('index'))
+        
+        con.close()
+
+        # Append the guest details to the guest list
+        guestlist.append(guest)
+
+        # Render the reservation form with the user and booking details
+        return render_template(
+            "reservationform.html",
+            user_info=user_info,
+            guest=guest
+        )
+    rooms = room_manager.list_rooms() #new way para ma call an rooms
+    return render_template("index.html", rooms=rooms, guestlist=guestlist, user_info=user_info)
