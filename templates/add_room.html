@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Room</title>
+</head>
+<body>
+    <h1>Add New Room</h1>
+    <form method="post">
+        <label for="room_name">Room Name:</label>
+        <input type="text" id="room_name" name="room_name" required><br>
+
+        <label for="cost">Room Cost:</label>
+        <input type="number" id="cost" name="cost" step="0.01" required><br>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea><br>
+
+        <label for="more">More Details (comma-separated):</label>
+        <input type="text" id="more" name="more" placeholder="e.g., Private bathroom, Cable channels, Free toiletries"><br>
+
+        <label for="image">Image URL:</label>
+        <input type="url" id="image" name="image" required><br>
+
+        <label for="min_guests">Minimum Guests:</label>
+        <input type="number" id="min_guests" name="min_guests" required><br>
+
+        <label for="max_guests">Maximum Guests:</label>
+        <input type="number" id="max_guests" name="max_guests" required><br>
+
+        <label for="room_count">Room Count:</label>
+        <input type="number" id="room_count" name="room_count" required><br>
+
+        <button type="submit">Add Room</button>
+    </form>
+
+    <br>
+    <a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

@@ -26,7 +26,7 @@ class Room_Management:
     def room_available(self):
         return self.__availability > 0
 
-    def room_book(self):
+    def room_book(self): 
         if self.room_available():
             self.__availability -= 1
         else:
@@ -66,10 +66,42 @@ predefined_rooms = {
     "Suite Room": { "price": 6000, "description": "3 double beds, A/C, Sleeps 6, Free wifi", "more": ["Private bathroom", "Cable channels", "Free toiletries"], "image": "static/images/lily3.jpg", "min_guests": 2, "max_guests": 6, "room_count": 5},
 }
 
+con = sqlite3.connect(currentdirectory + '\\data.db')
+c = con.cursor()
 
+for room_name, room_details in predefined_rooms.items():
+    # Check if the room already exists in the ROOMS table
+    c.execute("SELECT room_id FROM ROOMS WHERE room_name = ?", (room_name,))
+    result = c.fetchone()
+        
+    if result is not None:
+            # If the room already exists, flash a message and redirect
+            flash(f"Error: The room '{room_name}' already exists. Please contact support.")
+            redirect ('/')
+        
+
+    else:
+            # Insert only the relevant columns into the ROOMS table
+        query = """
+        INSERT INTO ROOMS (room_name, room_cost, room_availability,)
+        VALUES (?, ?, ?)
+        """
+        c.execute(query, (room_name, room_details["price"], room_details["room_count"]))
+
+    # Commit changes once after the loop completes
+con.commit()
+con.close()
+    
+
+    # Redirect to the home page after inserting all rooms
+
+
+    # room_details["min_guests"], room_details["max_guests"]
+
+
+    #ig insert sa database, pero kun already exist then move on
 for name, data in predefined_rooms.items():
     room_manager.add_room(Room_Management(name, data["price"], data["description"], data["more"], data["image"], data["min_guests"], data["max_guests"], count=data["room_count"]))
-
 
 #------------------------------------------------------------------------------
 
@@ -77,10 +109,33 @@ for name, data in predefined_rooms.items():
 @app.route("/")
 def home():
     rooms = room_manager.list_rooms()
+    
     return render_template("home.html", rooms=rooms)
 
 
-#admin lang makapag use ng options na to
+
+@app.route("/admin_dashboard", methods=["GET", "POST"])
+def admin_dashboard():
+    # Fetch the list of bookings from the database to show guest information
+    
+    con = sqlite3.connect(currentdirectory + '\\data.db')
+    c = con.cursor()
+
+    # Query to fetch booking details including guest info and room details
+    query = """
+        SELECT BOOKING.booking_id, GUEST.guest_id, ROOMS.room_name, ROOMS.check_in, ROOMS.check_out, ROOMS.room_cost
+        FROM BOOKING 
+        JOIN GUEST ON BOOKING.guest_id = GUEST.guest_id
+        JOIN ROOMS ON BOOKING.room_name = ROOMS.room_name
+    """
+    c.execute(query)
+    bookings = c.fetchall()
+    con.close()
+
+    return render_template("admin_dashboard.html", bookings=bookings)
+
+
+# Route to add a new room
 @app.route("/add_room", methods=["GET", "POST"])
 def add_room():
     if request.method == "POST":
@@ -93,27 +148,36 @@ def add_room():
         max_guests = request.form.get("max_guests")
         room_count = request.form.get("room_count")
 
+        # Create a new Room_Management object and add it to the room manager
         new_room = Room_Management(
             room_name, float(cost), description, more, image, int(min_guests), int(max_guests), count=int(room_count)
         )
         room_manager.add_room(new_room)
+
+        # Insert the room into the database
+        con = sqlite3.connect(currentdirectory + '\\data.db')
+        c = con.cursor()
+        query = """
+            INSERT INTO ROOMS (room_name, room_cost, room_availability)
+            VALUES (?, ?, ?)
+        """
+        c.execute(query, (room_name, float(cost), int(room_count)))
+        con.commit()
+        con.close()
+
         flash(f"Room '{room_name}' added successfully!")
-        return redirect(url_for("home"))
+        return redirect(url_for("admin_dashboard"))
 
     return render_template("add_room.html")
 
-@app.route("/remove_room/<room_name>", methods=["POST"])
-def remove_room(room_name):
-    room_manager.remove_room(room_name)
-    flash(f"Room '{room_name}' removed successfully!")
-    return redirect(url_for("home"))
 
+# Route to update room information
 @app.route("/update_room/<room_name>", methods=["GET", "POST"])
 def update_room(room_name):
     room = room_manager.get_room(room_name)
     if not room:
         flash("Room not found!")
-        return redirect(url_for("home"))
+        return redirect(url_for("admin_dashboard"))
 
     if request.method == "POST":
         room.room_name = request.form.get("room_name")
@@ -125,10 +189,41 @@ def update_room(room_name):
         room.max_guests = int(request.form.get("max_guests"))
         room.room_count = int(request.form.get("room_count"))
         room.__availability = int(request.form.get("room_count"))
+
+        # Update room details in the database
+        con = sqlite3.connect(currentdirectory + '\\data.db')
+        c = con.cursor()
+        query = """
+            UPDATE ROOMS
+            SET room_name = ?, room_cost = ?, room_availability = ?
+            WHERE room_name = ?
+        """
+        c.execute(query, (room.room_name, room.cost, room.room_count, room_name))
+        con.commit()
+        con.close()
+
         flash(f"Room '{room.room_name}' updated successfully!")
-        return redirect(url_for("home"))
+        return redirect(url_for("admin_dashboard"))
 
     return render_template("update_room.html", room=room)
+
+
+# Route to remove a room
+@app.route("/remove_room/<room_name>", methods=["POST"])
+def remove_room(room_name):
+    room_manager.remove_room(room_name)
+
+    # Remove room from the database
+    con = sqlite3.connect(currentdirectory + '\\data.db')
+    c = con.cursor()
+    query = "DELETE FROM ROOMS WHERE room_name = ?"
+    c.execute(query, (room_name,))
+    con.commit()
+    con.close()
+
+    flash(f"Room '{room_name}' removed successfully!")
+    return redirect(url_for("admin_dashboard"))
+
 
 @app.route("/book_room/<room_name>", methods=["POST"])
 def book_room(room_name):
@@ -315,6 +410,15 @@ def index():
             'room_name': request.form.get("room-name")
         }
         
+        """
+        
+
+        if room_name and its availabilty is not available anymore then flash a message that "Room is not available"
+        else  proceed to 
+        
+        """
+        
+        
         # Append guest information to the guestlist (if needed)
         guestlist.append(guest)
         
@@ -330,6 +434,9 @@ def index():
         if guest_id_row:
             guest_id = guest_id_row[0]  # Extract the guest_id from the query result
 
+            #make a condition if the room_name / room_id is available, if yes proceed
+            # if no print a flash message and try again
+            
             # Insert booking information into the BOOKING table
             query = """
                 INSERT INTO BOOKING (guest_id, check_in, check_out, adult_guest, child_guest, room_name)
