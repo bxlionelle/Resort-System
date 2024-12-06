@@ -9,7 +9,6 @@ app.secret_key = "hello"
 
 guestlist = []
 
-# Room Management Classes
 class Room_Management:
     def __init__(self, room_name, cost, description, more, image, min_guests, max_guests, room_id=None, count=1):
         self.room_id = room_id
@@ -101,7 +100,11 @@ finally:
 for name, data in predefined_rooms.items():
     room_manager.add_room(Room_Management(name, data["price"], data["description"], data["more"], data["image"], data["min_guests"], data["max_guests"], count=data["room_count"]))
 
+room_manager.rooms.extend([])
+
 #------------------------------------------------------------------------------
+
+
 
 
 @app.route("/")
@@ -111,8 +114,9 @@ def home():
     return render_template("home.html", rooms=rooms)
 
 
+
+
 #ig show an mga nakabooked na customer
-#an add rooms, makakapag add hin room, pero di pa na show
 @app.route("/admin_dashboard", methods=["GET", "POST"])
 def admin_dashboard():
     # Fetch the list of bookings from the database to show guest information
@@ -133,8 +137,7 @@ def admin_dashboard():
 
     return render_template("admin_dashboard.html", bookings=bookings)
 
-
-# Route to add a new room
+#50/50
 @app.route("/add_room", methods=["GET", "POST"])
 def add_room():
     if request.method == "POST":
@@ -146,14 +149,24 @@ def add_room():
         min_guests = request.form.get("min_guests")
         max_guests = request.form.get("max_guests")
         room_count = request.form.get("room_count")
+        
+        predefined_rooms[room_name] = {
+            "price": float(cost),
+            "description": description,
+            "more": more,
+            "image": image,
+            "min_guests": int(min_guests),
+            "max_guests": int(max_guests),
+            "room_count": int(room_count)
+        }
 
-        # Create a new Room_Management object and add it to the room manager
         new_room = Room_Management(
-            room_name, float(cost), description, more, image, int(min_guests), int(max_guests), count=int(room_count)
+            room_name, float(cost), description, more, image, 
+            int(min_guests), int(max_guests), count=int(room_count)
         )
-        room_manager.add_room(new_room)
+        
+        room_manager.rooms.extend([new_room])
 
-        # Insert the room into the database
         con = sqlite3.connect(currentdirectory + '\\data.db')
         c = con.cursor()
         query = """
@@ -169,7 +182,7 @@ def add_room():
 
     return render_template("add_room.html")
 
-# Route to update room information
+#NOT AYOS
 @app.route("/update_room/<room_name>", methods=["GET", "POST"])
 def update_room(room_name):
     room = room_manager.get_room(room_name)
@@ -178,17 +191,33 @@ def update_room(room_name):
         return redirect(url_for("admin_dashboard"))
 
     if request.method == "POST":
-        room.room_name = request.form.get("room_name")
-        room.cost = float(request.form.get("cost"))
-        room.description = request.form.get("description")
-        room.more = request.form.getlist("more")
-        room.image = request.form.get("image")
-        room.min_guests = int(request.form.get("min_guests"))
-        room.max_guests = int(request.form.get("max_guests"))
-        room.room_count = int(request.form.get("room_count"))
-        room.__availability = int(request.form.get("room_count"))
+        new_room_name = request.form.get("room_name")
+        predefined_rooms[new_room_name] = {
+            "price": float(request.form.get("cost")),
+            "description": request.form.get("description"),
+            "more": request.form.getlist("more"),
+            "image": request.form.get("image"),
+            "min_guests": int(request.form.get("min_guests")),
+            "max_guests": int(request.form.get("max_guests")),
+            "room_count": int(request.form.get("room_count"))
+        }
 
-        # Update room details in the database
+        if new_room_name != room_name:
+            del predefined_rooms[room_name]
+            
+        room = room_manager.get_room(room_name)
+        if room:
+            room.room_name = new_room_name
+            room.cost = float(request.form.get("cost"))
+            room.description = request.form.get("description")
+            room.more = request.form.getlist("more")
+            room.image = request.form.get("image")
+            room.min_guests = int(request.form.get("min_guests"))
+            room.max_guests = int(request.form.get("max_guests"))
+            room.room_count = int(request.form.get("room_count"))
+            room.__availability = int(request.form.get("room_count"))
+
+    
         con = sqlite3.connect(currentdirectory + '\\data.db')
         c = con.cursor()
         query = """
@@ -205,13 +234,13 @@ def update_room(room_name):
 
     return render_template("update_room.html", room=room)
 
-
-# Route to remove a room
+#CANT REMOVE A ROOM
 @app.route("/remove_room/<room_name>", methods=["POST"])
 def remove_room(room_name):
-    room_manager.remove_room(room_name)
+    if room_name in predefined_rooms:
+        del predefined_rooms[room_name]
 
-    # Remove room from the database
+    room_manager.remove_room(room_name)
     con = sqlite3.connect(currentdirectory + '\\data.db')
     c = con.cursor()
     query = "DELETE FROM ROOMS WHERE room_name = ?"
@@ -221,7 +250,6 @@ def remove_room(room_name):
 
     flash(f"Room '{room_name}' removed successfully!")
     return redirect(url_for("admin_dashboard"))
-
 
 @app.route("/book_room/<room_name>", methods=["POST"])
 def book_room(room_name):
@@ -234,7 +262,7 @@ def book_room(room_name):
     return redirect(url_for("home"))
 
 
-#////////////////////////////////////////////
+#//////////////////////////-------------DO NOT MODIFY THIS AREA-------------//////////////////////////
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -268,7 +296,6 @@ def login():
     else:
         return render_template('login.html')
 
-    
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -317,7 +344,6 @@ def signup():
     else:
         return render_template('sign_up.html')
 
-
 @app.route("/edit", methods=["GET", "POST"])
 def edit():
     if 'user_info' not in session:
@@ -360,7 +386,6 @@ def edit():
 
     return render_template("edit.html", user_info=user_info)
 
-
 @app.route('/profile', methods=["GET"])
 def profile():
     if 'user_info' not in session:
@@ -388,7 +413,9 @@ def profile():
         }
 
     return render_template("profile.html", user_info=session['user_info'])
-#////////////////////////////////////////////
+#//////////////////////////-------------DO NOT MODIFY THIS AREA-------------//////////////////////////
+
+
 
 
 @app.route("/index", methods=["GET", "POST"])
@@ -419,17 +446,15 @@ def index():
             return redirect(url_for('index'))
 
         if not room.room_available():
+            #POP UP MESSAGE
             flash(f"Room '{room_name}' is not available. Please choose another room.")
             return redirect(url_for('index'))
 
-        # If available, book the room
         room.room_book()
 
-        # Insert booking into database
         con = sqlite3.connect(currentdirectory + '\\data.db')
         c = con.cursor()
 
-        # Get the guest ID
         user_email = session['user_info']['email']
         c.execute("SELECT guest_id FROM GUEST WHERE email = ?", (user_email,))
         guest_id_row = c.fetchone()
@@ -437,7 +462,6 @@ def index():
         if guest_id_row:
             guest_id = guest_id_row[0]
 
-            # Insert booking into the database
             query = """
                 INSERT INTO BOOKING (guest_id, check_in, check_out, adult_guest, child_guest, room_name)
                 VALUES (?, ?, ?, ?, ?, ?)
@@ -467,8 +491,12 @@ def index():
     rooms = room_manager.list_rooms()
     return render_template("index.html", rooms=rooms, guestlist=guestlist, user_info=user_info)
 
-            
-class Rent: #IG DISPLAY LA NIYA AN INPUTS HA INDEX
+
+
+
+#//////////////////////////-------------DO NOT MODIFY THIS AREA-------------//////////////////////////
+class Rent: 
+    #DISPLAYS LA NIYA THE INPUTS HA INDEX
     @app.route("/reservationform", methods=['GET', 'POST'])
     def reservationform():
         if request.method == "POST":
@@ -502,23 +530,18 @@ class Rent: #IG DISPLAY LA NIYA AN INPUTS HA INDEX
             
             payment_method = request.form.get('payment-method')
             
-            # Add payment method to the specific guest dictionary
             guestlist[guest_index]['payment_method'] = payment_method
             
-            # Connect to database
             con = sqlite3.connect(currentdirectory + '\data.db')
             c = con.cursor()
             
-            # Get guest_id and booking_id
             user_email = session['user_info']['email']
             c.execute("SELECT guest_id FROM GUEST WHERE email = ?", (user_email,))
             guest_id = c.fetchone()[0]
             
-            # Get the most recent booking for this guest
             c.execute("SELECT booking_id FROM BOOKING WHERE guest_id = ? ORDER BY booking_id DESC LIMIT 1", (guest_id,))
             booking_id = c.fetchone()[0]
-            
-            # Insert payment information
+    
             query = """
                 INSERT INTO PAYMENT (guest_id, booking_id, payment_method)
                 VALUES (?, ?, ?)
@@ -529,7 +552,6 @@ class Rent: #IG DISPLAY LA NIYA AN INPUTS HA INDEX
             
             return redirect(url_for('receipt', guest_index=guest_index))
         
-        # For GET request
         try:
             guest = guestlist[guest_index]
         except IndexError:
@@ -545,7 +567,7 @@ class Rent: #IG DISPLAY LA NIYA AN INPUTS HA INDEX
         user_info = session.get('user_info')
         
         return render_template("receipt.html", guest=guest, user_info=user_info)
-    
+#//////////////////////////-------------DO NOT MODIFY THIS AREA-------------//////////////////////////
     
     
 @app.route('/logout')
