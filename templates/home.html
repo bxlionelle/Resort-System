@@ -47,10 +47,27 @@
 
 </section>
 
+<button id="showModal">Show Modal</button>
+
 <div id="myModal" class="modal">
     <p>This is a modal.</p>
     <button id="closeModal">Close</button>
 </div>
+
+<script>
+  const pop = document.querySelector('.pop');
+  const close = document.querySelector('.close');
+
+  window.onload = function(){
+    setTimeout(function(){
+      pop.style.display = "block";
+    }, 2000)
+  }
+
+  close.addEventListener('click', () => {
+    pop.style.display = "none";
+  })
+</script>
 
 <section class="Login" id="login">
     <div class="container-slide">
@@ -109,6 +126,9 @@
           <h1 class="heading"><span>Room</span> Rates</h1>
           
           <div class="row">
+
+            
+            <div>
                 
                 
 

@@ -41,11 +41,29 @@
                     <p>Payment Method: {{ guest.payment_method }}</p>
                 </section>
 
-                    <section class="last">
-                        <p class= "confirmed">PAYMENT CONFIRMED</p>
-                        <p style="text-align: center;"><a href="{{ url_for('index') }}"><button class=" btn btn --primary color">Home</button</a></p>
-                            <a href='/logout'>Logout</a>"
-                    </section>
+                <button type="submit" class="sub" onclick="openPopup()">Submit</button>
+
+                <div class = "popup" id="popup">
+                    <img src="static/images/2.png">
+                    <h2> Thank You!</h2>
+                    <p> LLOYD IG MEKUS MEKUS NLA!!!!</p>
+                    <a href ='/logout' button type="button" onclick="closePopup()" >OK</button>
+
+                </div>  
+      </div>
+
+      <script>
+        let popup = document.getElementById("popup");
+
+        function openPopup(){
+            popup.classList.add("open-popup");
+        }
+
+        function closePopup(){
+            popup.classList.remove("open-popup");
+        }
+
+      </script>
           </div>
     </body>
 </html>
