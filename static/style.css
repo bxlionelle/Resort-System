@@ -12,46 +12,13 @@ html{
     scroll-behavior: smooth;
     scroll-padding-top: 6rem;
     overflow-x:hidden;
-    background-color: wheat;
+    background-color: rgb(255, 255, 255);
 }
 
 section{
     padding:2rem 9%;
-    background-color: wheat;
+    background-color: rgb(255, 255, 255);
 }
-
-.heading{
-    text-align: center;
-    font-size: 4rem;
-    color: wheat;
-    padding: 1rem;
-    margin: 2rem 0;
-    background: seagreen;
-    font-family: "Fjalla One", sans-serif;
-}
-
-.heading span{
-    color: wheat;
-    font-family: "Fjalla One", sans-serif;
-}
-.btn{
-    display: inline-block ;
-    margin-top: 1rem;
-    border-radius: 5rem;
-    background:mediumseagreen;
-    color: #fff;
-    padding:.9rem 3.5rem;
-    cursor: pointer;
-    font-size: 1.7rem;
-    border-width: 3px;
-    border-radius: 5px;
-    border-color: #ffffff;
-}
-
-.btn:hover{
-    background:rgb(43, 161, 132);
-}
-
 
 header{
     position: fixed;
@@ -99,6 +66,148 @@ header .fa-bars{
     cursor: pointer;
     border: 1rem solid rgba(0,0,0,.3);
     display: none;
+}
+
+.heading{
+    text-align: center;
+    font-size: 4rem;
+    color: wheat;
+    padding: 1rem;
+    margin: 2rem 0;
+    background: seagreen;
+    font-family: "Fjalla One", sans-serif;
+}
+
+.heading span{
+    color: wheat;
+    font-family: "Fjalla One", sans-serif;
+}
+.btn{
+    display: inline-block ;
+    margin-top: 1rem;
+    border-radius: 5rem;
+    background:mediumseagreen;
+    color: #fff;
+    padding:.9rem 3.5rem;
+    cursor: pointer;
+    font-size: 1.7rem;
+    border-width: 3px;
+    border-radius: 5px;
+    border-color: #ffffff;
+}
+
+.btn:hover{
+    background:rgb(43, 161, 132);
+}
+
+
+.pics{
+    background-color: wheat;
+}
+
+
+/*.......................................*/
+
+/*..............POP-UP...............*/
+.pop{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display:none;
+}
+
+.contentBox{
+    position: relative;
+    width: 600px;
+    height: 400px;
+    background: #fff;
+    border-radius: 20px;
+    display: flex;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.contentBox .imgBx{
+    position: relative;
+    width: 300px;
+    height: 400px;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+}
+
+.contentBox .imgBx::before{
+    content:'';
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    background: #e7ffe0;
+    border-radius: 50%;
+}
+
+.contentBox .imgBx img{
+    position: relative;
+    max-width: 250px
+}
+
+.contentBox .content{
+    position: relative;
+    width: 300;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contentBox .content h3{
+    color:#333;
+    line-height: 1em;
+    font-weight: 300;
+    font-size: 2em;
+}
+
+.contentBox .content h2{
+    font-size: 4em;
+    color: #ff4d54;
+    line-height: 1em;
+}
+
+.contentBox .content h2 span{
+    color:#333;
+    font-size:0.75em;
+    text-transform: uppercasse;
+}
+.contentBox .content p{
+    font-weight: 300;
+}
+
+.contentBox .content a{
+    display: inline-block;
+    padding: 10px 20px;
+    background: #ff4d54;
+    color: #fff;
+    margin-top: 15px;
+    text-decoration: none;
+    border-radius: 10px;
+}
+
+.close{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: #f3f3f3 url(images/close.png) no-repeat center;
+    background-size: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+/*.................INDEX........................*/
+.home{
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    background-size: cover;
 }
 
 .user-pic{
@@ -179,17 +288,6 @@ header .fa-bars{
 }
 
 
-.home{
-    display: flex;
-    align-items: center;
-    min-height: 100vh;
-    background-size: cover;
-    background:url("pics.jpg") no-repeat; 
-    background-size: cover;
-   
-
-}
-
 .home .content{
     max-width: 50rem;
 
@@ -205,7 +303,6 @@ header .fa-bars{
 .home .content span{
     font-family: "Fjalla One", sans-serif;
     font-size: 3rem;
-    color:var(--pink);
     padding:1rem 0 ;
     line-height: 1.5;
     color: rgb(253, 253, 253);
@@ -227,7 +324,7 @@ header .fa-bars{
     color: #fff;
     padding:.9rem 3.5rem;
     cursor: pointer;
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     border-width: 3px;
     border-radius: 5px;
     border-color: white;
@@ -335,9 +432,6 @@ header .fa-bars{
     border-radius: .5rem;
 }
 
-
-
-
 .contact .row .image{
     flex:1 1 40rem;
 }
@@ -364,27 +458,27 @@ header .fa-bars{
     padding-left: 20px;
 }
 
-
-
 .contact .row form .box{
     padding:1rem;
     font-size: 1.7rem;
     color: #333;
     text-transform: none;
-    border: 1rem solid rgba(0,0,0,.1);
+    border: .5rem solid rgba(0,0,0,.1);
     border-radius: .5rem;
     margin:.7rem 0;
     width: 100%;
 }
 
 .contact .row form .box:focus{
-    border-color:rgb(17, 37, 97);
+    border-color:rgb(180, 180, 180);
 }
 
 .contact .row form textarea{
     height: 15rem;
     resize: none;
 }
+
+/*.........................ADMIN.......................*/
 .admin-block{
     text-align: center;
     width: auto ;
@@ -395,97 +489,216 @@ header .fa-bars{
     border: 3px solid teal;
     border-radius: 15px;
 }
+
+/*..........................RESERVATION_FORM..............*/
 .reservation-block{
-    background: url("resort3.jpg") ;
     text-align: center;
+    padding: 2rem;
+    padding-inline: 2rem;
     width: 50% ;
     height: 100px auto;
     margin: 120px auto;
     margin-left: 50px;
     margin-right: 50px;
-    border: 3px solid teal;
+    border: .5px solid  rgb(255, 255, 255);
     border-width: 10px;
-    border-radius: 35px;
+    border-radius: 10px;
     position: relative;
     left: 320px;
     padding-bottom: 3rem;
+    box-shadow: 0 0 10px ;
 }
-.flu{
-    padding-left: 10rem ;
-    
+.reservation-block p{
+    text-align: left;
+    display: inline-block;
+    width: 50%;
 }
 
+.reservation-block label{
+    text-align: left;
+    display: inline-block;
+    width: 50%;
 
-
-.payment-block{
+}
+.reservation-block h2{
+    text-align: left;
+    font-family: "Fjalla One";
+}
+.reservation-block h3{
     text-align: center;
+    font-family: "Fjalla One";
+}
+
+.reservation-block button{
+    display: inline-block;
+    margin: 10px;
+    text-align: center
+}
+.enter{
+    margin-top: 1rem;
+    border-radius: 5rem;
+    background:mediumseagreen;
+    color: #fff;
+    padding:.9rem 3.5rem;
+    cursor: pointer;
+    font-size: 1.7rem;
+    border-width: 3px;
+    border-radius: 5px;
+    border-color: #ffffff;
+}
+
+.enter:hover{
+    background:rgb(43, 161, 132);
+}
+/*......................PAYMENT........................*/
+.payment-block{
+   
+    text-align: center;
+    padding: 2rem;
+    padding-inline: 2rem;
     width: 50% ;
-    height: 100px auto;
     margin: 120px auto;
     margin-left: 50px;
     margin-right: 50px;
-    border: 3px solid teal;
+    border: .5px solid rgb(255, 255, 255);
     border-width: 10px;
-    border-radius: 15px;
+    border-radius: 10px;
     position: relative;
     left: 320px;
+    padding-bottom: 3rem;
+    box-shadow: 0 0 10px ;
 }
 
+.pay p{
+    text-align: left;
+    display: inline-block;
+    width: 50%;
+}
 
+.payment-block h3{
+    font-family: "Fjalla One";
+}
+/*...........................RECEIPT.......................*/
 .receipt-block {
+    text-align: center;
+    padding: 2rem;
+    padding-inline: 2rem;
     width: 50% ;
-    height: 100px auto;
-    margin: 110px auto;
+    margin: 120px auto;
     margin-left: 50px;
     margin-right: 50px;
-    border: 3px solid teal;
+    border: .5px solid  rgb(255, 255, 255);
     border-width: 10px;
-    border-radius: 15px;
+    border-radius: 10px;
     position: relative;
     left: 320px;
+    padding-bottom: 3rem;
+    box-shadow: 0 0 10px ;
    
   }
   .Reservation{
-    font-family: "Aladin", system-ui;
+    font-family: "Fjalla One";
     text-align: center;
     padding-top: 5px;
-    font-size: 3rem;
-
-
+    font-size: 3rem;    
 
   }
   .Receipt{
-    font-family: "Fjalla One", sans-serif;
-    text-align: center;
+    text-align: left;
     font-size: 2rem;
+  }
 
+  .Receipt p{
+    font-family: "Fjalla One";
   }
   .Receipt2{
-    font-family: "Fjalla One", sans-serif;
-    text-align: center;
-    font-size: 15px;
+    text-align: left;
+    font-size: 16px;
     width: 50% ;
     height: 200px auto;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 10px;
-    border: 3px solid teal;
-    border-width: 5px;
-    border-radius: 15px;
-  }
+    }
 
   .confirmed{
-    font-family: "Fjalla One", sans-serif ;
+    font-family: "Fjalla One";
     font-size: 20px;
     text-align: center;
    
   }
-  .last{
-    padding-top: 10px;
-    padding-bottom: 2rem;
+
+ /* .container{
+    width: 100%;
+    height: 100vh;
+    background: #3c5077;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
   }
+*/
 
+.sub{
+    padding: 10px 60px;
+    background: teal;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    font-size: 22px;
+    font-weight: 500;
+    border-radius: 30px;
+    font-family: "Fjalla One";
+}
 
+  .popup{
+    font-family: "Fjalla One";
+    width: 400px;
+    background: #fff;
+    border-radius: 6px;
+    position:absolute;
+    top:0;
+    left:50%;
+    transform: translate(-50%, -50%)scale(0.1);
+    text-align: center;
+    padding: 0 30px 30px;
+    color:#ffffff;
+    visibility:hidden ;
+    transition: transform 0.4s, top 0.4s;
+    background-color: teal;
+  }
+  .open-popup{
+    visibility: visible;
+    top:50%;
+    transform: translate(-50%, -50%) scale(1);
+  }
+.popup img{
+    width: 100px;
+    margin-top: -50%;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.popup h2{
+    font-size: 38px;
+    font-weight: 500px;
+    margin: 30px 0 10px;
+}
+
+.popup button{
+    width: 100%;
+    margin-top: 50px;
+    padding:10px 0;
+    background: #ffffff;
+    color: #040404;
+    border: 0;
+    outline:none;
+    font-size:18px;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 5px 5px rgba(0,0,0,0.2);
+}
+/*............................HOME........................*/
 .carousel-item img{
     height: 400px;
     border: 3px solid teal;
@@ -544,7 +757,9 @@ header .fa-bars{
     position: unset;
 }
 
+/*..........................LOGIN..........................*/
 .login-block{
+    
     text-align: center;
     width: 50% ;
     height: 100px auto;
@@ -556,12 +771,13 @@ header .fa-bars{
     left: 50%;
     transform: translate(-50%, -50%);
     width: 29vw;
-    background:  wheat;
+    background:  rgb(255, 255, 255);
     border-radius: 10px;
     bottom: auto;
 }
 
 .login-block .login{
+  font-family: "Fjalla One";
   text-align: center;
   padding: 0 0 20px 0;
   border-bottom: 1px solid rgb(249, 248, 245);
@@ -620,7 +836,7 @@ form .input-log{
     width: 100%;
   }
 
-  
+/*.....................SIGN-UP................*/
 .signup-block{
     text-align: left;
     width: 50% ;
@@ -632,7 +848,7 @@ form .input-log{
     border-radius: 20px;
     position: relative;
     left: 320px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
 }
 
 .signup{
@@ -717,8 +933,8 @@ form .input-box span.details {
 
 }
 
-*dri pa timaaaaaaaaaaa
 
+/*........................EDIT OR PROFILE.....................*/
 .card-body img {
     width: 250px; /* Increased from 200px */
 }
@@ -813,10 +1029,6 @@ form .input-box span.details {
 
 
 
-
-
-
-
 @media screen and (max-width: 768px){
 
     .carousel-item img{
@@ -863,11 +1075,6 @@ form .input-box span.details {
       }
     }
     
-
-
-
-
-
 
 @media (max-width:768px) {
 
