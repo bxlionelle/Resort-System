@@ -1,3 +1,4 @@
+
 *{
     margin: 0; padding:0;
     box-sizing: border-box;
@@ -26,7 +27,7 @@ section{
     color: wheat;
     padding: 1rem;
     margin: 2rem 0;
-    background: seagreen;
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
     font-family: "Fjalla One", sans-serif;
 }
 
@@ -56,8 +57,8 @@ section{
 header{
     position: fixed;
     top:0; left:0; right:0;
-    background:darkcyan;
-    padding: 2rem 9%;
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
+    padding: 1.5rem 9%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -65,11 +66,10 @@ header{
     box-shadow: 0 .5rem 1rem rgb(48, 47, 47);
 }
 
-header .logo{
-    font-size: 3rem;
-    color: #fcfafa;
-    font-weight: bolder;
 
+header .logo img{
+    width: 90px;
+    filter: drop-shadow(2px 2px 20px black);
 }
 
 header .logo span{
@@ -77,13 +77,41 @@ header .logo span{
 }
 
 header .navbar a{
-    font-size: 2rem;
-    padding: 0 1.5rem;
+    position: relative;
+    display: inline-block;
+    font-family: "Fjalla One", sans-serif;
+    font-size: 2.5rem;
+    cursor: pointer;
     color: #f7f8f8;
+    transition: 0.4s all ease;
+    padding: 10px;
 }
 
 header .navbar a:hover{
-    color:mediumseagreen;;
+    color: #93ccea;
+    transition: 0.4s all ease;
+}
+
+header .navbar a::after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #e5b73b;
+    transform-origin: bottom right;
+    transition: transform 0.5s ease-out;
+}
+
+header .navbar a:hover::after{
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+header .navbar a .img{
+    width: 30px;
 }
 
 header #toggler{
@@ -199,7 +227,9 @@ header .fa-bars{
     font-family: "Aladin", system-ui;
     font-size: 10.6rem;
     color: whitesmoke;
+    filter: drop-shadow(2px 2px 20px black);
 }
+
   
 
 .home .content span{
@@ -209,6 +239,7 @@ header .fa-bars{
     padding:1rem 0 ;
     line-height: 1.5;
     color: rgb(253, 253, 253);
+    filter: drop-shadow(2px 2px 20px black);
 }
 
 .home .content p{
@@ -217,13 +248,14 @@ header .fa-bars{
     color: #fcfcfc;
     padding:1rem 0 ;
     line-height: 1.5;
+    filter: drop-shadow(2px 2px 20px black);
 }
 
 .home .content .btn{
     display: inline-block ;
     margin-top: 1rem;
     border-radius: 5rem;
-    background:mediumseagreen;
+    background:linear-gradient(135deg, #00bfff, #ed9121);
     color: #fff;
     padding:.9rem 3.5rem;
     cursor: pointer;
@@ -232,21 +264,23 @@ header .fa-bars{
     border-radius: 5px;
     border-color: white;
     line-height: 1.9;
+    filter: drop-shadow(2px 2px 20px black);
 }
 
 .home .content .btn:hover{
-    background:rgb(119, 69, 9);
+    background:linear-gradient(135deg, #09779c, #9e5b08);
 }
+
 .rates .box-container .box{
     display: flex;
     flex-wrap: wrap;
-    gap:1.5rem;
+    gap:2rem;
     position: center;
 
 }
 
 .rates .box-container .box1{
-    padding-left: 143px;
+    padding-left: 135px;
 }
 
 .rates h1{
@@ -254,7 +288,23 @@ header .fa-bars{
     font-size: 3rem;
     text-align: center;
     color: wheat;
-    background-color: seagreen;
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
+    filter: drop-shadow(2px 2px 20px black);
+}
+
+.rates .rooms .w3-container{
+    padding-bottom: 20px;
+}
+
+
+.rates .box-container .rooms .w3-button{
+    padding-top: 2px;
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
+    color: white;
+}
+
+.rates .box-container .rooms .w3-button:hover{
+    background:linear-gradient(135deg, #008b8b, #c8a2c8, #008b8b);
 }
 
 .about .row{
@@ -274,18 +324,17 @@ header .fa-bars{
 
 .about .row .video-container video{ 
     width: 100%;
-    border: 1.5rem solid #ffffff;
-    border-radius: .5rem;
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
+    padding-right: 23px;
     height: 100%;
     object-fit: cover;
+    margin-right: 10px;
+    filter: drop-shadow(2px 2px 20px black);
 }
 
 .about .row .video-container h3{
     position: absolute;
     top: 50%; transform: translateY(-50%);
     font-size: 3rem;
-    background: #fff;
     width: 100%;
     padding: 1rem 2rem;
     text-align: center;
@@ -303,7 +352,7 @@ header .fa-bars{
 
 .about .row .content p{
     font-size: 1.5rem;
-    color: #999;
+    color: #0d5e5e;
     padding: 5rem 0;
     padding-top: 1rem;
     line-height: 1.5rem;
@@ -313,9 +362,8 @@ header .fa-bars{
     font-family: "Fjalla One";
     font-size: 3rem;
     text-align: center;
-    color: seagreen;
+    color:  #008b8b;
     position: relative;
-    padding-left: 190px;
     margin-top: .8px;
 }
 
@@ -335,50 +383,68 @@ header .fa-bars{
     border-radius: .5rem;
 }
 
-
-
-
-.contact .row .image{
-    flex:1 1 40rem;
+.contact .row form{
+    border: 2px solid #053f3f;
 }
-
-.contact .row .image img{
-    width: 100%;
-}
-
 
 
 .contact .info{
     flex:2 1 40rem;
 }
 
-.contact .info h3{
-    text-align: justify;
+.contact .row h1{
     font-family: "Fjalla One";
     padding-left: 20px;
+    color: #0d5e5e;
+    filter: drop-shadow(2px 2px 80px black);
 }
 
-.contact .info address{
-    text-align: justify;
+.contact .row address{
     font-family: "Fjalla One";
     padding-left: 20px;
+    padding-bottom: 40px;
+    font-size: 20px;
+    color: #053f3f;
 }
 
+.contact .row a{
+    font-family: "Fjalla One";
+    padding-bottom: 40px;
+    font-size: 20px;
+}
 
+.contact .row a:hover{
+    color: #008b8b;
+}
+
+.contact .row .btn{
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
+}
+
+.contact .row .btn:hover{
+    background:linear-gradient(135deg, #008b8b, #c8a2c8, #008b8b);
+}
 
 .contact .row form .box{
     padding:1rem;
     font-size: 1.7rem;
-    color: #333;
+    color: #053f3f;
     text-transform: none;
-    border: 1rem solid rgba(0,0,0,.1);
+    border: 2px solid #053f3f;
     border-radius: .5rem;
     margin:.7rem 0;
     width: 100%;
 }
 
+.contact .row form .box::placeholder{
+    color: #053f3f;
+}
+
+
 .contact .row form .box:focus{
-    border-color:rgb(17, 37, 97);
+    color: white;
+    border-color:#053f3f;
+    background:linear-gradient(135deg, #008b8b, #c8a2c8, #008b8b);
 }
 
 .contact .row form textarea{
@@ -488,9 +554,7 @@ header .fa-bars{
 
 .carousel-item img{
     height: 400px;
-    border: 3px solid teal;
     border-width: 5px;
-    border-radius: 15px;
 }
 
 .title {
@@ -498,6 +562,19 @@ header .fa-bars{
     text-align: center;
     margin-left: 200px;
     margin-right: auto;
+}
+
+.title .content h1{
+    font-family: "Aladin", system-ui;
+    color: #016969;
+    font-size: 5rem;
+    filter: drop-shadow(2px 2px 35px black);
+}
+
+.title .content p{
+    font-family: "Fjalla One", sans-serif;
+    font-size: 1.5rem;
+    color: #023a3a;
 }
 
 .title .content span{
@@ -519,7 +596,7 @@ header .fa-bars{
     display: inline-block ;
     margin-top: 1rem;
     border-radius: 5rem;
-    background:mediumseagreen;
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
     color: #fff;
     padding:.9rem 3.5rem;
     cursor: pointer;
@@ -536,12 +613,34 @@ header .fa-bars{
 .carousel-indicators img{
     width: 70px;
     display: block;
+    filter: drop-shadow(2px 2px 35px black);
 }
 .carousel-indicators button{
     width: 800px;
+    margin-top: 100px;
 }
+
+.container-slide button{
+    position: absolute;
+    font-size: 5rem;
+    border: none;
+    color: white;
+    transform: translateY(-50%);
+    top: 60%;
+}
+
+.carousel-control-prev{
+    margin-left: -20px;
+}
+
+.carousel-control-next{
+    left: 640px;
+}
+
 .carousel-indicators{
     position: unset;
+    margin-left: 240px;
+    filter: drop-shadow(2px 2px 35px black);
 }
 
 .login-block{
@@ -571,6 +670,12 @@ header .fa-bars{
     text-align: center;
     padding-top: 5px;
     font-size: 3rem;
+}
+
+.login .title .content h1{
+
+    font-family: "Aladin", system-ui;
+
 }
 
 form .input-log{

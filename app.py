@@ -20,12 +20,12 @@ class Room_Management:
         self.min_guests = min_guests
         self.max_guests = max_guests
         self.room_count = count
-        self.__availability = count
+        self.__availability = count  # Private, so the access can be controlled
 
-    def room_available(self):
+    def room_available(self): #The setter
         return self.__availability > 0
 
-    def room_book(self): 
+    def room_book(self): #The getter
         if self.room_available():
             self.__availability -= 1
         else:
@@ -38,15 +38,15 @@ class Room_Management:
 #for admin
 class Rooms:
     def __init__(self):
-        self.rooms = []
+        self.rooms = [] #List where the Objects of Room_Management
 
-    def add_room(self, room):
+    def add_room(self, room): #Adds a room inside the rooms
         self.rooms.append(room)
 
-    def remove_room(self, room_name):
+    def remove_room(self, room_name): #Removes if the room name inside the rooms is not equal to room_name
         self.rooms = [room for room in self.rooms if room.room_name != room_name]
 
-    def get_room(self, room_name):
+    def get_room(self, room_name): #Search the room_name inside the rooms
         for room in self.rooms:
             if room.room_name == room_name:
                 return room
@@ -56,8 +56,10 @@ class Rooms:
         return self.rooms
 
 #------------------------------------------------------------------------------
-
+#Creates a room object
 room_manager = Rooms()
+
+#Creates room using predefined rooms
 predefined_rooms = {
     "Basic Room": {"price": 500, "description": "1 bed, A/C, Sleeps 2, Free wifi", "more": ["Private bathroom", "Cable channels", "Free toiletries"], "image": "static/images/lily.jpg", "min_guests": 1, "max_guests": 2, "room_count": 10},
     "Deluxe Room": {"price": 1200, "description": "2 beds, A/C, Sleeps 4-5, Free wifi", "more": ["Private bathroom", "Cable channels", "Free toiletries"], "image": "static/images/lily1.jpg", "min_guests": 2, "max_guests": 5, "room_count": 3},
@@ -65,11 +67,11 @@ predefined_rooms = {
     "Suite Room": { "price": 6000, "description": "3 double beds, A/C, Sleeps 6, Free wifi", "more": ["Private bathroom", "Cable channels", "Free toiletries"], "image": "static/images/lily3.jpg", "min_guests": 2, "max_guests": 6, "room_count": 5},
 }
 
-# Connect to the database
 db_path = os.path.join(os.getcwd(), 'data.db')
 con = sqlite3.connect(db_path)
 c = con.cursor()
 
+#Condition for database
 try:
     for room_name, room_details in predefined_rooms.items():
         # Check if the room already exists
@@ -134,8 +136,18 @@ def admin_dashboard():
     c.execute(query)
     bookings = c.fetchall()
     con.close()
+    
+    con = sqlite3.connect(currentdirectory + '\\data.db')
+    c = con.cursor()
+    query1 = """
+        SELECT room_id, Room_name, Room_Cost, Room_Availability
+        FROM ROOMS
+    """
+    c.execute(query1)
+    rooms_to_display = c.fetchall()
+    con.close()
 
-    return render_template("admin_dashboard.html", bookings=bookings)
+    return render_template("admin_dashboard.html", bookings=bookings, rooms_to_display=rooms_to_display)
 
 #50/50
 @app.route("/add_room", methods=["GET", "POST"])
@@ -426,7 +438,6 @@ def index():
     user_info = session.get('user_info')
 
     if request.method == "POST":
-        # Collect guest information from the form
         guest = {
             'check_in': request.form.get("check_in"),
             'check_out': request.form.get("check_out"),
@@ -477,17 +488,14 @@ def index():
 
         con.close()
 
-        # Append the guest details to the guest list
         guestlist.append(guest)
 
-        # Render the reservation form with the user and booking details
         return render_template(
             "reservationform.html",
             user_info=user_info,
             guest=guest
         )
 
-    # Display available rooms on the index page
     rooms = room_manager.list_rooms()
     return render_template("index.html", rooms=rooms, guestlist=guestlist, user_info=user_info)
 
@@ -496,7 +504,6 @@ def index():
 
 #//////////////////////////-------------DO NOT MODIFY THIS AREA-------------//////////////////////////
 class Rent: 
-    #DISPLAYS LA NIYA THE INPUTS HA INDEX
     @app.route("/reservationform", methods=['GET', 'POST'])
     def reservationform():
         if request.method == "POST":

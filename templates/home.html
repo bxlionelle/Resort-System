@@ -21,7 +21,9 @@
     <input type="checkbox" name="" id="toggler">
     <label for="toggler" class="fas fa-bars"></label>
 
-    <a href="#" class="logo">resort<span>.</span></a>
+    <a href="#" class="logo">
+      <img src="static/images/yyy.png" alt="stingray">
+    </a>
 
     
 
@@ -33,19 +35,17 @@
     </nav>
 </header>
 
-<section class="home" id="home" style="background-image: url('static/images/e.jpg');">
+<section class="home" id="home" style="background-image: url('static/images/lo.jpg');">
 
     <div class="content">
         <h3>Coral Cove</h3>
-        <span>  You Beachfront Sanctuary</span>
+        <span>  Your Beachfront Sanctuary</span>
         <p> EXPERIENCE UNPARALLEL HOSPITALITY TAILORING YOUR NEEDS, IN BREATHTAKING ISLANDPARADISE. GO THROUGH THE BEAUTY OF THE BLUE AND UNWIND IN TROPICAL LUXURY. </p>
         <a href="/login" class="btn">Book Now</a> 
 
     </div>
 
 </section>
-
-<button id="showModal">Show Modal</button>
 
 <div id="myModal" class="modal">
     <p>This is a modal.</p>
@@ -59,25 +59,24 @@
         <div class="col-md-6">
           <div class="carousel slide" id="carouselDemo" data-bs-wrap="true" data-bs-ride="carousel">
             <div class="carousel-inner">
-              {% for i in range(5) %}
+              {% for i in range(13) %}
               <div class="carousel-item {% if i == 0 %}active{% endif %}" data-bs-interval="3000">
-                <img src="static/images/resort{{ i+1 }}.jpg" class="w-100">
+                <img src="static/images/a{{ i+1 }}.jpg" class="w-100">
               </div>
               {% endfor %}
             </div>
 
             
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselDemo" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon"></span>
+              <span>&#10094</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#carouselDemo" data-bs-slide="next">
-              <span class="carousel-control-next-icon"></span>
+              <span>&#10095</span>
             </button>
             <div class="carousel-indicators">
-              {% for i in range(5) %}
-              <button type="button" class="{% if i == 0 %}active{% endif %}" data-bs-target="#carouselDemo" data-bs-slide-to="{{ i }}">
-                <img src="static/images/resort{{ i+1 }}.jpg" />
-              </button>
+              {% for i in range(13) %}
+              <h1 type="button" class="{% if i == 0 %}active{% endif %}" data-bs-target="#carouselDemo" data-bs-slide-to="{{ i }}">
+              </h1>
               {% endfor %}
             </div>
           </div>
@@ -91,8 +90,8 @@
             </div>
             <div class="buttons">
               <li>
-                <a style="color: black" href="{{ url_for('login') }}">Login</a> |
-                <a style="color: black" href="{{ url_for('signup') }}">Sign up</a>
+                <a style="color: white" href="{{ url_for('login') }}">Login</a> |
+                <a style="color: white" href="{{ url_for('signup') }}">Sign up</a>
               </li>
             </div>
           </div>
@@ -110,9 +109,6 @@
           <h1 class="heading"><span>Room</span> Rates</h1>
           
           <div class="row">
-
-            
-            <div>
                 
                 
 

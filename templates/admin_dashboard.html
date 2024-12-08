@@ -34,6 +34,28 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Room No.</th>
+                <th>Room Name</th>
+                <th>Price</th>
+                <th>Available Rooms</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for room_display in rooms_to_display %}
+                <tr>
+                    <td>{{ room_display[0] }}</td> 
+                    <td>{{ room_display[1] }}</td> 
+                    <td>{{ room_display[2] }}</td> 
+                    <td>{{ room_display[3] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     <br>
     <a href="{{ url_for('add_room') }}">Add Room</a>
     <a href="{{ url_for('remove_room', room_name='room_name') }}">Remove Room</a>
