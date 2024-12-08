@@ -47,11 +47,21 @@
 
 </section>
 
-<button id="showModal">Show Modal</button>
-
-<div id="myModal" class="modal">
-    <p>This is a modal.</p>
-    <button id="closeModal">Close</button>
+<div class="pop">
+  <div class="contentBox">
+    <div class="close"></div>
+    <div class="imgBx">
+      <img src="static/images/gift.png">
+    </div>
+    <div class="content">
+      <div>
+        <h3>Special Offer</h3>
+        <h2>30<sup>%</sup><span>off</span></h2>
+        <p>A special offer this holiday.</p>
+        <a href="#">Get The Deal</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -126,12 +136,6 @@
           <h1 class="heading"><span>Room</span> Rates</h1>
           
           <div class="row">
-
-            
-            <div>
-                
-                
-
 
             {% for room in rooms %}
             <div class="col-md-6 mb-4">

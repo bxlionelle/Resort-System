@@ -112,9 +112,18 @@ header .fa-bars{
 /*..............POP-UP...............*/
 .pop{
     position: fixed;
-    top:0; left:0; right:0;
-    background:darkcyan;
-    padding: 2rem 9%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display:none;
+}
+
+.contentBox{
+    position: relative;
+    width: 600px;
+    height: 400px;
+    background: #fff;
+    border-radius: 20px;
     display: flex;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
@@ -126,30 +135,48 @@ header .fa-bars{
     display: flex;
     justify-content:center;
     align-items: center;
-    justify-content: space-between;
-    z-index: 1000;
-    box-shadow: 0 .5rem 1rem rgb(48, 47, 47);
 }
 
-header .logo{
-    font-size: 3rem;
-    color: #fcfafa;
-    font-weight: bolder;
-
+.contentBox .imgBx::before{
+    content:'';
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    background: #e7ffe0;
+    border-radius: 50%;
 }
 
-header .logo span{
-    color:rgb(17, 17, 17);
+.contentBox .imgBx img{
+    position: relative;
+    max-width: 250px
 }
 
-header .navbar a{
-    font-size: 2rem;
-    padding: 0 1.5rem;
-    color: #f7f8f8;
+.contentBox .content{
+    position: relative;
+    width: 300;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-header .navbar a:hover{
-    color:mediumseagreen;;
+.contentBox .content h3{
+    color:#333;
+    line-height: 1em;
+    font-weight: 300;
+    font-size: 2em;
+}
+
+.contentBox .content h2{
+    font-size: 4em;
+    color: #ff4d54;
+    line-height: 1em;
+}
+
+.contentBox .content h2 span{
+    color:#333;
+    font-size:0.75em;
+    text-transform: uppercasse;
 }
 .contentBox .content p{
     font-weight: 300;
@@ -426,9 +453,6 @@ header .navbar a:hover{
     border-radius: .5rem;
 }
 
-
-
-
 .contact .row .image{
     flex:1 1 40rem;
 }
@@ -454,14 +478,12 @@ header .navbar a:hover{
     padding-left: 20px;
 }
 
-
-
 .contact .row form .box{
     padding:1rem;
     font-size: 1.7rem;
     color: #053f3f;
     text-transform: none;
-    border: 1rem solid rgba(0,0,0,.1);
+    border: .5rem solid rgba(0,0,0,.1);
     border-radius: .5rem;
     margin:.7rem 0;
     width: 100%;
@@ -473,7 +495,7 @@ header .navbar a:hover{
 
 
 .contact .row form .box:focus{
-    border-color:rgb(17, 37, 97);
+    border-color:rgb(180, 180, 180);
 }
 
 .contact .row form textarea{
