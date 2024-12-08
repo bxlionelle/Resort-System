@@ -1,4 +1,3 @@
-
 *{
     margin: 0; padding:0;
     box-sizing: border-box;
@@ -18,7 +17,7 @@ html{
 
 section{
     padding:2rem 9%;
-    background-color: rgb(255, 255, 255);
+    background-color: wheat;
 }
 
 header{
@@ -31,42 +30,6 @@ header{
     justify-content: space-between;
     z-index: 1000;
     box-shadow: 0 .5rem 1rem rgb(48, 47, 47);
-}
-
-header .logo{
-    font-size: 3rem;
-    color: #fcfafa;
-    font-weight: bolder;
-
-}
-
-header .logo span{
-    color:rgb(17, 17, 17);
-}
-
-header .navbar a{
-    font-size: 2rem;
-    padding: 0 1.5rem;
-    color: #f7f8f8;
-}
-
-header .navbar a:hover{
-    color:mediumseagreen;;
-}
-
-header #toggler{
-    display:none;
-
-}
-
-header .fa-bars{
-    font-size: 3rem;
-    color: #333;
-    border-radius: .5rem;
-    padding: .5rem 1.5rem;
-    cursor: pointer;
-    border: 1rem solid rgba(0,0,0,.3);
-    display: none;
 }
 
 .heading{
@@ -101,6 +64,18 @@ header .fa-bars{
     background:rgb(43, 161, 132);
 }
 
+
+header{
+    position: fixed;
+    top:0; left:0; right:0;
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
+    padding: 1.5rem 9%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+    box-shadow: 0 .5rem 1rem rgb(48, 47, 47);
+}
 
 .pics{
     background-color: wheat;
@@ -178,6 +153,7 @@ header .fa-bars{
     font-size:0.75em;
     text-transform: uppercasse;
 }
+
 .contentBox .content p{
     font-weight: 300;
 }
@@ -203,12 +179,75 @@ header .fa-bars{
     cursor: pointer;
     border-radius: 50%;
 }
-/*.................INDEX........................*/
+
 .home{
     display: flex;
     align-items: center;
     min-height: 100vh;
     background-size: cover;
+}
+
+
+header .logo img{
+    width: 90px;
+    filter: drop-shadow(2px 2px 20px black);
+}
+
+header .logo span{
+    color:rgb(17, 17, 17);
+}
+
+header .navbar a{
+    position: relative;
+    display: inline-block;
+    font-family: "Fjalla One", sans-serif;
+    font-size: 2.5rem;
+    cursor: pointer;
+    color: #f7f8f8;
+    transition: 0.4s all ease;
+    padding: 10px;
+}
+
+header .navbar a:hover{
+    color: #93ccea;
+    transition: 0.4s all ease;
+}
+
+header .navbar a::after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #e5b73b;
+    transform-origin: bottom right;
+    transition: transform 0.5s ease-out;
+}
+
+header .navbar a:hover::after{
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+header .navbar a .img{
+    width: 30px;
+}
+
+header #toggler{
+    display:none;
+
+}
+
+header .fa-bars{
+    font-size: 3rem;
+    color: #333;
+    border-radius: .5rem;
+    padding: .5rem 1.5rem;
+    cursor: pointer;
+    border: 1rem solid rgba(0,0,0,.3);
+    display: none;
 }
 
 .user-pic{
@@ -453,12 +492,8 @@ header .fa-bars{
     border-radius: .5rem;
 }
 
-.contact .row .image{
-    flex:1 1 40rem;
-}
-
-.contact .row .image img{
-    width: 100%;
+.contact .row form{
+    border: 2px solid #053f3f;
 }
 
 
@@ -476,6 +511,27 @@ header .fa-bars{
 .contact .row address{
     font-family: "Fjalla One";
     padding-left: 20px;
+    padding-bottom: 40px;
+    font-size: 20px;
+    color: #053f3f;
+}
+
+.contact .row a{
+    font-family: "Fjalla One";
+    padding-bottom: 40px;
+    font-size: 20px;
+}
+
+.contact .row a:hover{
+    color: #008b8b;
+}
+
+.contact .row .btn{
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
+}
+
+.contact .row .btn:hover{
+    background:linear-gradient(135deg, #008b8b, #c8a2c8, #008b8b);
 }
 
 .contact .row form .box{
@@ -484,7 +540,7 @@ header .fa-bars{
     color: #053f3f;
     text-transform: none;
     border: .5rem solid rgba(0,0,0,.1);
-    border-radius: .5rem;
+    border-radius: .5rem solid rgba(0,0,0,.1);
     margin:.7rem 0;
     width: 100%;
 }
@@ -495,15 +551,15 @@ header .fa-bars{
 
 
 .contact .row form .box:focus{
+    color: white;
     border-color:rgb(180, 180, 180);
+    background:linear-gradient(135deg, #008b8b, #c8a2c8, #008b8b);
 }
 
 .contact .row form textarea{
     height: 15rem;
     resize: none;
 }
-
-/*.........................ADMIN.......................*/
 .admin-block{
     text-align: center;
     width: auto ;
@@ -514,9 +570,8 @@ header .fa-bars{
     border: 3px solid teal;
     border-radius: 15px;
 }
-
-/*..........................RESERVATION_FORM..............*/
 .reservation-block{
+    background: url("resort3.jpg") ;
     text-align: center;
     padding: 2rem;
     padding-inline: 2rem;
@@ -533,6 +588,12 @@ header .fa-bars{
     padding-bottom: 3rem;
     box-shadow: 0 0 10px ;
 }
+.flu{
+    padding-left: 10rem ;
+    
+}
+
+
 .reservation-block p{
     text-align: left;
     display: inline-block;
@@ -575,13 +636,13 @@ header .fa-bars{
 .enter:hover{
     background:rgb(43, 161, 132);
 }
-/*......................PAYMENT........................*/
+
 .payment-block{
-   
-    text-align: center;
     padding: 2rem;
     padding-inline: 2rem;
+    text-align: center;
     width: 50% ;
+    height: 100px auto;
     margin: 120px auto;
     margin-left: 50px;
     margin-right: 50px;
@@ -604,6 +665,7 @@ header .fa-bars{
     font-family: "Fjalla One";
 }
 /*...........................RECEIPT.......................*/
+
 .receipt-block {
     text-align: center;
     padding: 2rem;
@@ -625,7 +687,9 @@ header .fa-bars{
     font-family: "Fjalla One";
     text-align: center;
     padding-top: 5px;
-    font-size: 3rem;    
+    font-size: 3rem;
+
+
 
   }
   .Receipt{
@@ -636,6 +700,7 @@ header .fa-bars{
   .Receipt p{
     font-family: "Fjalla One";
   }
+
   .Receipt2{
     text-align: left;
     font-size: 16px;
@@ -644,7 +709,7 @@ header .fa-bars{
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 10px;
-    }
+  }
 
   .confirmed{
     font-family: "Fjalla One";
@@ -653,7 +718,7 @@ header .fa-bars{
    
   }
 
- /* .container{
+   /* .container{
     width: 100%;
     height: 100vh;
     background: #3c5077;
@@ -662,9 +727,9 @@ header .fa-bars{
     justify-content: center;
 
   }
-*/
+  */
 
-.sub{
+  sub{
     padding: 10px 60px;
     background: teal;
     border: 0;
@@ -724,6 +789,7 @@ header .fa-bars{
     box-shadow: 0 5px 5px rgba(0,0,0,0.2);
 }
 /*............................HOME........................*/
+
 .carousel-item img{
     height: 400px;
     border-width: 5px;
@@ -817,7 +883,6 @@ header .fa-bars{
 
 /*..........................LOGIN..........................*/
 .login-block{
-    
     text-align: center;
     width: 50% ;
     height: 100px auto;
@@ -832,6 +897,7 @@ header .fa-bars{
     background:  rgb(255, 255, 255);
     border-radius: 10px;
     bottom: auto;
+    box-shadow: 0 0 10px;
 }
 
 .login-block .login{
@@ -900,7 +966,7 @@ form .input-log{
     width: 100%;
   }
 
-/*.....................SIGN-UP................*/
+  /*.....................SIGN-UP................*/
 .signup-block{
     text-align: left;
     width: 50% ;
@@ -912,7 +978,6 @@ form .input-log{
     border-radius: 20px;
     position: relative;
     left: 320px;
-    
 }
 
 .signup{
@@ -997,8 +1062,8 @@ form .input-box span.details {
 
 }
 
-
 /*........................EDIT OR PROFILE.....................*/
+
 .card-body img {
     width: 250px; /* Increased from 200px */
 }
@@ -1029,7 +1094,7 @@ form .input-box span.details {
 .card-header {
     padding: 1.5rem 1.75rem; /* Increased padding */
     margin-bottom: 0;
-    background-color: wheat;; /* Slightly darker for better visibility */
+    background-color:rgb(255, 255, 255);; /* Slightly darker for better visibility */
     border-bottom: 2px solid rgba(33, 40, 50, 0.125); /* Thicker border */
 }
 
@@ -1093,6 +1158,10 @@ form .input-box span.details {
 
 
 
+
+
+
+
 @media screen and (max-width: 768px){
 
     .carousel-item img{
@@ -1139,6 +1208,11 @@ form .input-box span.details {
       }
     }
     
+
+
+
+
+
 
 @media (max-width:768px) {
 
