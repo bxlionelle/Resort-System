@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, url_for, redirect, session, flash
+from datetime import datetime
 import sqlite3
 import os
 
@@ -35,6 +36,7 @@ class Room_Management:
     def room_is_checked_out(self):
         if self.__availability < self.room_count:
             self.__availability += 1
+    
 
 class Rooms:
     def __init__(self):
@@ -105,33 +107,87 @@ def home():
     
     return render_template("home.html", rooms=rooms)
 
-@app.route("/admin_dashboard", methods=["GET", "POST"]) # Fetchs the list of bookings from the database to show guest information
+@app.route("/admin_dashboard", methods=["GET", "POST"])
 def admin_dashboard():
-    
     con = sqlite3.connect(currentdirectory + '\\data.db')
     c = con.cursor()
 
-    query = """
-        SELECT BOOKING.booking_id, GUEST.guest_id, ROOMS.room_name, GUEST.firstname, GUEST.lastname, BOOKING.check_in, BOOKING.check_out, ROOMS.room_cost
+    booking_query = """
+        SELECT 
+            BOOKING.booking_id, 
+            GUEST.guest_id, 
+            ROOMS.room_name, 
+            GUEST.firstname, 
+            GUEST.lastname, 
+            BOOKING.check_in, 
+            BOOKING.check_out, 
+            ROOMS.room_cost,
+            BOOKING.stay_duration,
+            BOOKING.total_price
         FROM BOOKING 
         JOIN GUEST ON BOOKING.guest_id = GUEST.guest_id
         JOIN ROOMS ON BOOKING.room_name = ROOMS.room_name
     """
-    c.execute(query)
+    c.execute(booking_query)
     bookings = c.fetchall()
-    con.close()
-    
-    con = sqlite3.connect(currentdirectory + '\\data.db')
-    c = con.cursor()
-    query1 = """
-        SELECT room_id, Room_name, Room_Cost, Room_Availability
+
+    # Rooms details query
+    rooms_query = """
+        SELECT 
+            room_id, 
+            room_name, 
+            room_cost, 
+            room_availability,
+            (SELECT COUNT(*) FROM BOOKING WHERE BOOKING.room_name = ROOMS.room_name) as booked_rooms
         FROM ROOMS
     """
-    c.execute(query1)
+    c.execute(rooms_query)
     rooms_to_display = c.fetchall()
     con.close()
 
-    return render_template("admin_dashboard.html", bookings=bookings, rooms_to_display=rooms_to_display)
+    # Handle booking update if POST request
+    if request.method == "POST":
+        booking_id = request.form.get("booking_id")
+        new_check_in = request.form.get("new_check_in")
+        new_check_out = request.form.get("new_check_out")
+        
+        # Validate dates
+        stay_details = calculate_stay_details(new_check_in, new_check_out)
+        if not stay_details['is_valid']:
+            flash("Invalid check-in or check-out dates.")
+            return redirect(url_for('admin_dashboard'))
+
+        # Update booking in database
+        con = sqlite3.connect(currentdirectory + '\\data.db')
+        c = con.cursor()
+        update_query = """
+            UPDATE BOOKING 
+            SET check_in = ?, 
+                check_out = ?, 
+                stay_duration = ?,
+                total_price = (
+                    SELECT room_cost * ? 
+                    FROM ROOMS 
+                    WHERE room_name = BOOKING.room_name
+                )
+            WHERE booking_id = ?
+        """
+        c.execute(update_query, (
+            new_check_in, 
+            new_check_out, 
+            stay_details['stay_duration'], 
+            stay_details['stay_duration'], 
+            booking_id
+        ))
+        con.commit()
+        con.close()
+        
+        flash("Booking updated successfully!")
+        return redirect(url_for('admin_dashboard'))
+
+    return render_template("admin_dashboard.html", 
+                           bookings=bookings, 
+                           rooms_to_display=rooms_to_display)
 
 @app.route("/add_room", methods=["GET", "POST"])
 def add_room():
@@ -144,7 +200,7 @@ def add_room():
         min_guests = request.form.get("min_guests")
         max_guests = request.form.get("max_guests")
         room_count = request.form.get("room_count")
-        
+
         predefined_rooms[room_name] = {
             "price": float(cost),
             "description": description,
@@ -179,70 +235,107 @@ def add_room():
 
 @app.route("/update_room/<room_name>", methods=["GET", "POST"])
 def update_room(room_name):
-    room = room_manager.get_room(room_name)
-    if not room:
+
+    con = sqlite3.connect(currentdirectory + '\\data.db')
+    c = con.cursor()
+    c.execute("SELECT * FROM ROOMS WHERE room_name = ?", (room_name,))
+    room_data = c.fetchone()
+    
+    if not room_data:
+        con.close()
         flash("Room not found!")
         return redirect(url_for("admin_dashboard"))
 
     if request.method == "POST":
         new_room_name = request.form.get("room_name")
-        predefined_rooms[new_room_name] = {
-            "price": float(request.form.get("cost")),
-            "description": request.form.get("description"),
-            "more": request.form.getlist("more"),
-            "image": request.form.get("image"),
-            "min_guests": int(request.form.get("min_guests")),
-            "max_guests": int(request.form.get("max_guests")),
-            "room_count": int(request.form.get("room_count"))
-        }
+        cost = request.form.get("cost")
+        description = request.form.get("description")
+        more = request.form.getlist("more")
+        image = request.form.get("image")
+        min_guests = request.form.get("min_guests")
+        max_guests = request.form.get("max_guests")
+        room_count = request.form.get("room_count")
+
+        try:
+            cost = float(cost)
+            min_guests = int(min_guests)
+            max_guests = int(max_guests)
+            room_count = int(room_count)
+        except ValueError:
+            flash("Invalid input types. Please check your entries.")
+            con.close()
+            return render_template("update_room.html", room=room_data)
 
         if new_room_name != room_name:
-            del predefined_rooms[room_name]
-            
+            predefined_rooms[new_room_name] = predefined_rooms.pop(room_name)
+        
+        predefined_rooms[new_room_name].update({
+            "price": cost,
+            "description": description,
+            "more": more,
+            "image": image or "static/images/default.jpg",
+            "min_guests": min_guests,
+            "max_guests": max_guests,
+            "room_count": room_count
+        })
+
         room = room_manager.get_room(room_name)
         if room:
             room.room_name = new_room_name
-            room.cost = float(request.form.get("cost"))
-            room.description = request.form.get("description")
-            room.more = request.form.getlist("more")
-            room.image = request.form.get("image")
-            room.min_guests = int(request.form.get("min_guests"))
-            room.max_guests = int(request.form.get("max_guests"))
-            room.room_count = int(request.form.get("room_count"))
-            room.__availability = int(request.form.get("room_count"))
+            room.cost = cost
+            room.description = description
+            room.more = more
+            room.image = image or "static/images/default.jpg"
+            room.min_guests = min_guests
+            room.max_guests = max_guests
+            room.room_count = room_count
+            room.__availability = room_count
 
-    
-        con = sqlite3.connect(currentdirectory + '\\data.db')
-        c = con.cursor()
         query = """
             UPDATE ROOMS
-            SET room_name = ?, room_cost = ?, room_availability = ?
+            SET room_name = ?, room_cost = ?, room_availability = ?, 
+                description = ?, min_guests = ?, max_guests = ?
             WHERE room_name = ?
         """
-        c.execute(query, (room.room_name, room.cost, room.room_count, room_name))
+        c.execute(query, (
+            new_room_name, cost, room_count, description, 
+            min_guests, max_guests, room_name
+        ))
         con.commit()
         con.close()
 
-        flash(f"Room '{room.room_name}' updated successfully!")
+        flash(f"Room '{new_room_name}' updated successfully!")
         return redirect(url_for("admin_dashboard"))
 
-    return render_template("update_room.html", room=room)
+    con.close()
+    return render_template("update_room.html", room=room_data)
 
-@app.route("/remove_room/<room_name>", methods=["POST"])
+@app.route("/remove_room/<room_name>", methods=["GET", "POST"])
 def remove_room(room_name):
+    con = sqlite3.connect(currentdirectory + '\\data.db')
+    c = con.cursor()
+    
+
+    c.execute("SELECT COUNT(*) FROM BOOKING WHERE room_name = ?", (room_name,))
+    booking_count = c.fetchone()[0]
+    
+    if booking_count > 0:
+        con.close()
+        flash(f"Cannot remove room '{room_name}'. Active bookings exist.")
+        return redirect(url_for("admin_dashboard"))
+
     if room_name in predefined_rooms:
         del predefined_rooms[room_name]
 
     room_manager.remove_room(room_name)
-    con = sqlite3.connect(currentdirectory + '\\data.db')
-    c = con.cursor()
-    query = "DELETE FROM ROOMS WHERE room_name = ?"
-    c.execute(query, (room_name,))
+
+    c.execute("DELETE FROM ROOMS WHERE room_name = ?", (room_name,))
     con.commit()
     con.close()
 
     flash(f"Room '{room_name}' removed successfully!")
     return redirect(url_for("admin_dashboard"))
+
 
 @app.route("/book_room/<room_name>", methods=["POST"])
 def book_room(room_name):
@@ -386,6 +479,34 @@ def profile():
     
     con = sqlite3.connect(currentdirectory + '\data.db')
     c = con.cursor()
+    
+    # Fetch user's bookings with room details
+    query = """
+    SELECT 
+        B.booking_id, 
+        B.check_in, 
+        B.check_out, 
+        B.room_name, 
+        B.stay_duration, 
+        B.total_price,
+        B.adult_guest,
+        B.child_guest,
+        P.payment_method
+    FROM 
+        BOOKING B
+    LEFT JOIN 
+        PAYMENT P ON B.booking_id = P.booking_id
+    JOIN 
+        GUEST G ON B.guest_id = G.guest_id
+    WHERE 
+        G.email = ?
+    ORDER BY 
+        B.check_in DESC
+    """
+    c.execute(query, (user_email,))
+    user_bookings = c.fetchall()
+    
+    # Fetch user info to update session
     query = "SELECT firstname, lastname, gender, cel_num, address, email FROM GUEST WHERE email = ?"
     c.execute(query, (user_email,))
     updated_info = c.fetchone()
@@ -401,8 +522,40 @@ def profile():
             "email": updated_info[5],
         }
 
-    return render_template("profile.html", user_info=session['user_info'])
+    return render_template("profile.html", 
+                           user_info=session['user_info'], 
+                           user_bookings=user_bookings)
 
+
+def calculate_stay_details(check_in, check_out):
+    """
+    Calculate the number of days and total price for a room booking.
+    
+    Args:
+    check_in (str): Check-in date in 'YYYY-MM-DD' format
+    check_out (str): Check-out date in 'YYYY-MM-DD' format
+    
+    Returns:
+    dict: A dictionary containing stay details
+    """
+    try:
+        # Convert date strings to datetime objects
+        check_in_date = datetime.strptime(check_in, "%Y-%m-%d")
+        check_out_date = datetime.strptime(check_out, "%Y-%m-%d")
+        
+        # Calculate number of days
+        stay_duration = (check_out_date - check_in_date).days
+        
+        return {
+            'stay_duration': stay_duration,
+            'is_valid': stay_duration > 0
+        }
+    except ValueError:
+        return {
+            'stay_duration': 0,
+            'is_valid': False
+        }
+        
 @app.route("/index", methods=["GET", "POST"])
 def index():
     if 'email' not in session:
@@ -419,6 +572,7 @@ def index():
             'room_name': request.form.get("room-name")
         }
 
+        # Validate room selection
         room_name = guest["room_name"]
         if not room_name:
             flash("Please select a room.")
@@ -429,12 +583,26 @@ def index():
             flash(f"Room '{room_name}' does not exist.")
             return redirect(url_for('index'))
 
+        # Calculate stay details
+        stay_details = calculate_stay_details(guest['check_in'], guest['check_out'])
+        
+        if not stay_details['is_valid']:
+            flash("Invalid check-in or check-out dates. Check-out must be after check-in.")
+            return redirect(url_for('index'))
+
+        # Calculate total price
+        stay_duration = stay_details['stay_duration']
+        total_price = room.cost * stay_duration
+
+        # Check room availability
         if not room.room_available():
             flash(f"Room '{room_name}' is not available. Please choose another room.")
             return redirect(url_for('index'))
 
+        # Book the room
         room.room_book()
 
+        # Additional booking logic (database insertion, etc.)
         con = sqlite3.connect(currentdirectory + '\\data.db')
         c = con.cursor()
 
@@ -445,11 +613,24 @@ def index():
         if guest_id_row:
             guest_id = guest_id_row[0]
 
+            # Add stay duration and total price to the guest dictionary
+            guest['stay_duration'] = stay_duration
+            guest['total_price'] = total_price
+
             query = """
-                INSERT INTO BOOKING (guest_id, check_in, check_out, adult_guest, child_guest, room_name)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO BOOKING (guest_id, check_in, check_out, adult_guest, child_guest, room_name, stay_duration, total_price)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """
-            c.execute(query, (guest_id, guest["check_in"], guest["check_out"], guest["adults"], guest["children"], room_name))
+            c.execute(query, (
+                guest_id, 
+                guest["check_in"], 
+                guest["check_out"], 
+                guest["adults"], 
+                guest["children"], 
+                room_name, 
+                stay_duration, 
+                total_price
+            ))
 
             c.execute("UPDATE ROOMS SET Room_Availability = Room_Availability - 1 WHERE room_name = ?", (room_name,))
             con.commit()
@@ -502,10 +683,13 @@ class Rent:
         if request.method == "POST":
 
             guest = guestlist[guest_index]
+            total_price = guest.get('total_price', 0)
             
             payment_method = request.form.get('payment-method')
             
             guestlist[guest_index]['payment_method'] = payment_method
+            
+            
             
             con = sqlite3.connect(currentdirectory + '\data.db')
             c = con.cursor()
@@ -539,9 +723,10 @@ class Rent:
     @app.route("/receipt/<int:guest_index>")
     def receipt(guest_index):
         guest = guestlist[guest_index]
+        total_price = guest.get('total_price', 0)
         user_info = session.get('user_info')
         
-        return render_template("receipt.html", guest=guest, user_info=user_info)
+        return render_template("receipt.html", guest=guest, user_info=user_info, total_price=total_price)
     
 @app.route('/logout')
 def logout():
@@ -552,3 +737,4 @@ def logout():
 
 if __name__ == "__main__":
     app.run(debug=True)
+

@@ -3,62 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .action-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); 
+        }
+        .modal-content { 
+            background-color: #fefefe; 
+            margin: 15% auto; 
+            padding: 20px; 
+            border: 1px solid #888; 
+            width: 80%; 
+        }
+    </style>
 </head>
 <body>
     <h1>Admin Dashboard</h1>
-    <h2>Bookings</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Booking ID</th>
-                <th>Guest ID</th>
-                <th>Room Name</th>
-                <th>Name</th>
-                <th>Check-in</th>
-                <th>Check-out</th>
-                <th>Cost</th>
-            </tr>
-        </thead>
-        <tbody>
-            
-            {% for booking in bookings %}
-                <tr>
-                    <td>{{ booking[0] }}</td> 
-                    <td>{{ booking[1] }}</td> 
-                    <td>{{ booking[2] }}</td> 
-                    <td>{{ booking[3] }} {{ booking[4] }}</td>
-                    <td>{{ booking[5] }}</td>
-                    <td>{{ booking[6] }}</td>
-                    <td>{{ booking[7] }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 
-    <table border="1">
+    <div class="action-buttons">
+        <button onclick="window.location.href='{{ url_for('add_room') }}'">Add Room</button>
+    </div>
+
+    <h2>Room Availability</h2>
+    <table>
         <thead>
             <tr>
                 <th>Room No.</th>
                 <th>Room Name</th>
                 <th>Price</th>
+                <th>Total Rooms</th>
                 <th>Available Rooms</th>
+                <th>Booked Rooms</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            
             {% for room_display in rooms_to_display %}
                 <tr>
                     <td>{{ room_display[0] }}</td> 
                     <td>{{ room_display[1] }}</td> 
                     <td>{{ room_display[2] }}</td> 
                     <td>{{ room_display[3] }}</td>
+                    <td>{{ room_display[3] }}{{ room_display[4] }}</td>
+                    <td>{{ room_display[4] }}</td>
+                    <td>
+                        <a href="{{ url_for('update_room', room_name=room_display[1]) }}">Update</a> | 
+                        <a href="{{ url_for('remove_room', room_name=room_display[1]) }}" onclick="return confirm('Are you sure you want to remove this room?')">Remove</a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-    <br>
-    <a href="{{ url_for('add_room') }}">Add Room</a>
-    <a href="{{ url_for('remove_room', room_name='room_name') }}">Remove Room</a>
-    <a href="{{ url_for('update_room', room_name='room_name') }}">Update Room</a>
-</body>
-</html>
+
+    <h2>Bookings</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Guest Name</th>
+                <th>Room Name</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+                <th>Stay Duration</th>
+                <th>Total Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking[0] }}</td> 
+                    <td>{{ booking[3] }} {{ booking[4] }}</td>
+                    <td>{{ booking[2] }}</td>
+                    <td>{{ booking[5] }}</td>
+                    <td>{{ booking[6] }}</td>
+                    <td>{{ booking[8] }} days</td>
+                    <td>{{ booking[9] }}</td>
+                    <td>
+                        <button onclick="openEditModal('{{ booking[0] }}', '{{ booking[5] }}', '{{ booking[6] }}')">Edit Dates</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Booking Edit Modal -->
+    <div id="editBookingModal" class="modal">
+        <div class="modal-content">
+            <h2>Edit Booking Dates</h2>
+            <form method="POST" action="{{ url_for('admin_dashboard') }}">
+                <input type="hidden" id="booking_id" name="booking_id">
+                <label>New Check-in Date:</label>
+                <input type="date" id="new_check_in" name="new_check_in" required>
+                <label>New Check-out Date:</label>
+                <input type="date" id="new_check_out" name="new_check_out" required>
+                <button type="submit">Update Booking</button>
+                <button type="button" onclick="closeEditModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openEditModal(bookingId, currentCheckIn, currentCheckOut) {
+            document.getElementById('booking_id').value = bookingId;
+            document.getElementById('new_check_in').value = currentCheckIn;
+            document.getElementById('new_check_out').value = currentCheckOut;
+            document.getElementById('editBookingModal').style.display = 'block';
+        }
+
+        function closeEditModal()
