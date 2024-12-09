@@ -17,7 +17,7 @@ html{
 
 section{
     padding:2rem 9%;
-    background-color: wheat;
+    background-color: rgb(255, 255, 255);
 }
 
 header{
@@ -897,7 +897,7 @@ header .fa-bars{
     background:  rgb(255, 255, 255);
     border-radius: 10px;
     bottom: auto;
-    box-shadow: 0 0 10px;
+
 }
 
 .login-block .login{
