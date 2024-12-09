@@ -109,6 +109,7 @@ def home():
 
 @app.route("/admin_dashboard", methods=["GET", "POST"])
 def admin_dashboard():
+
     con = sqlite3.connect(currentdirectory + '\\data.db')
     c = con.cursor()
 
@@ -527,6 +528,7 @@ def profile():
                            user_bookings=user_bookings)
 
 
+
 def calculate_stay_details(check_in, check_out):
     """
     Calculate the number of days and total price for a room booking.
@@ -555,7 +557,8 @@ def calculate_stay_details(check_in, check_out):
             'stay_duration': 0,
             'is_valid': False
         }
-        
+
+# Modify the index route to include price calculation
 @app.route("/index", methods=["GET", "POST"])
 def index():
     if 'email' not in session:
@@ -651,7 +654,6 @@ def index():
 
     rooms = room_manager.list_rooms()
     return render_template("index.html", rooms=rooms, guestlist=guestlist, user_info=user_info)
-
 class Rent: 
     @app.route("/reservationform", methods=['GET', 'POST'])
     def reservationform():
