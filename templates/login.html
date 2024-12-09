@@ -11,36 +11,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
+
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aladin&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aladin&family=Cherry+Cream+Soda&family=Concert+One&family=Fjalla+One&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
    
 </head>
 <body>
+    
     <header>
 
         <input type="checkbox" name="" id="toggler">
         <label for="toggler" class="fas fa-bars"></label>
     
-        <a href="#" class="logo">Resort<span>.</span></a>
+        <a href="#" class="logo">
+            <img src="static/images/yyy.png" alt="stingray">
+        </a>
     </header>  
+
     <div class="login-block">
-        <div class="login">Log In Page</div>
+        <div class="login">
+            <h3>Log in Page</h3>
+        </div>
         
         <form action="{{url_for("login")}}" method = "POST">
-            
-            {% if message %}
-            <p>{{ message }}
-            {% endif %}
 
             <div class="login">
                 <div class="input-log">
                     <input class="input" type="email" name="email" id="email" required>
                     <span></span>
-                    <label>email</label>
+                    <label>Email</label>
                 </div>
-                <br>
                 <div class="input-log">
                     <input class="input" type="password" name="password" id="password" required>
                     <span></span>
-                    <label>password</label>
+                    <label>Password</label>
                 </div>
                 <br>
                 <div>

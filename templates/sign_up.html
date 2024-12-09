@@ -10,6 +10,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
+
+    <!--FONTS-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aladin&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aladin&family=Cherry+Cream+Soda&family=Concert+One&family=Fjalla+One&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
    
 </head>
 <body>
@@ -18,7 +27,9 @@
         <input type="checkbox" name="" id="toggler">
         <label for="toggler" class="fas fa-bars"></label>
     
-        <a href="#" class="logo">Resort<span>.</span></a>
+        <a href="#" class="logo">
+            <img src="static/images/yyy.png" alt="stingray">
+        </a>
     </header> 
 
 <div class="signup-block">
@@ -38,17 +49,18 @@
             </div>
             <div class="input-box">
                 <span class="details">Lastname:</span>   
-                <input class="input" type="text" name="last-name" id="last-name" placeholder="Last Name " required size="31" style="text-align: center;">
+                <input class="input" type="text" name="last-name" id="last-name" placeholder="Last Name " required size="31" style="text-align: center;" >
             </div>
             <div class="input-box">
                 <span class="details">Phone Number:</span>
-                <input class="input" id="cel-num" type="tel" name="cel-number" id="cel-number" placeholder="Number" required minlength="11" maxlength="11" required pattern="\d*", size="31" style="text-align: center;">
-            </div>
-            <div class="input-box">
-                <span class="details">Address:</span>
-                <input class="input" id="" type="text" name="address" id="address" placeholder="Address" required size="31" style="text-align: center;">
+                <input class="input" id="cel-num" type="tel" name="cel-number" id="cel-number" placeholder="Number" required minlength="11" maxlength="12" required pattern="\d*", size="31" style="text-align: center;">
             </div>
             <br>
+            <div class="input-box">
+                <span class="address">Address:</span>
+                <input class="input" id="" type="text" name="address" id="address" placeholder="Address" required size="31" style="text-align: center;">
+            </div>
+            
             <div class="input-box">
                 <span class="details">Email:</span>
                 <input class="input" type="email" name="email" id="email" placeholder="Email" required size="31" style="text-align: center;">
@@ -57,17 +69,14 @@
                 <span class="details">Password:</span>
                 <input class="input" type="password" name="password" id="password" placeholder="Password" required minlength="8" size="31" style="text-align: center;">   
             </div>
-            <br>
             <div class="gender">
                 <p>
                 Female: <input type="radio" name="gender" id="gender" value="Female">
                 Male: <input type="radio" name="gender" id="gender" value="Male"><br></p>
             </div>
-            <br>
 
             <div class="button">
                 <button type="submit" value="Register Account" class="btn btn --primary" id="submit">Register Account</input>
-                <br>
                 <a href="login"><button type="button" value="Login Instead" name="login" class="btn btn --primary" id="login">Login Instead</button></a>
             </div>
         
