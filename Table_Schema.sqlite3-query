@@ -1,0 +1,45 @@
+-- database: ./data.db
+
+CREATE TABLE "GUEST" (
+	"guest_id"	INTEGER NOT NULL UNIQUE,
+	"firstname"	TEXT NOT NULL,
+	"lastname"	TEXT NOT NULL,
+	"gender"	TEXT,
+	"cel_num"	INTEGER NOT NULL,
+	"address"	TEXT,
+	"email"	TEXT NOT NULL UNIQUE,
+	"password"	TEXT NOT NULL,
+	PRIMARY KEY("guest_id" AUTOINCREMENT)
+);
+
+CREATE TABLE BOOKING (
+    booking_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    guest_id INT,
+    check_in DATE,
+    check_out DATE,
+    adult_guest INT,
+    child_guest INT,
+    room_name VARCHAR(50), stay_duration INTEGER, total_price REAL,
+    FOREIGN KEY (guest_id) REFERENCES GUEST(guest_id)
+);
+
+CREATE TABLE PAYMENT (
+    payment_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    guest_id INTEGER,
+    booking_id INTEGER,
+    payment_method TEXT,
+    FOREIGN KEY (guest_id) REFERENCES GUEST(guest_id),
+    FOREIGN KEY (booking_id) REFERENCES BOOKING(booking_id)
+);
+
+CREATE TABLE "ROOMS" (
+	"room_id"	INTEGER NOT NULL UNIQUE ,
+	"Room_name"	TEXT,
+	"Room_Cost"	INTEGER,
+	"Room_Availability"	TEXT,
+	PRIMARY KEY("room_id")
+);
+
+CREATE UNIQUE INDEX `sqlite_autoindex_ROOMS_1` ON `ROOMS` (room_id)
+
+

@@ -169,7 +169,7 @@ h1 {
     width: 800px;
     padding-top: 2.5%;
     text-align: center;
-    margin-left: 25rem;
+    margin-left: 30rem;
     border-radius: 5px;
     box-shadow: 0 .5rem 1rem rgb(48, 47, 47);
     
@@ -1076,7 +1076,6 @@ form .input-log{
   
 .input-log input{
     width: 100%;
-    padding: 0 5px;
     height: 40px;
     font-size: 16px;
     border: none;
