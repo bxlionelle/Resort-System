@@ -558,16 +558,15 @@ def calculate_stay_details(check_in, check_out):
             'is_valid': False
         }
 
-# Modify the index route to include price calculation
 @app.route("/index", methods=["GET", "POST"])
 def index():
-    if 'email' not in session:
-        return redirect(url_for('login'))
+    if 'email' not in session: # First, Authentication Check
+        return redirect(url_for('login')) # Ensure user is logged in before accessing booking page
 
     user_info = session.get('user_info')
 
     if request.method == "POST":
-        guest = {
+        guest = { # Collect booking information from form submission
             'check_in': request.form.get("check_in"),
             'check_out': request.form.get("check_out"),
             'adults': request.form.get("adult-count"),
@@ -575,48 +574,56 @@ def index():
             'room_name': request.form.get("room-name")
         }
 
-        # Validate room selection
+        # Step 1: Room Selection Validation
+        # Check if a room is selected
         room_name = guest["room_name"]
         if not room_name:
             flash("Please select a room.")
             return redirect(url_for('index'))
 
-        room = room_manager.get_room(room_name)
+        room = room_manager.get_room(room_name)# Verify if room exists in the system
         if not room:
             flash(f"Room '{room_name}' does not exist.")
             return redirect(url_for('index'))
 
-        # Calculate stay details
+        # Step 2: Stay Duration Calculation
+        # Calculate the number of days for the stay
         stay_details = calculate_stay_details(guest['check_in'], guest['check_out'])
         
-        if not stay_details['is_valid']:
+        
+        if not stay_details['is_valid']: # Validate the date range
             flash("Invalid check-in or check-out dates. Check-out must be after check-in.")
             return redirect(url_for('index'))
 
-        # Calculate total price
+        # Step 3: Price Calculation
+        # Calculate total price based on room cost and stay duration
         stay_duration = stay_details['stay_duration']
         total_price = room.cost * stay_duration
 
-        # Check room availability
+        # Step 4: Room Availability Check
+        # Ensure the selected room is available
         if not room.room_available():
             flash(f"Room '{room_name}' is not available. Please choose another room.")
             return redirect(url_for('index'))
 
-        # Book the room
+        # Step 5: Room Booking
+        # Mark the room as booked
         room.room_book()
 
-        # Additional booking logic (database insertion, etc.)
+        # Step 6: Database Record Insertion
+        # Open database connection
         con = sqlite3.connect(currentdirectory + '\\data.db')
         c = con.cursor()
 
-        user_email = session['user_info']['email']
+        
+        user_email = session['user_info']['email'] # Retrieve guest ID from user's email
         c.execute("SELECT guest_id FROM GUEST WHERE email = ?", (user_email,))
         guest_id_row = c.fetchone()
 
         if guest_id_row:
             guest_id = guest_id_row[0]
 
-            # Add stay duration and total price to the guest dictionary
+            # Add additional booking details to guest dictionary
             guest['stay_duration'] = stay_duration
             guest['total_price'] = total_price
 
@@ -635,16 +642,18 @@ def index():
                 total_price
             ))
 
+            # Update room availability in ROOMS table
             c.execute("UPDATE ROOMS SET Room_Availability = Room_Availability - 1 WHERE room_name = ?", (room_name,))
             con.commit()
         else:
+            # Handle case where guest ID cannot be found
             con.close()
             flash("Error: Could not find the guest ID. Please contact support.")
             return redirect(url_for('index'))
 
         con.close()
 
-        guestlist.append(guest)
+        guestlist.append(guest)# Add guest to guestlist
 
         return render_template(
             "reservationform.html",
@@ -652,8 +661,11 @@ def index():
             guest=guest
         )
 
+    # If not a POST request, display available rooms
     rooms = room_manager.list_rooms()
     return render_template("index.html", rooms=rooms, guestlist=guestlist, user_info=user_info)
+
+
 class Rent: 
     @app.route("/reservationform", methods=['GET', 'POST'])
     def reservationform():
