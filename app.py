@@ -38,7 +38,7 @@ class Room_Management:
             self.__availability += 1
     
 
-class Rooms:
+class Rooms(Room_Management):
     def __init__(self):
         self.rooms = [] #List where the Objects of Room_Management
 
@@ -101,12 +101,14 @@ room_manager.rooms.extend([])
 
 #------------------------------------------------------------------------------
 
+
 @app.route("/")
 def home():
     rooms = room_manager.list_rooms()
-    
     return render_template("home.html", rooms=rooms)
 
+
+#----------------ADMIN AREA----------------
 @app.route("/admin_dashboard", methods=["GET", "POST"])
 def admin_dashboard():
 
@@ -336,6 +338,7 @@ def remove_room(room_name):
 
     flash(f"Room '{room_name}' removed successfully!")
     return redirect(url_for("admin_dashboard"))
+#----------------ADMIN AREA----------------#
 
 
 @app.route("/book_room/<room_name>", methods=["POST"])
@@ -347,6 +350,9 @@ def book_room(room_name):
     else:
         flash("Room not found!")
     return redirect(url_for("home"))
+
+
+#----------------USERS AREA----------------
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -484,25 +490,25 @@ def profile():
     # Fetch user's bookings with room details
     query = """
     SELECT 
-        B.booking_id, 
-        B.check_in, 
-        B.check_out, 
-        B.room_name, 
-        B.stay_duration, 
-        B.total_price,
-        B.adult_guest,
-        B.child_guest,
-        P.payment_method
+        BOOKING.booking_id, 
+        BOOKING.check_in, 
+        BOOKING.check_out, 
+        BOOKING.room_name, 
+        BOOKING.stay_duration, 
+        BOOKING.total_price,
+        BOOKING.adult_guest,
+        BOOKING.child_guest,
+        PAYMENT.payment_method
     FROM 
-        BOOKING B
+        BOOKING 
     LEFT JOIN 
-        PAYMENT P ON B.booking_id = P.booking_id
+        PAYMENT ON BOOKING.booking_id = PAYMENT.booking_id
     JOIN 
-        GUEST G ON B.guest_id = G.guest_id
+        GUEST ON BOOKING.guest_id = GUEST.guest_id
     WHERE 
-        G.email = ?
+        GUEST.email = ?
     ORDER BY 
-        B.check_in DESC
+        BOOKING.check_in DESC
     """
     c.execute(query, (user_email,))
     user_bookings = c.fetchall()
@@ -527,6 +533,7 @@ def profile():
                            user_info=session['user_info'], 
                            user_bookings=user_bookings)
 
+#----------------USERS AREA----------------#
 
 
 def calculate_stay_details(check_in, check_out):
@@ -558,6 +565,8 @@ def calculate_stay_details(check_in, check_out):
             'is_valid': False
         }
 
+
+#----------------WEBSITE AREA----------------
 @app.route("/index", methods=["GET", "POST"])
 def index():
     if 'email' not in session: # First, Authentication Check
@@ -615,7 +624,6 @@ def index():
         con = sqlite3.connect(currentdirectory + '\\data.db')
         c = con.cursor()
 
-        
         user_email = session['user_info']['email'] # Retrieve guest ID from user's email
         c.execute("SELECT guest_id FROM GUEST WHERE email = ?", (user_email,))
         guest_id_row = c.fetchone()
@@ -631,16 +639,8 @@ def index():
                 INSERT INTO BOOKING (guest_id, check_in, check_out, adult_guest, child_guest, room_name, stay_duration, total_price)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """
-            c.execute(query, (
-                guest_id, 
-                guest["check_in"], 
-                guest["check_out"], 
-                guest["adults"], 
-                guest["children"], 
-                room_name, 
-                stay_duration, 
-                total_price
-            ))
+            c.execute(query, (guest_id, guest["check_in"], guest["check_out"], guest["adults"], guest["children"], 
+                room_name, stay_duration, total_price))
 
             # Update room availability in ROOMS table
             c.execute("UPDATE ROOMS SET Room_Availability = Room_Availability - 1 WHERE room_name = ?", (room_name,))
@@ -664,7 +664,7 @@ def index():
     # If not a POST request, display available rooms
     rooms = room_manager.list_rooms()
     return render_template("index.html", rooms=rooms, guestlist=guestlist, user_info=user_info)
-
+#----------------WEBSITE AREA----------------#
 
 class Rent: 
     @app.route("/reservationform", methods=['GET', 'POST'])

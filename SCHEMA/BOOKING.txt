@@ -1,0 +1,33 @@
+-- Drop existing BOOKING table if it exists
+DROP TABLE IF EXISTS BOOKING;
+
+-- Create BOOKING table with a special approach for B01 naming
+CREATE TABLE BOOKING (
+    booking_id TEXT PRIMARY KEY,
+    guest_id INT,
+    check_in DATE,
+    check_out DATE,
+    adult_guest INT,
+    child_guest INT,
+    room_name VARCHAR(50), 
+    stay_duration INTEGER, 
+    total_price REAL,
+    FOREIGN KEY (guest_id) REFERENCES GUEST(guest_id)
+);
+
+-- Create a trigger to generate custom booking_id
+CREATE TRIGGER booking_id_trigger 
+AFTER INSERT ON BOOKING
+FOR EACH ROW BEGIN
+    UPDATE BOOKING 
+    SET booking_id = 'B' || printf('%02d', (SELECT COUNT(*) FROM BOOKING)) 
+    WHERE booking_id IS NULL;
+END;
+
+-- Insert example bookings
+INSERT INTO BOOKING (guest_id, check_in, check_out, adult_guest, child_guest, room_name, stay_duration, total_price) VALUES 
+(22100, '2024-01-15', '2024-01-20', 2, 0, 'Standard Room', 5, 500.00),
+(22101, '2024-02-01', '2024-02-05', 1, 1, 'Deluxe Room', 4, 600.00);
+
+-- Verification Query
+SELECT booking_id, guest_id, room_name FROM BOOKING;

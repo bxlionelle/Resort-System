@@ -11,6 +11,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
+
+      <!--FONTS-->
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Aladin&display=swap" rel="stylesheet">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Aladin&family=Cherry+Cream+Soda&family=Concert+One&family=Fjalla+One&display=swap" rel="stylesheet">
+      <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
    
 </head>
 <body>
@@ -19,11 +28,14 @@
         <input type="checkbox" name="" id="toggler">
         <label for="toggler" class="fas fa-bars"></label>
     
-        <a href="#" class="logo">Resort<span>.</span></a>
+        <a href="#" class="logo">
+            <img src="static/images/yyy.png" alt="stingray">
+        </a>
     </header>  
 
     <div class="reservation-block">
         <h3>Your Reservation Details</h3>
+        <h1>____________________________________</h1>
         <form action="/reservationform" method="POST", "GET">
             
             <input type="hidden" name="check_in" value="{{ check_in }}">
@@ -34,7 +46,7 @@
 
             
 
-            <h2>User Information</h2>
+            <h2>USER INFORMATION:</h2>
             <p>Name: {{ user_info.firstname }} {{ user_info.lastname }}</p>
             <p>Email: {{ user_info.email }}</p>
             <p>Contact Number: {{ user_info.cel_num }}</p>
@@ -47,6 +59,8 @@
             <label>Adults: {{ guest.adults }}</label><br>
             <label>Children: {{ guest.children }}</label><br>
             <label> Room Type: {{ guest.room_name }}</label><br>
+
+            <br>
     
     
             <button class="btn btn --primary color" value="Proceed to Payment">Proceed To Payment</button>

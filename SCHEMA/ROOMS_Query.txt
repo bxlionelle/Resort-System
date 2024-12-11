@@ -1,0 +1,22 @@
+-- Drop existing ROOMS table if it exists
+DROP TABLE IF EXISTS ROOMS;
+
+-- Create ROOMS table with auto-increment starting at 100
+CREATE TABLE ROOMS (
+    room_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Room_name TEXT,
+    Room_Cost INTEGER,
+    Room_Availability TEXT
+);
+
+-- SQLite Sequence Reset Trick
+DELETE FROM sqlite_sequence WHERE name='ROOMS';
+INSERT INTO sqlite_sequence (name, seq) VALUES ('ROOMS', 99);
+
+-- Insert example rooms
+INSERT INTO ROOMS (Room_name, Room_Cost, Room_Availability) VALUES 
+('Standard Room', 100, 'Available'),
+('Deluxe Room', 200, 'Available');
+
+-- Verification Query
+SELECT * FROM ROOMS;

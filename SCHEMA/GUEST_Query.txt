@@ -1,0 +1,15 @@
+DROP TABLE IF EXISTS GUEST;
+
+CREATE TABLE GUEST (
+    guest_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    firstname TEXT NOT NULL,
+    lastname TEXT NOT NULL,
+    gender TEXT,
+    cel_num INTEGER NOT NULL,
+    address TEXT,
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL
+);
+
+DELETE FROM sqlite_sequence WHERE name='GUEST';
+INSERT INTO sqlite_sequence (name, seq) VALUES ('GUEST', 22099);

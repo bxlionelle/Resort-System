@@ -1,96 +1,105 @@
 <DOCTYPE>
-<html>
-<head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Profile Page</title>
-
+    <html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <link rel="stylesheet" href="/static/style.css">
-   
-
-</head>
-
-<body>
-
-    <div class="container-xl px-4 mt-4">
+        <title>Profile Page</title>
+    
+        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+        <link rel="stylesheet" href="/static/style.css">
+    
+        <!--FONTS-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Aladin&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Aladin&family=Cherry+Cream+Soda&family=Concert+One&family=Fjalla+One&display=swap" rel="stylesheet">
+        <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
        
-        <hr class="mt-0 mb-4">
-        <div class="row">
-            <div class="col-xl-4">
-                <!-- Profile picture card-->
-                <div class="card mb-4 mb-xl-0">
-                    <div class="card-header">Profile Picture</div>
-                    <div class="card-body text-center">
-                        <!-- Profile picture image-->
-                        <img class="img-account-profile rounded-circle mb-2" src="static/images/profile.png" alt="">
-                        <!-- Profile picture help block-->
-                        <div class=" font-italic"> {{ user_info.firstname }}</div>
-
-                        <div class=" font-italic ">  {{ user_info.email }} </div>
-                       
+    
+    </head>
+    
+    <body>
+    
+        <div class="container-xl px-4 mt-4">
+           
+            <hr class="mt-0 mb-4">
+            <div class="row">
+                <div class="col-xl-4">
+                    <!-- Profile picture card-->
+                    <div class="card mb-4 mb-xl-0">
+                        <div class="card-header">Profile Picture</div>
+                        <div class="card-body text-center">
+                            <!-- Profile picture image-->
+                            <img class="img-account-profile rounded-circle mb-2" src="static/images/profile.png" alt="">
+                            <!-- Profile picture help block-->
+                            <div class=" font-italic"> {{ user_info.firstname }}</div>
+    
+                            <div class=" font-italic ">  {{ user_info.email }} </div>
+                           
+                        </div>
+                    </div>
+    
+                </div>
+    
+                <div class="col-xl-8">
+                    <!-- Account details card-->
+                    <div class="card mb-4">
+                        <div class="card-header">Account Details</div>
+                        <div class="card-body">
+                            <form action="{{ url_for('edit') }}" method="POST">
+                                <!-- Form Row -->
+                                <div class="row gx-3 mb-3">
+                                    <!-- Form Group (first name) -->
+                                    <div class="col-md-6">
+                                        <label class="font" for="inputFirstName">First name</label>
+                                        <input class="form-control" name="first-name" id="inputFirstName" type="text" value="{{ user_info.firstname }}" placeholder="Enter your first name">
+                                    </div>
+                                    <!-- Form Group (last name) -->
+                                    <div class="col-md-6">
+                                        <label class="font" for="inputLastName">Last name</label>
+                                        <input class="form-control" name="last-name" id="inputLastName" type="text" value="{{ user_info.lastname }}" placeholder="Enter your last name">
+                                    </div>
+                                </div>
+                                <!-- Form Row -->
+                                <div class="row gx-3 mb-3">
+                                    <!-- Form Group (location) -->
+                                    <div class="col-md-6">
+                                        <label class="font" for="inputLocation">Address</label>
+                                        <input class="form-control" name="address" id="inputLocation" type="text" value="{{ user_info.address }}" placeholder="Enter your Address">
+                                    </div>
+                                    <!-- Form Group (phone number) -->
+                                    <div class="col-md-6">
+                                        <label class="font" for="inputPhone">Phone number</label>
+                                        <input class="form-control" name="cel-number" id="inputPhone" type="tel" value="{{ user_info.cel_num }}" placeholder="Enter your phone number">
+                                    </div>
+                                </div>
+                                <!-- Form Group (email address) -->
+                                <div class="mb-3">
+                                    <label type="hidden" class="font" for="inputEmailAddress"></label>
+                                    <input type="hidden" class="form-control" name="email" id="inputEmailAddress" type="email" value="{{ user_info.email }}" placeholder="Enter your email address">
+                                </div>
+                            
+                                <!-- Save changes button -->
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </form>
+    
+                            
+    
+                        </div>
                     </div>
                 </div>
-
+                
+                <!-- Save changes button
+                liooo an save changes po -->
+                <a class="back" href="{{ url_for('index') }}"> Back</a> 
+                                 
             </div>
-
-            <div class="col-xl-8">
-                <!-- Account details card-->
-                <div class="card mb-4">
-                    <div class="card-header">Account Details</div>
-                    <div class="card-body">
-                        <form action="{{ url_for('edit') }}" method="POST">
-                            <!-- Form Row -->
-                            <div class="row gx-3 mb-3">
-                                <!-- Form Group (first name) -->
-                                <div class="col-md-6">
-                                    <label class="font" for="inputFirstName">First name</label>
-                                    <input class="form-control" name="first-name" id="inputFirstName" type="text" value="{{ user_info.firstname }}" placeholder="Enter your first name">
-                                </div>
-                                <!-- Form Group (last name) -->
-                                <div class="col-md-6">
-                                    <label class="font" for="inputLastName">Last name</label>
-                                    <input class="form-control" name="last-name" id="inputLastName" type="text" value="{{ user_info.lastname }}" placeholder="Enter your last name">
-                                </div>
-                            </div>
-                            <!-- Form Row -->
-                            <div class="row gx-3 mb-3">
-                                <!-- Form Group (location) -->
-                                <div class="col-md-6">
-                                    <label class="font" for="inputLocation">Address</label>
-                                    <input class="form-control" name="address" id="inputLocation" type="text" value="{{ user_info.address }}" placeholder="Enter your Address">
-                                </div>
-                                <!-- Form Group (phone number) -->
-                                <div class="col-md-6">
-                                    <label class="font" for="inputPhone">Phone number</label>
-                                    <input class="form-control" name="cel-number" id="inputPhone" type="tel" value="{{ user_info.cel_num }}" placeholder="Enter your phone number">
-                                </div>
-                            </div>
-                            <!-- Form Group (email address) -->
-                            <div class="mb-3">
-                                <label type="hidden" class="font" for="inputEmailAddress"></label>
-                                <input type="hidden" class="form-control" name="email" id="inputEmailAddress" type="email" value="{{ user_info.email }}" placeholder="Enter your email address">
-                            </div>
-                        
-                            <!-- Save changes button -->
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                        </form>
-
-                        
-
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Save changes button
-            liooo an save changes po -->
-            <a style="color: black" class="back" href="{{ url_for('index') }}"> Back</a> 
-                             
         </div>
-    </div>
-</body>
-
-</html>
+    </body>
+    
+    </html>
