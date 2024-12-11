@@ -12,7 +12,6 @@ guestlist = []
 
 class Room_Management:
     def __init__(self, room_name, cost, description, more, image, min_guests, max_guests, room_id=None, count=1):
-        #Encapsulates room properties
         self.room_id = room_id
         self.room_name = room_name
         self.cost = cost
@@ -22,12 +21,12 @@ class Room_Management:
         self.min_guests = min_guests
         self.max_guests = max_guests
         self.room_count = count
-        self.__availability = count  # Private, so the access can be controlled 
+        self.__availability = count  # Private
 
-    def room_available(self): #The setter
+    def room_available(self): #The getter
         return self.__availability > 0
 
-    def room_book(self): #The getter
+    def room_book(self): #The setter
         if self.room_available():
             self.__availability -= 1
         else:
@@ -38,9 +37,9 @@ class Room_Management:
             self.__availability += 1
     
 
-class Rooms(Room_Management):
+class Rooms:
     def __init__(self):
-        self.rooms = [] #List where the Objects of Room_Management
+        self.rooms = [] 
 
     def add_room(self, room): # Hides the process of addition logic
         self.rooms.append(room)
@@ -58,10 +57,9 @@ class Rooms(Room_Management):
         return self.rooms
 
 #------------------------------------------------------------------------------
-#Creates a room object
 room_manager = Rooms()
 
-#Creates room using predefined rooms
+#Predefines rooms
 predefined_rooms = {
     "Basic Room": {"price": 500, "description": "1 bed, A/C, Persons 2, Free wifi", "more": ["Private bathroom", "Cable channels", "Free toiletries"], "image": "static/images/lily.jpg", "min_guests": 1, "max_guests": 2, "room_count": 10},
     "Deluxe Room": {"price": 1200, "description": "2 beds, A/C, Persons 4-5, Free wifi", "more": ["Private bathroom", "Cable channels", "Free toiletries"], "image": "static/images/lily1.jpg", "min_guests": 2, "max_guests": 5, "room_count": 3},
@@ -101,14 +99,12 @@ room_manager.rooms.extend([])
 
 #------------------------------------------------------------------------------
 
-
 @app.route("/")
 def home():
     rooms = room_manager.list_rooms()
     return render_template("home.html", rooms=rooms)
 
-
-#----------------ADMIN AREA----------------
+#---------------------------ADMIN AREA---------------------------
 @app.route("/admin_dashboard", methods=["GET", "POST"])
 def admin_dashboard():
     con = sqlite3.connect(currentdirectory + '\\data.db')
@@ -337,7 +333,7 @@ def remove_room(room_name):
 
     flash(f"Room '{room_name}' removed successfully!")
     return redirect(url_for("admin_dashboard"))
-#----------------ADMIN AREA----------------#
+#---------------------------ADMIN AREA---------------------------
 
 
 @app.route("/book_room/<room_name>", methods=["POST"])
@@ -350,9 +346,7 @@ def book_room(room_name):
         flash("Room not found!")
     return redirect(url_for("home"))
 
-
-#----------------USERS AREA----------------
-
+#---------------------------USERS AREA---------------------------
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -489,25 +483,25 @@ def profile():
     # Fetch user's bookings with room details
     query = """
     SELECT 
-        BOOKING.booking_id, 
-        BOOKING.check_in, 
-        BOOKING.check_out, 
-        BOOKING.room_name, 
-        BOOKING.stay_duration, 
-        BOOKING.total_price,
-        BOOKING.adult_guest,
-        BOOKING.child_guest,
-        PAYMENT.payment_method
+        B.booking_id, 
+        B.check_in, 
+        B.check_out, 
+        B.room_name, 
+        B.stay_duration, 
+        B.total_price,
+        B.adult_guest,
+        B.child_guest,
+        P.payment_method
     FROM 
-        BOOKING 
+        BOOKING B
     LEFT JOIN 
-        PAYMENT ON BOOKING.booking_id = PAYMENT.booking_id
+        PAYMENT P ON B.booking_id = P.booking_id
     JOIN 
-        GUEST ON BOOKING.guest_id = GUEST.guest_id
+        GUEST G ON B.guest_id = G.guest_id
     WHERE 
-        GUEST.email = ?
+        G.email = ?
     ORDER BY 
-        BOOKING.check_in DESC
+        B.check_in DESC
     """
     c.execute(query, (user_email,))
     user_bookings = c.fetchall()
@@ -531,26 +525,16 @@ def profile():
     return render_template("profile.html", 
                            user_info=session['user_info'], 
                            user_bookings=user_bookings)
-
+#---------------------------USERS AREA---------------------------
 
 
 def calculate_stay_details(check_in, check_out):
-    """
-    Calculate the number of days and total price for a room booking.
-    
-    Args:
-    check_in (str): Check-in date in 'YYYY-MM-DD' format
-    check_out (str): Check-out date in 'YYYY-MM-DD' format
-    
-    Returns:
-    dict: A dictionary containing stay details
-    """
     try:
-        # Convert date strings to datetime objects
+        # ConvertER
         check_in_date = datetime.strptime(check_in, "%Y-%m-%d")
         check_out_date = datetime.strptime(check_out, "%Y-%m-%d")
         
-        # Calculate number of days
+        # Calculation
         stay_duration = (check_out_date - check_in_date).days
         
         return {
@@ -562,7 +546,7 @@ def calculate_stay_details(check_in, check_out):
             'stay_duration': 0,
             'is_valid': False
         }
-
+        
 @app.route("/index", methods=["GET", "POST"])
 def index():
     if 'email' not in session:
@@ -579,7 +563,6 @@ def index():
             'room_name': request.form.get("room-name")
         }
 
-        # Validate room selection
         room_name = guest["room_name"]
         if not room_name:
             flash("Please select a room.")
@@ -590,38 +573,32 @@ def index():
             flash(f"Room '{room_name}' does not exist.")
             return redirect(url_for('index'))
 
-        # Calculate stay details
         stay_details = calculate_stay_details(guest['check_in'], guest['check_out'])
         
         if not stay_details['is_valid']:
             flash("Invalid check-in or check-out dates. Check-out must be after check-in.")
             return redirect(url_for('index'))
 
-        # Calculate total price
+        
         stay_duration = stay_details['stay_duration']
-        total_price = room.cost * stay_duration
+        total_price = room.cost * stay_duration # Calculatation for price
 
-        # Check room availability
         if not room.room_available():
             flash(f"Room '{room_name}' is not available. Please choose another room.")
             return redirect(url_for('index'))
 
-        # Book the room
         room.room_book()
 
-        # Additional booking logic (database insertion, etc.)
         con = sqlite3.connect(currentdirectory + '\\data.db')
         c = con.cursor()
 
-        
-        user_email = session['user_info']['email'] # Retrieve guest ID from user's email
+        user_email = session['user_info']['email']
         c.execute("SELECT guest_id FROM GUEST WHERE email = ?", (user_email,))
         guest_id_row = c.fetchone()
 
         if guest_id_row:
             guest_id = guest_id_row[0]
 
-            # Add stay duration and total price to the guest dictionary
             guest['stay_duration'] = stay_duration
             guest['total_price'] = total_price
 
@@ -629,8 +606,16 @@ def index():
                 INSERT INTO BOOKING (guest_id, check_in, check_out, adult_guest, child_guest, room_name, stay_duration, total_price)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """
-            c.execute(query, (guest_id, guest["check_in"], guest["check_out"], guest["adults"], guest["children"], 
-                room_name, stay_duration, total_price))
+            c.execute(query, (
+                guest_id, 
+                guest["check_in"], 
+                guest["check_out"], 
+                guest["adults"], 
+                guest["children"], 
+                room_name, 
+                stay_duration, 
+                total_price
+            ))
 
             c.execute("UPDATE ROOMS SET Room_Availability = Room_Availability - 1 WHERE room_name = ?", (room_name,))
             con.commit()
@@ -652,7 +637,6 @@ def index():
     rooms = room_manager.list_rooms()
     return render_template("index.html", rooms=rooms, guestlist=guestlist, user_info=user_info)
 
-
 class Rent: 
     @app.route("/reservationform", methods=['GET', 'POST'])
     def reservationform():
@@ -669,8 +653,7 @@ class Rent:
             session['guestlist'] = guestlist 
 
             return redirect(url_for('payment', guest_index=len(guestlist) - 1))
-
-        
+  
         return render_template("reservationform.html", user_info=user_info, 
             check_in=check_in, 
             check_out=check_out, 
@@ -689,9 +672,7 @@ class Rent:
             payment_method = request.form.get('payment-method')
             
             guestlist[guest_index]['payment_method'] = payment_method
-            
-            
-            
+             
             con = sqlite3.connect(currentdirectory + '\data.db')
             c = con.cursor()
             

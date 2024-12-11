@@ -51,7 +51,7 @@
                     <p>Address: {{ user_info.address }}</p>
                     <p>Phone Number: {{ user_info.cel_num}}</p>
                     <p>Payment Method: {{ guest.payment_method }}</p>
-                    <p>Total Price {{ guest.total_price }}</p>
+                    <p>Total Price: {{ guest.total_price }}</p>
                 </section>
 
                 <button type="submit" class="btn" onclick="openPopup()">Submit</button>
@@ -60,7 +60,7 @@
                     <img src="/static/images/2.png">
                     <h1> Thank You!</h1>
                     <p> We can't wait to host you!</p>
-                    <a href ='/logout' button type="button" onclick="closePopup()" >EXIT</button>
+                    <a href ='/index' button type="button" onclick="closePopup()" >EXIT</button>
 
                 </div>  
       </div>

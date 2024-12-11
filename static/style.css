@@ -161,7 +161,6 @@ h1 {
 .dash-con h1{
     font-family: "Fjalla One";
     color: white;
-    padding-bottom: 10px;
 }
 .dash-con{
     background:linear-gradient(135deg, #2F4F4F, #008b8b, #2F4F4F);
@@ -169,7 +168,8 @@ h1 {
     height: 100px;
     width: 800px;
     padding-top: 2.5%;
-    margin-left: 23%;
+    text-align: center;
+    margin-left: 30rem;
     border-radius: 5px;
     box-shadow: 0 .5rem 1rem rgb(48, 47, 47);
     
@@ -193,13 +193,12 @@ th {
      }
 
 .action-buttons { 
-    font-family: "Fjalla One";
     text-align: right;
     display: flex; 
     gap: 10px; 
     margin-bottom: 20px;
     color: #008b8b;
-    margin-left: 5%;
+
  }
 
  .action-buttons button {
@@ -677,14 +676,6 @@ header .fa-bars{
     filter: drop-shadow(2px 2px 80px black);
 }
 
-.contact .row h2{
-    font-family: "Fjalla One";
-    padding-left: 20px;
-    color: #0d5e5e;
-    filter: drop-shadow(2px 2px 80px black);
-    font-size: 35px;
-}
-
 .contact .row address{
     font-family: "Fjalla One";
     padding-left: 20px;
@@ -717,7 +708,6 @@ header .fa-bars{
     color: #053f3f;
     text-transform: none;
     margin:.7rem 0;
-    border: 2px solid #053f3f;
     width: 100%;
     border: 2px solid #053f3f;
 }
