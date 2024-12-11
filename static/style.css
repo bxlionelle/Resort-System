@@ -203,11 +203,13 @@ th {
 
  .action-buttons button {
     padding: 10px 20px;
+    font-family: "Fjalla One", sans-serif;
     background:linear-gradient(135deg, #2F4F4F, #008b8b, #2F4F4F);
     color: white;
     border: none;
     cursor: pointer;
     box-shadow: 0 .5rem 1rem rgb(48, 47, 47);
+    margin-left: 49%;
   }
 
 .action-buttons button:hover{
@@ -705,10 +707,9 @@ header .fa-bars{
     font-size: 1.7rem;
     color: #053f3f;
     text-transform: none;
-    border: .5rem solid rgba(0,0,0,.1);
-    border-radius: .5rem solid rgba(0,0,0,.1);
     margin:.7rem 0;
     width: 100%;
+    border: 2px solid #053f3f;
 }
 
 .contact .row form .box::placeholder{
@@ -718,8 +719,7 @@ header .fa-bars{
 
 .contact .row form .box:focus{
     color: white;
-    border-color:rgb(180, 180, 180);
-    background:linear-gradient(135deg, #008b8b, #c8a2c8, #008b8b);
+    border-color:#1a9999;
 }
 
 .contact .row form textarea{
@@ -1603,6 +1603,172 @@ form .input-box span.details {
 .font{
     font-size: 1.5rem;
     font:senrif;
+}
+
+/*---------------------ADD ROOM------------------------------*/
+
+.add label{
+    color: #025858;
+    font-family: "Fjalla One", sans-serif;
+    font-size: 20px;
+    margin-left: 35%;
+    margin-top: 100%;
+}
+
+.add h1{
+    color: #025858;
+    font-family: "Fjalla One", sans-serif;
+    padding-top: 50px;
+    font-size: 40px;
+}
+
+.add input{
+    border: 2px solid #025858;
+    margin-left: 55px;
+    color: #025858;;
+}
+
+.add .cost{
+    border: 2px solid #025858;
+    margin-left: 66px;
+    margin-top: 9px;
+}
+
+.add .description{
+    border: 2px solid #025858;
+    margin-left: 59px;
+    height: 27px;
+    margin-top: 9px;
+    width: 206px;
+}
+
+.add .more{
+    border: 2px solid #025858;
+    margin-left: 51px;
+    margin-top: 9px;
+}
+
+.add .image{
+    border: 2px solid #025858;
+    margin-left: 67px;
+    margin-top: 9px;
+}
+
+.add .mini{
+    border: 2px solid #025858;
+    margin-left: 19px;
+    margin-top: 9px;
+}
+
+.add .max{
+    border: 2px solid #025858;
+    margin-left: 16px;
+    margin-top: 9px;
+}
+
+.add .room{
+    border: 2px solid #025858;
+    margin-left: 55px;
+    margin-top: 9px;
+}
+
+.add .btn{
+    color: white;
+    font-family: "Fjalla One", sans-serif;
+    margin-left: 35%;
+    font-size: 17px;
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
+}
+
+.add .btn:hover{
+    background:linear-gradient(135deg, #008b8b, #c8a2c8, #008b8b);
+}
+
+.add a{
+    margin-left: 35%;
+}
+
+/*------------------------------UPDATE ROOM-----------------------------------*/
+
+.lip label{
+    color: #025858;
+    font-family: "Fjalla One", sans-serif;
+    font-size: 20px;
+    margin-left: 35%;
+    margin-top: 100%;
+}
+
+.lip h1{
+    color: #025858;
+    font-family: "Fjalla One", sans-serif;
+    padding-top: 50px;
+    font-size: 40px;
+}
+
+.lip input{
+    border: 2px solid #025858;
+    margin-left: 55px;
+    color: #025858;;
+}
+
+.lip .room{
+    border: 2px solid #025858;
+    margin-left: 66px;
+    margin-top: 9px;
+}
+
+.lip .cost{
+    border: 2px solid #025858;
+    margin-left: 77px;
+    margin-top: 9px;
+}
+
+.lip .description{
+    border: 2px solid #025858;
+    margin-left: 69px;
+    margin-top: 9px;
+}
+
+.lip .more{
+    border: 2px solid #025858;
+    margin-left: 61px;
+    margin-top: 9px;
+}
+
+.lip .image{
+    border: 2px solid #025858;
+    margin-left: 77px;
+    margin-top: 9px;
+}
+
+.lip .min{
+    border: 2px solid #025858;
+    margin-left: 29px;
+    margin-top: 9px;
+}
+
+.lip .max{
+    border: 2px solid #025858;
+    margin-left: 26px;
+    margin-top: 9px;
+}
+
+.lip .count{
+    border: 2px solid #025858;
+    margin-left: 64px;
+    margin-top: 9px;
+}
+
+.lip .btn{
+    color: white;
+    font-family: "Fjalla One", sans-serif;
+    margin-left: 35%;
+    font-size: 17px;
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
+}
+
+.lip .btn:hover{
+    background:linear-gradient(135deg, #008b8b, #c8a2c8, #008b8b);
 }
 
 

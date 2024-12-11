@@ -4,38 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Room</title>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+
+    <!--FONTS-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aladin&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aladin&family=Cherry+Cream+Soda&family=Concert+One&family=Fjalla+One&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
 </head>
 <body>
+
+<div class="lip">
+
     <h1>Update Room Information</h1>
     <form method="post">
         <label for="room_name">Room Name:</label>
-        <input type="text" id="room_name" name="room_name" value="{{ room.room_name }}" required><br>
+        <input class="room" type="text" id="room_name" name="room_name" value="{{ room.room_name }}" required><br>
 
         <label for="cost">Room Cost:</label>
-        <input type="number" id="cost" name="cost" value="{{ room.cost }}" step="0.01" required><br>
+        <input class="cost" type="number" id="cost" name="cost" value="{{ room.cost }}" step="0.01" required><br>
 
         <label for="description">Description:</label>
-        <textarea id="description" name="description" required>{{ room.description }}</textarea><br>
+        <input class="description" id="description" name="description" required>{{ room.description }}</input><br>
 
-        <label for="more">More Details (comma-separated):</label>
-        <input type="text" id="more" name="more" value="{{ ', '.join(room.more) }}"><br>
+        <label for="more">More Details:</label>
+        <input class="more" type="text" id="more" name="more" value="{{ ', '.join(room.more) }}"><br>
 
         <label for="image">Image URL:</label>
-        <input type="url" id="image" name="image" value="{{ room.image }}"><br>
+        <input class="image" type="url" id="image" name="image" value="{{ room.image }}"><br>
 
         <label for="min_guests">Minimum Guests:</label>
-        <input type="number" id="min_guests" name="min_guests" value="{{ room.min_guests }}" required><br>
+        <input class="min" type="number" id="min_guests" name="min_guests" value="{{ room.min_guests }}" required><br>
 
         <label for="max_guests">Maximum Guests:</label>
-        <input type="number" id="max_guests" name="max_guests" value="{{ room.max_guests }}" required><br>
+        <input class="max" type="number" id="max_guests" name="max_guests" value="{{ room.max_guests }}" required><br>
 
         <label for="room_count">Room Count:</label>
-        <input type="number" id="room_count" name="room_count" value="{{ room.room_count }}" required><br>
+        <input class="count" type="number" id="room_count" name="room_count" value="{{ room.room_count }}" required><br>
 
-        <button type="submit">Update Room</button>
+        <button class="btn" type="submit">Update Room</button>
     </form>
+    <a class="btn" href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
 
-    <br>
-    <a href="{{ url_for('admin_dashboard') }}">Back to Dashboard</a>
+</div>
 </body>
 </html>
