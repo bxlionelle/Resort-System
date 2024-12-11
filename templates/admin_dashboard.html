@@ -53,7 +53,7 @@
                     <td>{{ room_display[1] }}</td> 
                     <td>{{ room_display[2] }}</td> 
                     <td>{{ room_display[3] }}</td>
-                    <td>{{ room_display[3] }}{{ room_display[4] }}</td>
+                    <td>{{ room_display[3]|int - room_display[4]|int }}</td>
                     <td>{{ room_display[4] }}</td>
 
                     <div class="bots">
