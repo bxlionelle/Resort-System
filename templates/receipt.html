@@ -11,6 +11,15 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
         <link rel="stylesheet" href="/static/style.css">
+
+        <!--FONTS-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aladin&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aladin&family=Cherry+Cream+Soda&family=Concert+One&family=Fjalla+One&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
         
     </head>
     <body>
@@ -20,14 +29,17 @@
             <input type="checkbox" name="" id="toggler">
             <label for="toggler" class="fas fa-bars"></label>
         
-            <a href="#" class="logo">Resort<span>.</span></a>
+            <a href="#" class="logo">
+                <img src="/static/images/yyy.png" alt="stingray">
+            </a>
         </header>  
         <div class="receipt-block">
               <h3 class="Reservation">Reservation Receipt</h3>
+              <p>________________________________________________</p>
 
               <section class="Receipt">
                 <p>Thank you, {{ user_info.firstname }} {{ user_info.lastname }}!</p>
-                <p>Your Customer ID: <strong>{{ guest.customer_id }}</strong></p>
+              <!--  <p>Your Customer ID: <strong>{{ guest.customer_id }}</strong></p>-->
                 <p>Your reservation details:</p>
               </section>
                 <section class="Receipt2">
@@ -42,13 +54,13 @@
                     <p>Total Price {{ guest.total_price }}</p>
                 </section>
 
-                <button type="submit" class="sub" onclick="openPopup()">Submit</button>
+                <button type="submit" class="btn" onclick="openPopup()">Submit</button>
 
                 <div class = "popup" id="popup">
-                    <img src="static/images/2.png">
-                    <h2> Thank You!</h2>
-                    <p> LLOYD IG MEKUS MEKUS NLA!!!!</p>
-                    <a href ='/logout' button type="button" onclick="closePopup()" >OK</button>
+                    <img src="/static/images/2.png">
+                    <h1> Thank You!</h1>
+                    <p> We can't wait to host you!</p>
+                    <a href ='/logout' button type="button" onclick="closePopup()" >EXIT</button>
 
                 </div>  
       </div>

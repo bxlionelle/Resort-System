@@ -35,7 +35,7 @@ header{
 .heading{
     text-align: center;
     font-size: 4rem;
-    color: wheat;
+    color: white;
     padding: 1rem;
     margin: 2rem 0;
     background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
@@ -43,7 +43,7 @@ header{
 }
 
 .heading span{
-    color: wheat;
+    color: white;
     font-family: "Fjalla One", sans-serif;
 }
 .btn{
@@ -246,10 +246,10 @@ th {
     position: relative;
     width: 600px;
     height: 400px;
-    background: #fff;
+    background:linear-gradient(135deg, #CD853F, #EEE8AA, #E9967A);
     border-radius: 20px;
     display: flex;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    filter: drop-shadow(2px 2px 20px black);
 }
 
 .contentBox .imgBx{
@@ -266,13 +266,13 @@ th {
     position: absolute;
     width: 250px;
     height: 250px;
-    background: #e7ffe0;
-    border-radius: 50%;
+
 }
 
 .contentBox .imgBx img{
     position: relative;
-    max-width: 250px
+    max-width: 200px;
+    filter: drop-shadow(2px 2px 10px white);
 }
 
 .contentBox .content{
@@ -288,23 +288,34 @@ th {
     color:#333;
     line-height: 1em;
     font-weight: 300;
-    font-size: 2em;
+    font-size: 3.8em;
+    font-family: "Aladin", system-ui;
 }
 
 .contentBox .content h2{
     font-size: 4em;
     color: #ff4d54;
     line-height: 1em;
+    font-family: "Fjalla One";
+}
+
+.contentBox .content h2 sup{
+    color: #ff4d54;
+    line-height: 1em;
+    font-family: "Fjalla One";
 }
 
 .contentBox .content h2 span{
     color:#333;
     font-size:0.75em;
     text-transform: uppercasse;
+    font-family: "Fjalla One";
 }
 
 .contentBox .content p{
     font-weight: 300;
+    font-family: "Fjalla One";
+    font-size: 2rem;
 }
 
 .contentBox .content a{
@@ -315,6 +326,12 @@ th {
     margin-top: 15px;
     text-decoration: none;
     border-radius: 10px;
+    font-family: "Fjalla One";
+    font-size: 2rem;
+}
+
+.contentBox .content a:hover{
+    background: #f72f36;
 }
 
 .close{
@@ -545,7 +562,7 @@ header .fa-bars{
     font-family: "Fjalla One", sans-serif;
     font-size: 3rem;
     text-align: center;
-    color: wheat;
+    color: white;
     background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
     filter: drop-shadow(2px 2px 20px black);
 }
@@ -729,17 +746,9 @@ header .fa-bars{
     margin: 120px auto;
     margin-left: 50px;
     margin-right: 50px;
-    border: .5px solid  rgb(255, 255, 255);
-    border-width: 10px;
-    border-radius: 10px;
     position: relative;
     left: 320px;
     padding-bottom: 3rem;
-    box-shadow: 0 0 10px ;
-}
-.flu{
-    padding-left: 10rem ;
-    
 }
 
 
@@ -756,23 +765,51 @@ header .fa-bars{
 
 }
 .reservation-block h2{
-    text-align: left;
+    text-align: center;
     font-family: "Fjalla One";
+    font-size: 2.5rem;
+    color: #053f3f;
 }
 .reservation-block h3{
     text-align: center;
     font-family: "Fjalla One";
+    color: #053f3f;
+    font-size: 3rem;
+}
+
+.reservation-block h1{
+    color: #053f3f;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.reservation-block p{
+    font-family: "Fjalla One";
+    font-size: 1.5rem;
+    color: #053f3f;
+}
+
+.reservation-block label{
+    font-family: "Fjalla One";
+    font-size: 1.5rem;
+    color: #053f3f;
 }
 
 .reservation-block button{
     display: inline-block;
     margin: 10px;
-    text-align: center
+    text-align: center;
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);   
 }
+
+.reservation-block button:hover{
+    background:linear-gradient(135deg, #008b8b, #c8a2c8, #008b8b);
+}
+
 .enter{
     margin-top: 1rem;
     border-radius: 5rem;
-    background:mediumseagreen;
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
     color: #fff;
     padding:.9rem 3.5rem;
     cursor: pointer;
@@ -783,7 +820,7 @@ header .fa-bars{
 }
 
 .enter:hover{
-    background:rgb(43, 161, 132);
+    background:linear-gradient(135deg, #008b8b, #c8a2c8, #008b8b);
 }
 
 .payment-block{
@@ -795,23 +832,52 @@ header .fa-bars{
     margin: 120px auto;
     margin-left: 50px;
     margin-right: 50px;
-    border: .5px solid rgb(255, 255, 255);
-    border-width: 10px;
-    border-radius: 10px;
     position: relative;
     left: 320px;
     padding-bottom: 3rem;
-    box-shadow: 0 0 10px ;
 }
 
 .pay p{
     text-align: left;
     display: inline-block;
     width: 50%;
+    color: #053f3f;
+    font-family: "Fjalla One";
+    font-size: 2rem;
 }
 
 .payment-block h3{
     font-family: "Fjalla One";
+    font-size: 4.5rem;
+    text-align: center;
+    color: #053f3f;
+}
+
+.payment-block .pay button{
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
+}
+
+.payment-block .pay button:hover{
+    background:linear-gradient(135deg, #008b8b, #c8a2c8, #008b8b);
+}
+
+.payment-block .pay label{
+    color: #053f3f;
+    margin-left: 19px;
+    font-family: "Fjalla One";
+    font-size: 2rem;
+}
+
+.payment-block .pay option{
+    color: #053f3f;
+    font-family: "Fjalla One";
+    font-size: 1.9rem;
+}
+
+.payment-block .pay select{
+    color: #109797;
+    font-family: "Fjalla One";
+    font-size: 1.9rem;
 }
 /*...........................RECEIPT.......................*/
 
@@ -823,26 +889,37 @@ header .fa-bars{
     margin: 120px auto;
     margin-left: 50px;
     margin-right: 50px;
-    border: .5px solid  rgb(255, 255, 255);
-    border-width: 10px;
-    border-radius: 10px;
     position: relative;
     left: 320px;
     padding-bottom: 3rem;
-    box-shadow: 0 0 10px ;
-   
-  }
+}
+
+.receipt-block h3{
+    font-family: "Fjalla One";
+    color: #053f3f;
+    font-size: 3.5rem;
+    text-align: center;
+}
+
+.receipt-block .Receipt p{
+    color: #053f3f;
+}
+
+.receipt-block .Receipt2 p{
+    color: #053f3f;
+    font-size: 1.7rem;
+    font-family: "Fjalla One";
+}
+
   .Reservation{
     font-family: "Fjalla One";
     text-align: center;
     padding-top: 5px;
     font-size: 3rem;
-
-
-
   }
+
   .Receipt{
-    text-align: left;
+    text-align: center;
     font-size: 2rem;
   }
 
@@ -878,17 +955,14 @@ header .fa-bars{
   }
   */
 
-  sub{
-    padding: 10px 60px;
-    background: teal;
-    border: 0;
-    outline: none;
-    cursor: pointer;
-    font-size: 22px;
-    font-weight: 500;
-    border-radius: 30px;
+  .receipt-block .btn{
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
     font-family: "Fjalla One";
-}
+  }
+
+  .receipt-block .btn:hover{
+    background:linear-gradient(135deg, #008b8b, #c8a2c8, #008b8b);
+  }
 
   .popup{
     font-family: "Fjalla One";
@@ -904,7 +978,8 @@ header .fa-bars{
     color:#ffffff;
     visibility:hidden ;
     transition: transform 0.4s, top 0.4s;
-    background-color: teal;
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
+    filter: drop-shadow(2px 2px 10px black);
   }
   .open-popup{
     visibility: visible;
@@ -915,13 +990,28 @@ header .fa-bars{
     width: 100px;
     margin-top: -50%;
     border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    filter: drop-shadow(2px 2px 20px black);
 }
 
-.popup h2{
-    font-size: 38px;
+.popup h1{
+    font-size: 40px;
     font-weight: 500px;
     margin: 30px 0 10px;
+    font-family: "Fjalla One";
+}
+
+.popup p{
+    font-family: "Fjalla One";
+    font-size: 19px;
+}
+
+.popup a{
+    margin-top: 10px;
+    font-family: "Fjalla One";
+}
+
+.popup a:hover{
+    color: #053f3f;
 }
 
 .popup button{
@@ -1070,13 +1160,11 @@ header .fa-bars{
 
 form .input-log{
     position: relative;
-    border-bottom: 2px solid rgb(250, 249, 246);;
     margin: 30px 0;
-  }
+}
   
 .input-log input{
     width: 100%;
-    padding: 0 5px;
     height: 40px;
     font-size: 16px;
     border: none;
@@ -1338,12 +1426,16 @@ form .input-box span.details {
 /*........................EDIT OR PROFILE.....................*/
 
 .card-body img {
-    width: 250px; /* Increased from 200px */
+    width: 120px; /* Increased from 200px */
 }
 
 .img-account-profile {
     width: 12rem; /* Increased width */
     height: 12rem; /* Increased height */
+}
+
+.card-header{
+    color: #025858;
 }
 
 .rounded-circle {
@@ -1353,6 +1445,14 @@ form .input-box span.details {
 .card {
     box-shadow: 0 0.25rem 2rem 0 rgb(33 40 50 / 15%);
     padding: 1.5rem; /* Increased padding for a more spacious look */
+}
+
+.card-body label{
+    color: #025858;
+}
+
+.card-body .form-control{
+    color: #025858;
 }
 
 .card .card-header {
@@ -1371,11 +1471,111 @@ form .input-box span.details {
     border-bottom: 2px solid rgba(33, 40, 50, 0.125); /* Thicker border */
 }
 
-.form-control, .dataTable-input {
+.col-md-6 label{
+    color: #025858;
+    font-family: "Fjalla One", sans-serif;
+}
+
+.card-header{
+    color: #025858;
+    font-family: "Fjalla One", sans-serif;
+}
+
+.card button{
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
+    border: none;
+}
+
+.card button:hover{
+    border: none;
+    background:linear-gradient(135deg, #008b8b, #c8a2c8, #008b8b);
+}
+
+.card-body .font-italic{
+    font-family: "Fjalla One", sans-serif;
+    color: #025858;
+}
+
+.card-body input{
+    font-family: "Fjalla One", sans-serif;
+    font-size: 15px;
+}
+
+.row .back{
+    color: #025858;
+    font-size: 20px;
+    font-family: "Fjalla One", sans-serif;
+}
+
+.row .back:hover{
+    color: #219c9c;
+}
+
+.card-body .col-md-6 label{
+    font-size: 20px;
+}
+
+.card-body .col-md-6 p{
+    font-size: 15px;
+    color: #025858;
+    font-family: "Fjalla One", sans-serif;
+}
+
+.card-body .mb-3 label{
+    font-size: 20px;
+    font-family: "Fjalla One", sans-serif;
+}
+
+.card-body .mb-3 p{
+    font-size: 15px;
+    color: #025858;
+    font-family: "Fjalla One", sans-serif;
+}
+
+.mom .first{
+    margin-top: 20px;
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
+    border: none;
+    color: white;
+    font-size: 18px;
+    font-family: "Fjalla One", sans-serif;
+}
+
+.mom .first:hover{
+    border: none;
+    background:linear-gradient(135deg, #008b8b, #c8a2c8, #008b8b);
+}
+
+.mom .save{
+    margin-top: 20px;
+    background:linear-gradient(135deg, #002e63, #008b8b, #08457e);
+    border: none;
+    font-family: "Fjalla One", sans-serif;
+}
+
+.mom .save:hover{
+    background:linear-gradient(135deg, #008b8b, #c8a2c8, #008b8b);
+    border: none;
+}
+
+.card .card-header h3{
+    font-family: "Fjalla One", sans-serif;
+    font-size: 25px;
+}
+
+.card-body table th{
+    color: white;
+}
+
+.card-body{
+    font-size: 15px;
+}
+
+.form-control .dataTable-input {
     display: block;
     width: 100%;
     padding: 1rem 1.25rem; /* Increased padding */
-    font-size: 1.2rem; /* Increased font size */
+    font-size: 1.5rem; /* Increased font size */
     font-weight: 400;
     line-height: 1.2;
     color: #69707a;
@@ -1404,7 +1604,6 @@ form .input-box span.details {
     font-size: 1.5rem;
     font:senrif;
 }
-
 
 
 

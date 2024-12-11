@@ -7,12 +7,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
+
+    <!--FONTS-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aladin&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aladin&family=Cherry+Cream+Soda&family=Concert+One&family=Fjalla+One&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 </head>
 <body>
     <header>
         <input type="checkbox" name="" id="toggler">
         <label for="toggler" class="fas fa-bars"></label>
-        <a href="#" class="logo">Resort<span>.</span></a>
+        <a href="#" class="logo">
+            <img src="/static/images/yyy.png" alt="stingray">
+        </a>
     </header>
     <div class="payment-block">
         <h3 class="payment">Payment Details</h3>
@@ -23,12 +34,13 @@
             </form>
             <form action="" method="POST" id="paymentForm">
                 <label for="payment-method">Payment Method:</label>
-                <select id="payment-method" name="payment-method" onchange="showPaymentDetails()" required>
+                <select name="payment-method" onchange="showPaymentDetails()" required>
                     <option value="">Payment Method</option>
                     <option value="Paytaca">Paytaca</option>
                     <option value="debit-card">Debit Card</option>
                 </select><br>
                 <div id="payment-details"></div>
+                <br>
                 <button type="submit" class="btn btn --primary color" value="Complete Booking">Complete Booking</button>
             </form>
             <a href="{{ url_for('reservationform', check_in=guest.check_in, check_out=guest.check_out, adults=guest.adults, children=guest.children, room_type=guest.room_type) }}"><button class="btn btn --primary color">Cancel</button></a>
